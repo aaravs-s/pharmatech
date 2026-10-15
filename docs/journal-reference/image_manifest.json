@@ -1,0 +1,368 @@
+{
+  "cad_b4_assembly.jpg": {
+    "caption": "B4 workspace SuperStructureAssem. The alternate arrangement shows a servo and lead-screw lift structure above the auger drive. This is a CAD revision, not proof of installed final hardware.",
+    "raw_url": "https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/cad_b4_assembly.jpg",
+    "source_url": "https://cad.onshape.com/documents/f819db58872866a35406a666/w/1f6b807ce727fc3c6c64753e/e/10f304238bc42744937828a5",
+    "capture_date": null
+  },
+  "cad_b4_lift.jpg": {
+    "caption": "B4 servo actuator assem. CAD of the lift concept with lead screw, brackets, and motor assembly. Confirm its relationship to the built mechanism.",
+    "raw_url": "https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/cad_b4_lift.jpg",
+    "source_url": "https://cad.onshape.com/documents/f819db58872866a35406a666/w/1f6b807ce727fc3c6c64753e/e/0298b1384aee3baf88b3c44e",
+    "capture_date": null
+  },
+  "cad_doser_early_assembly.jpg": {
+    "caption": "Separate doser document, simple asem tab. It shows a single hopper assembly and visibly unresolved mate markers in the source UI.",
+    "raw_url": "https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/cad_doser_early_assembly.jpg",
+    "source_url": "https://cad.onshape.com/documents/402cc719a9b371e4776378d7/w/02bcbbb697ba2949cb4b8289/e/e7f1ae54d13c5c78b7393eca",
+    "capture_date": null
+  },
+  "cad_main_assembly.jpg": {
+    "caption": "Current Main workspace SuperStructureAssem. Only one hopper is visible in this assembly view. CAD includes mate or linked-reference warnings; the image is not proof of a fully populated or validated mechanism.",
+    "raw_url": "https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/cad_main_assembly.jpg",
+    "source_url": "https://cad.onshape.com/documents/f819db58872866a35406a666/w/7d1b7ca1a3232135829d3d22/e/10f304238bc42744937828a5",
+    "capture_date": null
+  },
+  "cad_main_rotary.jpg": {
+    "caption": "Current Rotary Disk V2 Part Studio showing eight openings, two plates, spacers, and central indexing features.",
+    "raw_url": "https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/cad_main_rotary.jpg",
+    "source_url": "https://cad.onshape.com/documents/f819db58872866a35406a666/w/7d1b7ca1a3232135829d3d22/e/109c5c7082df4704b0ae719e",
+    "capture_date": null
+  },
+  "cad_main_superstructure.jpg": {
+    "caption": "Current Main workspace Superstructure Part Studio. CAD geometry capture, not a validated structural test.",
+    "raw_url": "https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/cad_main_superstructure.jpg",
+    "source_url": "https://cad.onshape.com/documents/f819db58872866a35406a666/w/7d1b7ca1a3232135829d3d22/e/600e8b7745e9207ed96bca89",
+    "capture_date": null
+  },
+  "cad_v10_auger_agitator.jpg": {
+    "caption": "V10 Part Studio 1, saved July 10 2026. Later view of the auger and agitator arms.",
+    "raw_url": "https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/cad_v10_auger_agitator.jpg",
+    "source_url": "https://cad.onshape.com/documents/f819db58872866a35406a666/v/b12403b67299534bef1edc27/e/f71758db9526cabee3bf909f",
+    "capture_date": null
+  },
+  "cad_v18_adapter_base_extrude.jpg": {
+    "caption": "V18 motor adapter: Extrude 13 adds two selected Sketch 15 regions at 0.2 cm blind depth into Part 4.",
+    "raw_url": "https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/cad_v18_adapter_base_extrude.jpg",
+    "source_url": "https://cad.onshape.com/documents/f819db58872866a35406a666/v/7212cfc1b8972a4d6cbc3e1b/e/a4c2e4728cc4a7298ef15cd1",
+    "capture_date": "2026-10-13"
+  },
+  "cad_v18_adapter_base_sketch.jpg": {
+    "caption": "V18 auger motor adapter: Sketch 15 on a face of Extrude 2, displayed 2.5 cm circular profile before the adapter base is added.",
+    "raw_url": "https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/cad_v18_adapter_base_sketch.jpg",
+    "source_url": "https://cad.onshape.com/documents/f819db58872866a35406a666/v/7212cfc1b8972a4d6cbc3e1b/e/a4c2e4728cc4a7298ef15cd1",
+    "capture_date": "2026-10-13"
+  },
+  "cad_v18_adapter_complete.jpg": {
+    "caption": "V18 saved auger with keyed motor adapter. This is a recovered orientation-dependent design stage; its identity with the exact failed printed coupler has not been established, and it is not the later serrated revision.",
+    "raw_url": "https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/cad_v18_adapter_complete.jpg",
+    "source_url": "https://cad.onshape.com/documents/f819db58872866a35406a666/v/7212cfc1b8972a4d6cbc3e1b/e/a4c2e4728cc4a7298ef15cd1",
+    "capture_date": "2026-10-13"
+  },
+  "cad_v18_adapter_key_extrude.jpg": {
+    "caption": "V18 motor adapter: Extrude 11 adds two Sketch 13 regions at 0.75 cm blind depth into Part 4, forming the keyed wall/engagement geometry.",
+    "raw_url": "https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/cad_v18_adapter_key_extrude.jpg",
+    "source_url": "https://cad.onshape.com/documents/f819db58872866a35406a666/v/7212cfc1b8972a4d6cbc3e1b/e/a4c2e4728cc4a7298ef15cd1",
+    "capture_date": "2026-10-13"
+  },
+  "cad_v18_adapter_key_sketch.jpg": {
+    "caption": "V18 motor adapter: Sketch 13 on a face of Extrude 13 shows a 2.3 cm circular boundary and keyed engagement profile. Onshape reports this sketch is not fully defined.",
+    "raw_url": "https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/cad_v18_adapter_key_sketch.jpg",
+    "source_url": "https://cad.onshape.com/documents/f819db58872866a35406a666/v/7212cfc1b8972a4d6cbc3e1b/e/a4c2e4728cc4a7298ef15cd1",
+    "capture_date": "2026-10-13"
+  },
+  "cad_v18_disk_complete.jpg": {
+    "caption": "V18 saved Rotary Disk V2 after closing its feature preview. The archive contains feature warnings; this view is geometry evidence, not a rigidity or operation test.",
+    "raw_url": "https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/cad_v18_disk_complete.jpg",
+    "source_url": "https://cad.onshape.com/documents/f819db58872866a35406a666/v/7212cfc1b8972a4d6cbc3e1b/e/109c5c7082df4704b0ae719e",
+    "capture_date": "2026-10-13"
+  },
+  "cad_v18_disk_lightening.jpg": {
+    "caption": "V18 Rotary Disk V2: Part Lightening feature inspected as a construction stage, with its parameters and cut structure shown.",
+    "raw_url": "https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/cad_v18_disk_lightening.jpg",
+    "source_url": "https://cad.onshape.com/documents/f819db58872866a35406a666/v/7212cfc1b8972a4d6cbc3e1b/e/109c5c7082df4704b0ae719e",
+    "capture_date": "2026-10-13"
+  },
+  "cad_v18_disk_mirror.jpg": {
+    "caption": "V18 Rotary Disk V2: Mirror 1 duplicates the selected plate about Plane 1, producing the upper/lower arrangement.",
+    "raw_url": "https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/cad_v18_disk_mirror.jpg",
+    "source_url": "https://cad.onshape.com/documents/f819db58872866a35406a666/v/7212cfc1b8972a4d6cbc3e1b/e/109c5c7082df4704b0ae719e",
+    "capture_date": "2026-10-13"
+  },
+  "cad_v18_disk_plane.jpg": {
+    "caption": "V18 Rotary Disk V2: Plane 1 parameter view defining the reference used by Mirror 1. Read-only historical inspection.",
+    "raw_url": "https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/cad_v18_disk_plane.jpg",
+    "source_url": "https://cad.onshape.com/documents/f819db58872866a35406a666/v/7212cfc1b8972a4d6cbc3e1b/e/109c5c7082df4704b0ae719e",
+    "capture_date": "2026-10-13"
+  },
+  "cad_v18_disk_plate.jpg": {
+    "caption": "V18 Rotary Disk V2: Extrude 1 creates the initial plate from Sketch 1 regions. Historical construction preview.",
+    "raw_url": "https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/cad_v18_disk_plate.jpg",
+    "source_url": "https://cad.onshape.com/documents/f819db58872866a35406a666/v/7212cfc1b8972a4d6cbc3e1b/e/109c5c7082df4704b0ae719e",
+    "capture_date": "2026-10-13"
+  },
+  "cad_v18_disk_sketch.jpg": {
+    "caption": "V18 Rotary Disk V2: Sketch 1 on Top plane. The displayed outer diameter is 33 cm and a pocket diameter is 8.5 cm; the rest of the crowded dimensions need direct CAD inspection.",
+    "raw_url": "https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/cad_v18_disk_sketch.jpg",
+    "source_url": "https://cad.onshape.com/documents/f819db58872866a35406a666/v/7212cfc1b8972a4d6cbc3e1b/e/109c5c7082df4704b0ae719e",
+    "capture_date": "2026-10-13"
+  },
+  "cad_v18_frame_baseplates.jpg": {
+    "caption": "V18 frame: Extrude 3 creates plate geometry at 0.5 cm depth; previously created rails and uprights remain in the construction preview.",
+    "raw_url": "https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/cad_v18_frame_baseplates.jpg",
+    "source_url": "https://cad.onshape.com/documents/f819db58872866a35406a666/v/7212cfc1b8972a4d6cbc3e1b/e/600e8b7745e9207ed96bca89",
+    "capture_date": "2026-10-13"
+  },
+  "cad_v18_frame_complete.jpg": {
+    "caption": "V18 saved Superstructure after closing the feature preview. This historical model is distinct from the later Main assembly.",
+    "raw_url": "https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/cad_v18_frame_complete.jpg",
+    "source_url": "https://cad.onshape.com/documents/f819db58872866a35406a666/v/7212cfc1b8972a4d6cbc3e1b/e/600e8b7745e9207ed96bca89",
+    "capture_date": "2026-10-13"
+  },
+  "cad_v18_frame_rails.jpg": {
+    "caption": "V18 frame: Extrude 1 creates the first base rail solids from selected Sketch 1 faces, blind depth 3 cm.",
+    "raw_url": "https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/cad_v18_frame_rails.jpg",
+    "source_url": "https://cad.onshape.com/documents/f819db58872866a35406a666/v/7212cfc1b8972a4d6cbc3e1b/e/600e8b7745e9207ed96bca89",
+    "capture_date": "2026-10-13"
+  },
+  "cad_v18_frame_sketch.jpg": {
+    "caption": "V18 frame: Sketch 1 on Top plane, including rail/attachment layout and visible 50 and 35 dimensions in the centimetre-based model.",
+    "raw_url": "https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/cad_v18_frame_sketch.jpg",
+    "source_url": "https://cad.onshape.com/documents/f819db58872866a35406a666/v/7212cfc1b8972a4d6cbc3e1b/e/600e8b7745e9207ed96bca89",
+    "capture_date": "2026-10-13"
+  },
+  "cad_v18_frame_uprights.jpg": {
+    "caption": "V18 frame: Extrude 2 creates four upright solids from Sketch 1 faces at 48 cm blind depth.",
+    "raw_url": "https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/cad_v18_frame_uprights.jpg",
+    "source_url": "https://cad.onshape.com/documents/f819db58872866a35406a666/v/7212cfc1b8972a4d6cbc3e1b/e/600e8b7745e9207ed96bca89",
+    "capture_date": "2026-10-13"
+  },
+  "cad_v1_adapter_extrude.jpg": {
+    "caption": "V1 adapter: Extrude 2, New solid, depth 5.118 in, starting offset 0.197 in. Read-only feature construction preview.",
+    "raw_url": "https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/cad_v1_adapter_extrude.jpg",
+    "source_url": "https://cad.onshape.com/documents/f819db58872866a35406a666/v/c35bd3df92eaaba4c30c0348/e/f71758db9526cabee3bf909f",
+    "capture_date": "2026-10-13"
+  },
+  "cad_v1_complete.jpg": {
+    "caption": "V1 complete saved feeder model, after closing the feature preview. Holder, adapter, and bottom feeder are present.",
+    "raw_url": "https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/cad_v1_complete.jpg",
+    "source_url": "https://cad.onshape.com/documents/f819db58872866a35406a666/v/c35bd3df92eaaba4c30c0348/e/f71758db9526cabee3bf909f",
+    "capture_date": "2026-10-13"
+  },
+  "cad_v1_feeder.jpg": {
+    "caption": "V1 Part Studio 1, saved June 21 2026. Early feeder geometry.",
+    "raw_url": "https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/cad_v1_feeder.jpg",
+    "source_url": "https://cad.onshape.com/documents/f819db58872866a35406a666/v/c35bd3df92eaaba4c30c0348/e/f71758db9526cabee3bf909f",
+    "capture_date": null
+  },
+  "cad_v1_feeder_revolve.jpg": {
+    "caption": "V1 feeder: Revolve 1 adds faces of Sketch 6 around its selected edge, full revolve, merged into bottom feeder.",
+    "raw_url": "https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/cad_v1_feeder_revolve.jpg",
+    "source_url": "https://cad.onshape.com/documents/f819db58872866a35406a666/v/c35bd3df92eaaba4c30c0348/e/f71758db9526cabee3bf909f",
+    "capture_date": "2026-10-13"
+  },
+  "cad_v1_hopper_extrude.jpg": {
+    "caption": "V1 holder: Extrude 1, New solid, blind depth 4.724 in. Read-only feature construction preview.",
+    "raw_url": "https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/cad_v1_hopper_extrude.jpg",
+    "source_url": "https://cad.onshape.com/documents/f819db58872866a35406a666/v/c35bd3df92eaaba4c30c0348/e/f71758db9526cabee3bf909f",
+    "capture_date": "2026-10-13"
+  },
+  "cad_v1_hopper_sketch.jpg": {
+    "caption": "V1 holder: Sketch 2 on Front plane, before holder extrusion; displayed concentric diameters approximately 1.476 in and 1.777 in.",
+    "raw_url": "https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/cad_v1_hopper_sketch.jpg",
+    "source_url": "https://cad.onshape.com/documents/f819db58872866a35406a666/v/c35bd3df92eaaba4c30c0348/e/f71758db9526cabee3bf909f",
+    "capture_date": "2026-10-13"
+  },
+  "cad_v5_agitator_extrude.jpg": {
+    "caption": "V5 agitator: Extrude 8 adds two sketch faces symmetrically at 0.318 cm depth into tube adapter. The archived tree shows feature warnings, not a fully validated assembly.",
+    "raw_url": "https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/cad_v5_agitator_extrude.jpg",
+    "source_url": "https://cad.onshape.com/documents/f819db58872866a35406a666/v/5bcacf0da546b272575bb130/e/f71758db9526cabee3bf909f",
+    "capture_date": "2026-10-13"
+  },
+  "cad_v5_agitator_sketch.jpg": {
+    "caption": "V5 agitator: Sketch 10 highlights the two arm profiles before Extrude 8, with the earlier screw geometry present.",
+    "raw_url": "https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/cad_v5_agitator_sketch.jpg",
+    "source_url": "https://cad.onshape.com/documents/f819db58872866a35406a666/v/5bcacf0da546b272575bb130/e/f71758db9526cabee3bf909f",
+    "capture_date": "2026-10-13"
+  },
+  "cad_v5_auger_agitator.jpg": {
+    "caption": "V5 Part Studio 1, saved July 2 2026. Auger geometry with two agitator arms.",
+    "raw_url": "https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/cad_v5_auger_agitator.jpg",
+    "source_url": "https://cad.onshape.com/documents/f819db58872866a35406a666/v/5bcacf0da546b272575bb130/e/f71758db9526cabee3bf909f",
+    "capture_date": null
+  },
+  "cad_v5_disk_base_sketch.jpg": {
+    "caption": "V5 solid carousel: Sketch 1, Top-plane circle with displayed diameter 33 cm, before creating the disk blank.",
+    "raw_url": "https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/cad_v5_disk_base_sketch.jpg",
+    "source_url": "https://cad.onshape.com/documents/f819db58872866a35406a666/v/5bcacf0da546b272575bb130/e/a5f83284d99eae74ecb0cfba",
+    "capture_date": "2026-10-13"
+  },
+  "cad_v5_disk_blank.jpg": {
+    "caption": "V5 solid carousel: Extrude 1 creates a 6 cm deep New solid disk blank before pocket removal.",
+    "raw_url": "https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/cad_v5_disk_blank.jpg",
+    "source_url": "https://cad.onshape.com/documents/f819db58872866a35406a666/v/5bcacf0da546b272575bb130/e/a5f83284d99eae74ecb0cfba",
+    "capture_date": "2026-10-13"
+  },
+  "cad_v5_disk_complete.jpg": {
+    "caption": "V5 solid carousel saved model after closing the pocket feature preview. Selected feature edges remain highlighted; later suppressed features remain visible in the tree.",
+    "raw_url": "https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/cad_v5_disk_complete.jpg",
+    "source_url": "https://cad.onshape.com/documents/f819db58872866a35406a666/v/5bcacf0da546b272575bb130/e/a5f83284d99eae74ecb0cfba",
+    "capture_date": "2026-10-13"
+  },
+  "cad_v5_disk_pocket_cut.jpg": {
+    "caption": "V5 solid carousel: Extrude 2 removes the eight pocket regions to 3 cm blind depth. Intermediate feature preview.",
+    "raw_url": "https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/cad_v5_disk_pocket_cut.jpg",
+    "source_url": "https://cad.onshape.com/documents/f819db58872866a35406a666/v/5bcacf0da546b272575bb130/e/a5f83284d99eae74ecb0cfba",
+    "capture_date": "2026-10-13"
+  },
+  "cad_v5_disk_pocket_sketch.jpg": {
+    "caption": "V5 solid carousel: Sketch 2 on the disk face shows eight pockets, displayed 12 cm radial location and 7 cm diameter.",
+    "raw_url": "https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/cad_v5_disk_pocket_sketch.jpg",
+    "source_url": "https://cad.onshape.com/documents/f819db58872866a35406a666/v/5bcacf0da546b272575bb130/e/a5f83284d99eae74ecb0cfba",
+    "capture_date": "2026-10-13"
+  },
+  "cad_v5_flight_sketch.jpg": {
+    "caption": "V5 flight section: Sketch 1 on Top plane before Sweep 1. The highlighted section supplies the profile for the helix sweep.",
+    "raw_url": "https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/cad_v5_flight_sketch.jpg",
+    "source_url": "https://cad.onshape.com/documents/f819db58872866a35406a666/v/5bcacf0da546b272575bb130/e/f71758db9526cabee3bf909f",
+    "capture_date": "2026-10-13"
+  },
+  "cad_v5_flight_sweep.jpg": {
+    "caption": "V5 flight: Sweep 1 adds the Sketch 1 faces along Curve 1 into tube adapter; no extra Twist or Scale is enabled.",
+    "raw_url": "https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/cad_v5_flight_sweep.jpg",
+    "source_url": "https://cad.onshape.com/documents/f819db58872866a35406a666/v/5bcacf0da546b272575bb130/e/f71758db9526cabee3bf909f",
+    "capture_date": "2026-10-13"
+  },
+  "cad_v5_helix.jpg": {
+    "caption": "V5 screw path: Helix 1, circular edge input, 2 deg start angle, 3.81 cm height, 0.635 cm target pitch, clockwise.",
+    "raw_url": "https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/cad_v5_helix.jpg",
+    "source_url": "https://cad.onshape.com/documents/f819db58872866a35406a666/v/5bcacf0da546b272575bb130/e/f71758db9526cabee3bf909f",
+    "capture_date": "2026-10-13"
+  },
+  "m1_1.jpg": {
+    "caption": "Printed blue threaded hopper components from the M1 notes.",
+    "raw_url": "https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m1_1.jpg",
+    "source_url": "https://docs.google.com/document/d/1VJVmuO_Wsarp4JEZYmcffV4hj5R7lj_xGEI08EhueAM/edit",
+    "capture_date": null
+  },
+  "m1_10.jpg": {
+    "caption": "Early rotary and fixed-drive concept in top view.",
+    "raw_url": "https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m1_10.jpg",
+    "source_url": "https://docs.google.com/document/d/1VJVmuO_Wsarp4JEZYmcffV4hj5R7lj_xGEI08EhueAM/edit",
+    "capture_date": null
+  },
+  "m1_11.jpg": {
+    "caption": "Earlier CAD screenshot of an auger drive assembly. Original image from the milestone document.",
+    "raw_url": "https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m1_11.jpg",
+    "source_url": "https://docs.google.com/document/d/1VJVmuO_Wsarp4JEZYmcffV4hj5R7lj_xGEI08EhueAM/edit",
+    "capture_date": null
+  },
+  "m1_2.jpg": {
+    "caption": "Early eight-position solid rotary disk concept from the M1 notes.",
+    "raw_url": "https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m1_2.jpg",
+    "source_url": "https://docs.google.com/document/d/1VJVmuO_Wsarp4JEZYmcffV4hj5R7lj_xGEI08EhueAM/edit",
+    "capture_date": null
+  },
+  "m1_3.jpg": {
+    "caption": "CAD of a hopper interface with locking features. Confirm its exact revision before identifying tabs and slots.",
+    "raw_url": "https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m1_3.jpg",
+    "source_url": "https://docs.google.com/document/d/1VJVmuO_Wsarp4JEZYmcffV4hj5R7lj_xGEI08EhueAM/edit",
+    "capture_date": null
+  },
+  "m1_4.jpg": {
+    "caption": "Physical single-hopper prototype during powder handling.",
+    "raw_url": "https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m1_4.jpg",
+    "source_url": "https://docs.google.com/document/d/1VJVmuO_Wsarp4JEZYmcffV4hj5R7lj_xGEI08EhueAM/edit",
+    "capture_date": null
+  },
+  "m1_5.jpg": {
+    "caption": "Annotated hopper section showing the screw-in funnel concept and internal drive.",
+    "raw_url": "https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m1_5.jpg",
+    "source_url": "https://docs.google.com/document/d/1VJVmuO_Wsarp4JEZYmcffV4hj5R7lj_xGEI08EhueAM/edit",
+    "capture_date": null
+  },
+  "m1_6.jpg": {
+    "caption": "Printed cylindrical hopper or receiver component from the M1 notes.",
+    "raw_url": "https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m1_6.jpg",
+    "source_url": "https://docs.google.com/document/d/1VJVmuO_Wsarp4JEZYmcffV4hj5R7lj_xGEI08EhueAM/edit",
+    "capture_date": null
+  },
+  "m1_7.jpg": {
+    "caption": "Single doser positioned above the balance. This photo provides setup context, not a trial result.",
+    "raw_url": "https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m1_7.jpg",
+    "source_url": "https://docs.google.com/document/d/1VJVmuO_Wsarp4JEZYmcffV4hj5R7lj_xGEI08EhueAM/edit",
+    "capture_date": null
+  },
+  "m1_8.jpg": {
+    "caption": "Cross-section CAD illustrating the internal hopper, auger path, and base.",
+    "raw_url": "https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m1_8.jpg",
+    "source_url": "https://docs.google.com/document/d/1VJVmuO_Wsarp4JEZYmcffV4hj5R7lj_xGEI08EhueAM/edit",
+    "capture_date": null
+  },
+  "m1_9.jpg": {
+    "caption": "Physical auger and hopper component used to illustrate the cornstarch geometry discussion.",
+    "raw_url": "https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m1_9.jpg",
+    "source_url": "https://docs.google.com/document/d/1VJVmuO_Wsarp4JEZYmcffV4hj5R7lj_xGEI08EhueAM/edit",
+    "capture_date": null
+  },
+  "m2_1.jpg": {
+    "caption": "Electronics schematic proposal from M2. It is not evidence that a PCB was manufactured.",
+    "raw_url": "https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m2_1.jpg",
+    "source_url": "https://docs.google.com/document/d/1T77pfLAAVP4tJ4OaOJhaz1ho2cAGb-1LFiVUrzH-hzI/edit",
+    "capture_date": null
+  },
+  "m2_2.jpg": {
+    "caption": "Breadboard motor-control wiring in the early prototype.",
+    "raw_url": "https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m2_2.jpg",
+    "source_url": "https://docs.google.com/document/d/1T77pfLAAVP4tJ4OaOJhaz1ho2cAGb-1LFiVUrzH-hzI/edit",
+    "capture_date": null
+  },
+  "m2_3.jpg": {
+    "caption": "Raspberry Pi and display connection with breadboard wiring.",
+    "raw_url": "https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m2_3.jpg",
+    "source_url": "https://docs.google.com/document/d/1T77pfLAAVP4tJ4OaOJhaz1ho2cAGb-1LFiVUrzH-hzI/edit",
+    "capture_date": null
+  },
+  "m2_4.jpg": {
+    "caption": "Single-doser test arrangement with scale, screen, and controller wiring.",
+    "raw_url": "https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m2_4.jpg",
+    "source_url": "https://docs.google.com/document/d/1T77pfLAAVP4tJ4OaOJhaz1ho2cAGb-1LFiVUrzH-hzI/edit",
+    "capture_date": null
+  },
+  "m2_5.jpg": {
+    "caption": "CAD showing the motor mounted above a single hopper.",
+    "raw_url": "https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m2_5.jpg",
+    "source_url": "https://docs.google.com/document/d/1T77pfLAAVP4tJ4OaOJhaz1ho2cAGb-1LFiVUrzH-hzI/edit",
+    "capture_date": null
+  },
+  "m4_1.jpg": {
+    "caption": "Later open rotary structure with upper and lower plates and spacers.",
+    "raw_url": "https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m4_1.jpg",
+    "source_url": "https://docs.google.com/document/d/1j8LOm5HRvMM-VXsni-38hi5GsA0yg5A1A_3LY9DY1Is/edit",
+    "capture_date": null
+  },
+  "m4_2.jpg": {
+    "caption": "Physical multi-doser assembly photograph included in M4.",
+    "raw_url": "https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m4_2.jpg",
+    "source_url": "https://docs.google.com/document/d/1j8LOm5HRvMM-VXsni-38hi5GsA0yg5A1A_3LY9DY1Is/edit",
+    "capture_date": null
+  },
+  "m4_3.jpg": {
+    "caption": "Earlier solid eight-cavity rotary disk for comparison with the open structure.",
+    "raw_url": "https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m4_3.jpg",
+    "source_url": "https://docs.google.com/document/d/1j8LOm5HRvMM-VXsni-38hi5GsA0yg5A1A_3LY9DY1Is/edit",
+    "capture_date": null
+  },
+  "m4_4.jpg": {
+    "caption": "Full frame, carousel, drive, and screen CAD from M4.",
+    "raw_url": "https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m4_4.jpg",
+    "source_url": "https://docs.google.com/document/d/1j8LOm5HRvMM-VXsni-38hi5GsA0yg5A1A_3LY9DY1Is/edit",
+    "capture_date": null
+  },
+  "photo_perfboard_comparison.jpg": {
+    "caption": "IMG_8167.HEIC Drive preview: breadboard wiring beside an unsoldered perfboard. Supports the board-packaging discussion; does not show a completed failed perfboard circuit.",
+    "raw_url": "https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/photo_perfboard_comparison.jpg",
+    "source_url": "https://drive.google.com/file/d/1fuau6g7IH-GREJ9cu54vgH6rErYTzOjz/view",
+    "capture_date": null
+  }
+}

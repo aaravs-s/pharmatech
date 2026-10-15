@@ -1,0 +1,17 @@
+powder,target_g,dispensed_g,absolute_error_percent,within_3_percent,time_m_ss
+Granulated sugar,0.055,0.056,1.8182,yes,0:57
+Table salt,0.055,0.058,5.4545,no,0:54
+Cocoa powder,0.055,0.054,1.8182,yes,1:03
+Ground cinnamon,0.055,0.052,5.4545,no,1:10
+Baking soda,0.055,0.054,1.8182,yes,2:43
+Cornstarch,0.055,0.053,3.6364,no,2:49
+Powdered sugar,0.055,0.049,10.9091,no,3:07
+All purpose flour,0.055,0.047,14.5455,no,3:21
+Granulated sugar,5,5,0.0,yes,1:54
+Table salt,5,5,0.0,yes,1:49
+Cocoa powder,5,5.006,0.12,yes,3:32
+Ground cinnamon,5,4.985,0.3,yes,3:05
+Baking soda,5,4.994,0.12,yes,5:01
+Cornstarch,5,4.991,0.18,yes,4:55
+Powdered sugar,5,4.996,0.08,yes,4:57
+All purpose flour,5,4.993,0.14,yes,4:39
