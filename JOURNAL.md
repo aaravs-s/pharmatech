@@ -2,6 +2,13 @@
 
 This file is the entry point for the project journal. Add completed entries written from actual work here, including their original work date, active time, progress images, and measured results.
 
+## Personal retrospective journals
+
+A separate collection of finished, AI-assisted retrospective narratives is available for personal documentation. These are not Forge submissions or verified session logs.
+
+- [All 33 finished journals](docs/journals/README.md)
+- [Read the complete collection in one document](docs/journals/ALL_JOURNALS.md)
+
 ## Reference material
 
 The AI-assisted reference drafts and source-image gallery are stored separately for rewriting and fact-checking. They are not submitted journal entries or verified hours.
@@ -25,3 +32,4 @@ The CAD construction captures are retrospective views from archived models, capt
 ## Completed entries
 
 <!-- Add your own completed entries below. Keep the reference drafts outside the submitted journal. -->
+
