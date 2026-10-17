@@ -1,30 +1,42 @@
-# J27 Sequence lift, indexing, engagement, and mass feedback for a multi-powder recipe
+# J27 Getting the recipe to wait for the mechanisms
 
-*Milestone 4 | Personal retrospective journal*
+*Milestone 4 | Retrospective build notes*
 
-## Design and iteration
+Moving from one powder to a recipe made the application more demanding. It had to know the contents of each slot, the requested amount, and where the mechanisms were before it could even start the next dispense.
 
-I extended the application from a single target into a sequence of selected ingredients. Each active recipe item needed a slot, a powder name, and its own requested mass. The app then had to coordinate positioning before handing that item to the mass controller.
+I used the same basic sequence I had been building mechanically: raise, index, lower, feed. The app waits at the boundaries instead of firing all the commands and assuming the hardware keeps up. If the actuator position is unknown, it doesn't go on with an invented position.
 
-The sequence was raise, index, lower, and dispense. I made the transitions depend on state and completion responses rather than assuming each mechanism finished immediately. The controller for the actuator was separate from the Uno, so cancellation also had to reach more than one device.
+![Physical multi-doser assembly photograph included in M4.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m4_2.jpg)
 
-A new ingredient used a starting mass reference so earlier ingredients in the receiving container were not counted as newly added powder. The later app also retained per-item result fields for CSV output. That provides a useful structure for integrated trials, but the available record does not include a complete measured recipe series tied to one confirmed final app-and-firmware configuration.
+Physical multi-doser assembly photograph included in M4.
 
-## Technical detail
+Cancellation was another awkward edge. The actuator has its own controller, so STOP ALL on the Uno isn't a stop for the whole machine. The app has to reach both devices and stop trusting position after interruption.
+
+For the mass, each ingredient needs a new starting reference. Otherwise powder already in the cup could be mistaken for part of the next addition. The app also has CSV fields for per-item results. I don't have a complete measured recipe tied to one matched final software set here, so those fields are a logging feature rather than a result table I can populate from the single-powder trials.
+
+## The preparation sequence
 
 The later app builds active_run_items from slots with a positive requested amount, preserving each slot's powder name and target. It initializes per-item dispensed, remaining, and status values, computes the total recipe target, clears cancellation events, and begins preparing the first item. That is the data model behind the multi-powder workflow.
 
-The preparation worker first checks cancellation and actuator state. If the actuator is UNKNOWN, it refuses to continue. If it is not UP, it sends ACTUATOR UP and waits for a motion response with a 70 s timeout. If it is already UP, it checks status and handles the source's declared reference procedure. Only then does it request DISK GOTO for the next item.
+The preparation worker first checks cancellation and actuator state. If the actuator is UNKNOWN, it refuses to continue. If it isn't UP, it sends ACTUATOR UP and waits for a motion response with a 70 s timeout. If it is already UP, it checks status and handles the source's declared reference procedure. Only then does it request DISK GOTO for the next item.
 
 Disk motion has a 12 s timeout in the recipe worker. The returned line must contain DONE DISK SLOT with the requested slot number. Once that is confirmed, the app records the slot, checks cancellation again, sends ACTUATOR DOWN, waits for completion, and queues a ready result. The main UI then launches mass dispensing for the item. This is an explicit raise/index/lower/feed chain with completion checks between actions.
 
-The actuator has a separate controller, so Uno STOP ALL does not stop every moving mechanism by itself. The app's force-stop route also sends an actuator stop and marks actuator and disk state unknown. Cancellation checks between stages prevent a canceled preparation sequence from proceeding through the remaining actions on its old assumptions.
+The actuator has a separate controller, so Uno STOP ALL doesn't stop every moving mechanism by itself. The app's force-stop route also sends an actuator stop and marks actuator and disk state unknown. Cancellation checks between stages prevent a canceled preparation sequence from proceeding through the remaining actions on its old assumptions.
 
-After all recipe items have dispensed, preparation is called with no next item; the worker raises the actuator and queues completion. The app exports per-item results to CSV, including target, actual mass, error, remaining amount, and status. Those fields can document a real integrated trial, but their presence in source code does not prove that such a trial occurred successfully.
+After all recipe items have dispensed, preparation is called with no next item; the worker raises the actuator and queues completion. The app exports per-item results to CSV, including target, actual mass, error, remaining amount, and status. Those fields can document a real integrated trial, but their presence in source code doesn't prove that such a trial occurred successfully.
 
-The final paired actuator firmware, disk firmware, and measured recipe transcript are not identified in the available archive. In particular, switch-based app wording differs from the recovered step-count disk code. The state and command flow above describe the saved implementation without asserting that an arbitrary combination of those files is a validated final build.
+## More views
 
-## Archived implementation
+![Current Main workspace SuperStructureAssem. Only one hopper is visible in this assembly view. CAD includes mate or linked-reference warnings; the image is not proof of a fully populated or validated mechanism.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/cad_main_assembly.jpg)
+
+Current Main workspace SuperStructureAssem. Only one hopper is visible in this assembly view. CAD includes mate or linked-reference warnings; the image is not proof of a fully populated or validated mechanism.
+
+![Full frame, carousel, drive, and screen CAD from M4.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m4_4.jpg)
+
+Full frame, carousel, drive, and screen CAD from M4.
+
+## Code for this revision
 
 Exact archived source excerpts. The file labels identify their revisions.
 
@@ -94,23 +106,14 @@ def start_recipe_preparation():
     root.after(100, process_recipe_result_queue)
 ```
 
-## Process images
+The recipe logic was mostly about making each stage earn the next one: known position, completed movement, then feeding. That is much more than adding eight quantities to the screen. The remaining gap in this record is the matched firmware and full run data needed to check the whole sequence together.
 
-![Physical multi-doser assembly photograph included in M4.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m4_2.jpg)
+<details>
+<summary>Notes added while reconstructing this entry</summary>
 
-Physical multi-doser assembly photograph included in M4.
+The final paired actuator firmware, disk firmware, and measured recipe transcript aren't identified in the available archive. In particular, switch-based app wording differs from the recovered step-count disk code. The state and command flow above describe the saved implementation without asserting that an arbitrary combination of those files is a validated final build.
 
-![Current Main workspace SuperStructureAssem. Only one hopper is visible in this assembly view. CAD includes mate or linked-reference warnings; the image is not proof of a fully populated or validated mechanism.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/cad_main_assembly.jpg)
-
-Current Main workspace SuperStructureAssem. Only one hopper is visible in this assembly view. CAD includes mate or linked-reference warnings; the image is not proof of a fully populated or validated mechanism.
-
-![Full frame, carousel, drive, and screen CAD from M4.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m4_4.jpg)
-
-Full frame, carousel, drive, and screen CAD from M4.
-
-## Outcome and reflection
-
-The application encoded the complete preparation sequence and separated item results from recipe state. That was a substantial step beyond putting eight slots on a screen. The remaining verification boundary was the installed combination of actuator firmware, disk firmware, and app, together with a measured multi-ingredient run; the existing single-powder results cannot substitute for that evidence.
+</details>
 
 ## Sources
 

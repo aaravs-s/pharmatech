@@ -1,30 +1,36 @@
-# J13 Stop unwanted motion after program termination and add layered shutdown behavior
+# J13 The program ended. The motor kept moving.
 
-*Milestone 2 | Personal retrospective journal*
+*Milestone 2 | Retrospective build notes*
 
-## Design and iteration
+The slow rotation after motor_scale terminated was a problem I couldn't leave in place. The software had finished, but the feeder could still be adding powder. From the machine's point of view, the run wasn't actually over.
 
-I observed slow motor motion after the motor-and-scale program terminated. That meant ending the software task was not consistently ending the physical feeding action. I rerouted the driver's enable connection to a Pi GPIO as the response recorded in the milestone notes.
+I rerouted EN to a Pi GPIO, which is the fix described in my M2 notes. Those notes call it electrical noise. I don't have a waveform showing the cause, so I can stand behind the symptom and wiring change without pretending the diagnosis went further than it did.
 
-The notes suspected electrical noise, but I did not have a waveform measurement establishing that cause. The observation I could support was the unwanted motion and the change to enable control. That was enough to make shutdown a design requirement rather than an assumption about what closing a program would do.
+![Breadboard motor-control wiring in the early prototype.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m2_2.jpg)
 
-As the controller developed, I added explicit stop commands, cleanup on process termination, and a firmware communication watchdog. The later app also handled cancellation across its child process and positioning state. These were successive layers with different responsibilities, rather than one wiring change that guaranteed every possible fault was covered.
+Breadboard motor-control wiring in the early prototype.
 
-## Technical detail
+That also pushed me to stop relying on one program exiting neatly. The July Python code explicitly sends STOP ALL during cleanup and handles termination signals. The firmware has a communication watchdog. Later, the app had its own cancellation work to do with the child process and positioning states.
 
-The early symptom was slow rotation after motor_scale terminated. I rerouted EN to a Pi GPIO as recorded in the M2 notes. Although those notes attribute the behavior to noise, no waveform or comparable measurement establishes the exact electrical mechanism. The observed unwanted motion and the enable-wiring change are the supported parts of the diagnosis.
+It isn't exciting compared with adding a carousel, but this is the sort of behavior that can ruin an otherwise decent dispense. Every way out of a run needs attention, not only the one where the target is reached and everything cooperates.
+
+## The stop paths in the code
 
 Enable control provides a way to deactivate the driver as well as stop step commands. The July firmware uses LOW to enable, while the later integrated motor setup uses HIGH. Those are version-specific electrical assumptions: reversing the intended polarity could leave a driver active when software believes it is disabled.
 
 The July Python shutdown function guards against repeated cleanup, sets its running state false, prints its shutdown action, sends STOP ALL through the Arduino client, waits briefly, closes connections, and exits. SIGINT and SIGTERM both call that path. This turns an ordinary process stop into an explicit motor-control action rather than assuming closing the terminal is enough.
 
-The firmware adds another layer: it stops automatically if serial contact is absent for 2000 ms while motion is active. Python sends a heartbeat approximately every 0.50 s during continuous feeding. The intent is to stop if the Pi program disappears even when it cannot deliver its normal shutdown command. That watchdog complements EN control; it does not prove that every wiring or power fault has been handled.
+The firmware adds another layer: it stops automatically if serial contact is absent for 2000 ms while motion is active. Python sends a heartbeat approximately every 0.50 s during continuous feeding. The intent is to stop if the Pi program disappears even when it can't deliver its normal shutdown command. That watchdog complements EN control; it doesn't prove that every wiring or power fault has been handled.
 
 In the later app, cancellation sends stop commands, signals the child process, marks actuator position UNKNOWN, and invalidates the disk reference. If the child remains alive, the app escalates to a kill after a delay. This is a later coordination layer in addition to the initial GPIO change and firmware watchdog.
 
-The saved code shows normal cleanup, signal handling, and lost-communication stop routes. It does not contain a measured physical stop time for each case. I kept the distinction between sending a stop and observing the shaft stopped, especially because residual motion could add powder after apparent software completion.
+## More views
 
-## Archived implementation
+![Raspberry Pi and display connection with breadboard wiring.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m2_3.jpg)
+
+Raspberry Pi and display connection with breadboard wiring.
+
+## Code for this revision
 
 Exact archived source excerpts. The file labels identify their revisions.
 
@@ -74,19 +80,16 @@ void updateWatchdog() {
 }
 ```
 
-## Process images
+I ended up with several stop paths, each for a different failure or exit case. I still don't have measured shaft-stop times for all of them. The practical change was that stopping had become something the programs deliberately requested, instead of something I assumed would follow from closing them.
 
-![Breadboard motor-control wiring in the early prototype.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m2_2.jpg)
+<details>
+<summary>Notes added while reconstructing this entry</summary>
 
-Breadboard motor-control wiring in the early prototype.
+The early symptom was slow rotation after motor_scale terminated. I rerouted EN to a Pi GPIO as recorded in the M2 notes. Although those notes attribute the behavior to noise, no waveform or comparable measurement establishes the exact electrical mechanism. The observed unwanted motion and the enable-wiring change are the supported parts of the diagnosis.
 
-![Raspberry Pi and display connection with breadboard wiring.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m2_3.jpg)
+The saved code shows normal cleanup, signal handling, and lost-communication stop routes. It doesn't contain a measured physical stop time for each case. I kept the distinction between sending a stop and observing the shaft stopped, especially because residual motion could add powder after apparent software completion.
 
-Raspberry Pi and display connection with breadboard wiring.
-
-## Outcome and reflection
-
-Stopping became an explicit part of the control protocol. Enable handling, Python cleanup, heartbeat loss, and later application cancellation each addressed a different way an operation could end. The remaining distinction was between code taking a stop path and a measured physical stop; the saved files establish the former without supplying timing measurements for every termination case.
+</details>
 
 ## Sources
 

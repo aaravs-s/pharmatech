@@ -1,28 +1,24 @@
-# J20 Evaluate the 0.055 g limit and separate accuracy from repeatability
+# J20 The 55 mg tests didn't go nearly as well
 
-*Milestone 3 | Personal retrospective journal*
+*Milestone 3 | Retrospective build notes*
 
-## Design and iteration
+The 5 g results made the smaller target worth trying. At 0.055 g, though, 3% only gives me 0.00165 g of room. That's 1.65 mg. A difference that barely looks noticeable on the scale becomes a large part of the whole dose.
 
-I reduced the requested mass to 0.055 g to examine the difficult end of the dosing range. At 55 mg, the project's 3% criterion permits only 0.00165 g of absolute error. A small clump or a milligram-scale difference therefore matters far more than it does in a 5 g trial.
+Only three of the eight recorded runs met the target: sugar, cocoa, and baking soda. Salt overshot. Several others undershot, with flour ending at 0.047 g. That is about 14.55% absolute error. Definitely not a result I can smooth over with the successful 5 g table.
 
-The results were mixed. Sugar, cocoa, and baking soda met the criterion in their recorded runs; salt, cinnamon, cornstarch, powdered sugar, and flour did not. The worst listed result was flour at 0.047 g, or about 14.55% below target in absolute percentage terms.
+![Single doser positioned above the balance. This photo provides setup context, not a trial result.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m1_7.jpg)
 
-My milestone notes also describe consecutive same-target dispenses, but the available eight-powder sheet is not that repeatability series. Its two sections use different target masses. I therefore kept the small-dose accuracy observations separate from any statistical claim about repeated performance, and treated pulse size, clumping, feedback delay, and stopping behavior as possible contributors rather than a proven single cause.
+Single doser positioned above the balance. This photo provides setup context, not a trial result.
 
-## Technical detail
+There isn't one obvious correction hiding in the signs of the errors, either. Simply adding a fixed amount to every target wouldn't fix both the high and low results. Pulse size, clumps, delayed feedback, and the stopping logic could all be involved. I don't have the traces to separate their contributions here.
+
+The notes mention consecutive same-target tests, but the eight-powder sheet isn't that repeated series. Its two sections are different requested masses. I can't use them as replicates just because they're called trials. I need the actual repeated values before calculating a spread or claiming this is consistent.
+
+## Working through the small-dose result
 
 At a 0.055 g target, the absolute allowance for 3% is 0.00165 g, or 1.65 mg. A 0.001 g difference already represents about 1.82% of the request. The recorded values and recalculated errors are shown in the table below; all error values use the same absolute percentage formula as the 5 g trials.
 
-Only sugar, cocoa, and baking soda met 3% in these individual runs. Salt overshot while several other powders undershot, so the result does not support a single universal correction to the target. Material delivery per motion, scale response, and the stopping logic remained possible interacting factors.
-
 Run times ranged from 54 seconds for salt to 3 minutes 21 seconds for flour. Several finer or more cohesive materials took longer despite the very small target. Long finishing pauses and small additions are consistent with that pattern, but no phase trace identifies the cause of each trial's duration.
-
-The July 24 FINAL-only behavior below 0.100 g addresses the same class of small-target problem. The code snapshots and test sheet do not establish that these specific results were produced before or after that change. I retained the program comparison as a separate documented revision rather than assigning an improvement to unmatched data.
-
-The milestone notes describe consecutive same-target testing, but its raw series is not present in the available test sheet. The two target groups in that sheet are different-dose comparisons, not replicates. They cannot establish a repeated-run standard deviation or a general probability of meeting the criterion.
-
-A useful next experiment would hold the target, powder, feeder, code, baseline method, and fill conditions fixed, then retain each delivered mass and duration. That would distinguish a consistent offset from variation between runs and provide a direct comparison for revised pulse behavior. It remained a proposed next experiment rather than an added result.
 
 ## Recorded measurements
 
@@ -37,19 +33,28 @@ A useful next experiment would hold the target, powder, feeder, code, baseline m
 | Powdered sugar | 0.055 | 0.049 | 10.91% | 3:07 | No |
 | All purpose flour | 0.055 | 0.047 | 14.55% | 3:21 | No |
 
-## Process images
-
-![Single doser positioned above the balance. This photo provides setup context, not a trial result.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m1_7.jpg)
-
-Single doser positioned above the balance. This photo provides setup context, not a trial result.
+## More views
 
 ![Single-doser test arrangement with scale, screen, and controller wiring.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m2_4.jpg)
 
 Single-doser test arrangement with scale, screen, and controller wiring.
 
-## Outcome and reflection
+## What I need next
 
-The 55 mg trials established a real limitation: the eight successful 5 g results did not carry over to the smaller target. Three of eight small-dose runs met 3%. The next experimental priority was a matched series at a fixed target and configuration, so I could distinguish occasional accuracy from consistent delivery and evaluate changes such as FINAL-only control.
+This is where the limitation was obvious. A feeder that did well at 5 g was struggling at 55 mg. The next useful test would keep one small target and one configuration fixed, repeat it, and keep every result. More tuning without that comparison would leave me guessing at what helped.
+
+<details>
+<summary>Notes added while reconstructing this entry</summary>
+
+Only sugar, cocoa, and baking soda met 3% in these individual runs. Salt overshot while several other powders undershot, so the result doesn't support a single universal correction to the target. Material delivery per motion, scale response, and the stopping logic remained possible interacting factors.
+
+The July 24 FINAL-only behavior below 0.100 g addresses the same class of small-target problem. The code snapshots and test sheet don't establish that these specific results were produced before or after that change. I retained the program comparison as a separate documented revision rather than assigning an improvement to unmatched data.
+
+The milestone notes describe consecutive same-target testing, but its raw series isn't present in the available test sheet. The two target groups in that sheet are different-dose comparisons, not replicates. They can't establish a repeated-run standard deviation or a general probability of meeting the criterion.
+
+A useful next experiment would hold the target, powder, feeder, code, baseline method, and fill conditions fixed, then retain each delivered mass and duration. That would distinguish a consistent offset from variation between runs and provide a direct comparison for revised pulse behavior. It remained a proposed next experiment rather than an added result.
+
+</details>
 
 ## Sources
 

@@ -1,30 +1,34 @@
-# J08 Wire the first NEMA 17 and TMC2209 drive and establish controlled motion
+# J08 Getting commanded motion out of the feeder
 
-*Milestone 2 | Personal retrospective journal*
+*Milestone 2 | Retrospective build notes*
 
-## Design and iteration
+I put together the first drive setup with the NEMA 17, TMC2209, and a breadboard, using the Pi 4 as the initial control connection. This was where the printed mechanism started becoming something I could command instead of only inspect or move by hand.
 
-I assembled the initial electrical drive using a NEMA 17, a TMC2209 driver, and a breadboard. The Raspberry Pi 4 provided the first control connection, with a touchscreen for the user interface. This moved the project from mechanical powder trials toward commanded feeding.
+I needed to keep the task small enough to debug. Direction, STEP pulses, and enable first. A spinning auger would be progress, but it wouldn't tell me how many grams had reached the cup. That was a separate job for the scale.
 
-I kept the basic motion task separate from target-mass accuracy. STEP pulses, direction, and driver enable determine what the motor is asked to do; none of them measure how much powder reaches the cup. Before a closed-loop controller could be useful, the feeder needed an electrical interface that could start, change behavior, and stop.
+![Breadboard motor-control wiring in the early prototype.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m2_2.jpg)
 
-The saved code includes multiple wiring stages. A small AccelStepper test uses STEP on pin 3 and DIR on pin 2, while the July controller assigns those signals differently. I have kept those configurations separate below. The exact original Pi GPIO map and driver current setting are not recorded in the material used for this account.
+Breadboard motor-control wiring in the early prototype.
 
-## Technical detail
+The saved test files make one source of confusion obvious: the pin assignments changed. The small AccelStepper test uses STEP 3 and DIR 2, while the July controller uses STEP 2 and DIR 3. Both are real versions. Mixing them would give me a wiring problem that had nothing to do with powder.
 
-M2 began with one active hopper, so the electrical prototype used one NEMA 17 and a TMC2209 on a breadboard. The Raspberry Pi 4 provided the initial control connection, and the touchscreen added the user interface. At this point I needed to prove direction, enable control, and repeatable commanded motion separately from target-mass accuracy.
+The exact original Pi GPIO map and TMC2209 current setting aren't in the record I'm reconstructing from. I've kept the concrete later pin maps below rather than filling that gap with whichever version happens to be easiest to find.
+
+## Pin maps to keep straight
 
 STEP, DIR, and EN control different aspects of the drive. STEP requests incremental motion, DIR selects its direction, and EN activates or disables the driver according to its polarity. The motor winding connections and shared signal reference are separate from those logic functions. A breadboard layout records packaging, while the corresponding pin assignments identify a particular controller revision.
 
-The later July Arduino source makes the eventual command interface concrete: auger STEP is pin 2, DIR is pin 3, and ENABLE is pin 4. In that file, LOW enables the driver and HIGH disables it, while HIGH is the dispensing direction. This is an archived Arduino configuration, not the original Pi GPIO map. The timer-based firmware later uses different pins and the opposite enable level, so those diagrams must be kept version-specific.
+The later July Arduino source makes the eventual command interface concrete: auger STEP is pin 2, DIR is pin 3, and ENABLE is pin 4. In that file, LOW enables the driver and HIGH disables it, while HIGH is the dispensing direction. That's the archived Arduino configuration. It isn't the original Pi GPIO map. The timer-based firmware later uses different pins and the opposite enable level, so those diagrams must be kept version-specific.
 
-The standalone repository test uses AccelStepper::DRIVER with stepPin 3 and directionPin 2, sets a 1000-step/s maximum, and calls runSpeed() at 600 steps/s. That is a motor-only test with a different pin order from the July controller. It does not contain the mass-feedback loop or establish the final integrated wiring.
+The standalone repository test uses AccelStepper::DRIVER with stepPin 3 and directionPin 2, sets a 1000-step/s maximum, and calls runSpeed() at 600 steps/s. That is a motor-only test with a different pin order from the July controller. It doesn't contain the mass-feedback loop or establish the final integrated wiring.
 
-The source record establishes the breadboard components and the motion-test configurations. It does not preserve a complete electrical test sequence, supply measurements, or the TMC2209 current setting for the initial setup. I have retained that boundary while documenting the actual code values, rather than describing unrecorded checks as successful trials.
+## More views
 
-The outcome was the motor system used for the first scale-controlled doser. The next step was to read meaningful mass data, because a rotating motor alone cannot tell the machine how much powder reached the cup.
+![Raspberry Pi and display connection with breadboard wiring.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m2_3.jpg)
 
-## Archived implementation
+Raspberry Pi and display connection with breadboard wiring.
+
+## Code for this revision
 
 Exact archived source excerpts. The file labels identify their revisions.
 
@@ -77,19 +81,18 @@ const uint8_t DISK_REVERSE_DIR_LEVEL = LOW;
 // ============================================================
 ```
 
-## Process images
+There was now an electrical route to drive the feeder. The next missing piece was a quantity the program could trust. Without scale input, I was still controlling motion and hoping the powder did something useful in response.
 
-![Breadboard motor-control wiring in the early prototype.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m2_2.jpg)
+<details>
+<summary>Notes added while reconstructing this entry</summary>
 
-Breadboard motor-control wiring in the early prototype.
+M2 began with one active hopper, so the electrical prototype used one NEMA 17 and a TMC2209 on a breadboard. The Raspberry Pi 4 provided the initial control connection, and the touchscreen added the user interface. At this point I needed to prove direction, enable control, and repeatable commanded motion separately from target-mass accuracy.
 
-![Raspberry Pi and display connection with breadboard wiring.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m2_3.jpg)
+The saved record establishes the breadboard components and the motion-test configurations. It doesn't preserve a complete electrical test sequence, supply measurements, or the TMC2209 current setting for the initial setup. I've retained that boundary while documenting the actual code values, rather than describing unrecorded checks as successful trials.
 
-Raspberry Pi and display connection with breadboard wiring.
+This was the motor setup for the first scale-controlled doser. The next step was to read meaningful mass data, because a rotating motor alone can't tell the machine how much powder reached the cup.
 
-## Outcome and reflection
-
-The first motor setup gave the single doser an electrically commanded drive. It also established the need to track wiring together with firmware: a pin assignment from a standalone test cannot be carried into a different controller by assumption. I then added scale feedback so the machine could act on the mass actually collected.
+</details>
 
 ## Sources
 

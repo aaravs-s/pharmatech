@@ -1,30 +1,38 @@
-# J26 Choose the shortest carousel route and wait for completed indexing
+# J26 One slot backward instead of seven forward
 
-*Milestone 4 | Personal retrospective journal*
+*Milestone 4 | Retrospective build notes*
 
-## Design and iteration
+Always rotating in one direction wastes a lot of movement near the numbering boundary. From slot 1 to slot 8, I only need one station in reverse, not seven forward. I added the shorter-route calculation to the step-count version.
 
-I added shortest-route selection so the carousel could reverse rather than make nearly a full revolution to reach a nearby hopper across the slot-number boundary. The step-count firmware compares forward and reverse distances and uses a consistent forward choice for a four-station tie.
+The four-station case needed a tie rule, so the code chooses forward when both distances are equal. Requesting the current slot doesn't need a move at all. These are simple cases, but they're exactly the sort of details that get lost if I just write 'shortest path added.'
 
-Reducing travel did not change the required mechanical order. The drive had to stay clear throughout the index, and the next action had to wait for completion. An accepted command was therefore not enough information for the Pi to lower the actuator.
+![Current Rotary Disk V2 Part Studio showing eight openings, two plates, spacers, and central indexing features.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/cad_main_rotary.jpg)
 
-I used separate command and completion responses, including the destination slot in the completion message. The code-derived examples below explain wraparound and tie behavior. They are calculations of what this revision requests, rather than a substituted set of measured physical alignment trials.
+Current Rotary Disk V2 Part Studio showing eight openings, two plates, spacers, and central indexing features.
 
-## Technical detail
+The more consequential part was waiting. An OK response says the command started; it doesn't mean the disk has stopped at the target. The Pi needed the destination in DONE DISK SLOT before lowering the drive.
+
+The timer counts the move, then the main loop updates the slot and reports completion. I kept the examples below as code-derived behavior. I don't have a full physical alignment table for every wraparound, tie, and interrupted move.
+
+## Route calculation and completion
 
 The step-count firmware calculates forward distance as (requested + 8 - current) modulo 8 and reverse distance as (current + 8 - requested) modulo 8. It chooses the smaller distance, with forward motion for a four-slot tie. This is a concrete implementation of the shortest-route note, rather than simply assuming the motor always turns in one direction.
 
 For example, from slot 1 to slot 8, the forward distance is seven slots and the reverse distance is one, so the firmware requests one reverse slot. From slot 2 to slot 6, both distances are four, so it takes the documented forward tie. Requesting the current slot performs no index and immediately reports that slot while maintaining driver hold. These are derived examples of the code, not recorded physical tests.
 
-startDiskMove() refuses indexing if the auger is moving, the disk is already busy, a disk alarm is latched, or the step calibration is not integral. It sets direction, enables the driver, allows a 20 ms enable-settling interval and a 20 microsecond direction-settling interval, then starts Timer2. The nominal disk frequency is 1000 pulses per second in the recovered configuration.
+startDiskMove() refuses indexing if the auger is moving, the disk is already busy, a disk alarm is latched, or the step calibration isn't integral. It sets direction, enables the driver, allows a 20 ms enable-settling interval and a 20 microsecond direction-settling interval, then starts Timer2. The disk is configured for 1000 pulses per second in the recovered configuration.
 
 The number of timer compare events is twice the number of steps because the output toggles once high and once low for each full pulse. The interrupt decrements that count and disconnects the output when the move ends. Completion is then handled in the main loop, which updates the slot reference and emits DONE DISK SLOT n. That response separates an accepted command from a completed move.
 
-The Pi-side recipe worker waits for a motion response and checks that the slot number in DONE DISK SLOT matches the requested target. It does not lower the actuator merely because an OK line says motion started. That distinction matters because the mechanical coupling must stay clear throughout indexing.
+The Pi-side recipe worker waits for a motion response and checks that the slot number in DONE DISK SLOT matches the requested target. It doesn't lower the actuator merely because an OK line says motion started. That matters here because the mechanical coupling must stay clear throughout indexing.
 
-These formulas and responses document the bidirectional step-count revision. Later switch and counterclockwise descriptions belong to a different state of the app. The available record contains the routing implementation, but no complete physical trial set for wraparound, ties, same-slot requests, and interruption recovery.
+## More views
 
-## Archived implementation
+![Physical multi-doser assembly photograph included in M4.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m4_2.jpg)
+
+Physical multi-doser assembly photograph included in M4.
+
+## Code for this revision
 
 Exact archived source excerpts. The file labels identify their revisions.
 
@@ -95,19 +103,14 @@ void updateDiskCompletion() {
 }
 ```
 
-## Process images
+Less rotation was useful, but it couldn't come at the expense of lowering into a moving disk. The completion response mattered more to the shared-drive sequence than the time saved by taking the shorter route.
 
-![Current Rotary Disk V2 Part Studio showing eight openings, two plates, spacers, and central indexing features.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/cad_main_rotary.jpg)
+<details>
+<summary>Notes added while reconstructing this entry</summary>
 
-Current Rotary Disk V2 Part Studio showing eight openings, two plates, spacers, and central indexing features.
+These formulas and responses document the bidirectional step-count revision. Later switch and counterclockwise descriptions belong to a different state of the app. The available record contains the routing implementation, but no complete physical trial set for wraparound, ties, same-slot requests, and interruption recovery.
 
-![Physical multi-doser assembly photograph included in M4.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m4_2.jpg)
-
-Physical multi-doser assembly photograph included in M4.
-
-## Outcome and reflection
-
-The routing logic reduced unnecessary commanded travel while preserving a clear completion boundary. The more significant integration detail was waiting for the correct DONE response before lowering the drive. Shorter rotation helped efficiency, but mechanical endpoint accuracy still depended on the reference, calibration, and installed disk following the motion.
+</details>
 
 ## Sources
 

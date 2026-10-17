@@ -1,34 +1,26 @@
-# J05 Simplify the powder path and reduce sugar leaking during loading
+# J05 Sugar was falling out before I started
 
-*Milestone 1 | Personal retrospective journal*
+*Milestone 1 | Retrospective build notes*
 
-## Design and iteration
+I revisited the removable hopper after spending time on the connection. It was meant to make cleaning easier, but the joint itself added more surfaces and recesses. Combining the funnel and enclosure removed an interface and cut down the part count. The early integrated disk concept took that simplification further, although the carousel structure changed again later.
 
-After working through the detachable interfaces, I reconsidered whether the hopper and funnel needed to be separate. Both components still had internal surfaces to clean, and the joint added recesses and assembly work. Combining the funnel and enclosure reduced the number of parts and removed one interface from the powder path.
-
-I also explored an integrated rotary-disk concept containing eight hopper cavities. That concept belonged to the early solid carousel; the supporting structure changed again later. At this stage, the useful idea was reducing unnecessary interfaces while continuing to test one feeder.
-
-Sugar exposed a separate mechanical problem. It moved readily, but some escaped from the outlet during loading before I intentionally rotated the auger. I narrowed the opening near the auger exit to resist this passive flow while retaining a route for material driven by the screw. My milestone record describes that change resolving the immediate loading problem. It did not establish a leakage rate across different fill levels or powders.
-
-## Technical detail
-
-The removable hopper was initially a means to make cleaning easier, not an end in itself. I revisited it after the thread and locking iterations. If both the hopper and funnel still needed their internal surfaces wiped, separation could add cleaning work at the joint instead of reducing it. Combining the funnel and enclosure reduced the number of parts and removed an interface from the powder path.
-
-The early integrated-cavity concept appears in the solid carousel. The later skeletal two-plate structure is a subsequent revision with a different support arrangement. Comparing them preserves the evolution of the machine: reducing interfaces was an early design direction, while the eventual carousel continued to change during integration.
-
-Sugar exposed another issue during loading. Material escaped from the downstream end before the auger was intentionally turning. That was uncontrolled discharge, so adjusting a software stop threshold would not address it. The mechanical path needed enough resistance to retain the powder while the machine was idle and being filled.
-
-I narrowed the opening at the auger end according to the milestone notes. The aim was to restrict the bypass path through which sugar could fall immediately, while retaining a route for material pushed by the screw. This connects outlet geometry to the intended control model: the scale loop is most useful when auger motion is the main cause of additional material entering the cup.
-
-My milestone notes report that narrowing the end addressed the immediate sugar-loading spill and that sugar did not require agitation in those trials. The record contains neither the before-and-after aperture dimensions nor a measured leakage series. I regard the result as a practical response to the observed loading problem, with performance across other materials left to their own tests.
-
-The outcome was a simpler contact path and improved control over sugar before motion began. Cornstarch then challenged the same geometry in the opposite way: instead of passing too easily, it clumped, jammed, and left material untouched. That gave the next update a concrete reason to change the flights and add agitation.
-
-## Process images
+Then sugar gave me a much more immediate problem: it came out during loading, before I intentionally turned the auger. The feeder was doing something, just not something I had commanded.
 
 ![Cross-section CAD illustrating the internal hopper, auger path, and base.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m1_8.jpg)
 
 Cross-section CAD illustrating the internal hopper, auger path, and base.
+
+I narrowed the opening near the auger exit so there was more resistance to that passive flow. The idea was to hold sugar back while idle but still let the screw drive it through. My notes describe this fixing the immediate loading spill. I don't have before-and-after aperture dimensions or a leakage-mass series, so I can't turn that observation into a zero-leakage specification.
+
+This was a useful reminder to sort out the mechanical behavior before asking software to compensate for it. A better stop threshold couldn't prevent powder falling out before a run had even begun.
+
+## The flow path
+
+The early integrated-cavity concept appears in the solid carousel. The later skeletal two-plate structure is a subsequent revision with a different support arrangement. Comparing them preserves the evolution of the machine: reducing interfaces was an early design direction, while the eventual carousel continued to change during integration.
+
+I narrowed the opening at the auger end according to the milestone notes. The aim was to restrict the bypass path through which sugar could fall immediately, while retaining a route for material pushed by the screw. This connects outlet geometry to the intended control model: the scale loop is most useful when auger motion is the main cause of additional material entering the cup.
+
+## More views
 
 ![Single doser positioned above the balance. This photo provides setup context, not a trial result.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m1_7.jpg)
 
@@ -50,9 +42,20 @@ V5 solid carousel: Extrude 2 removes the eight pocket regions to 3 cm blind dept
 
 V5 solid carousel saved model after closing the pocket feature preview. Selected feature edges remain highlighted; later suppressed features remain visible in the tree.
 
-## Outcome and reflection
+Sugar didn't need agitation in the trials described here, which made the feeder look fairly straightforward for a while. Cornstarch was a different story. Restricting flow is helpful when material escapes too easily; it becomes a problem when the next material barely wants to move.
 
-I left this iteration with a simpler contact path and better control of sugar during loading. The important distinction was between powder released by a command and powder falling out while the machine was idle. Feedback control could regulate the former, but the latter first required a mechanical correction. Cornstarch then exposed the opposite problem: material that would not move consistently enough.
+<details>
+<summary>Notes added while reconstructing this entry</summary>
+
+The removable hopper was initially a means to make cleaning easier, not an end in itself. I revisited it after the thread and locking iterations. If both the hopper and funnel still needed their internal surfaces wiped, separation could add cleaning work at the joint instead of reducing it. Combining the funnel and enclosure reduced the number of parts and removed an interface from the powder path.
+
+Sugar exposed another issue during loading. Material escaped from the downstream end before the auger was intentionally turning. That was uncontrolled discharge, so adjusting a software stop threshold would not address it. The mechanical path needed enough resistance to retain the powder while the machine was idle and being filled.
+
+My milestone notes report that narrowing the end addressed the immediate sugar-loading spill and that sugar didn't require agitation in those trials. The record contains neither the before-and-after aperture dimensions nor a measured leakage series. I regard the result as a practical response to the observed loading problem, with performance across other materials left to their own tests.
+
+The outcome was a simpler contact path and improved control over sugar before motion began. Cornstarch then challenged the same geometry in the opposite way: instead of passing too easily, it clumped, jammed, and left material untouched. That gave the next update a concrete reason to change the flights and add agitation.
+
+</details>
 
 ## Sources
 

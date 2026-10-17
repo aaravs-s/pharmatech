@@ -1,30 +1,38 @@
-# J25 Convert carousel positions to step counts and establish a known reference
+# J25 The controller needs to know which hopper is there
 
-*Milestone 4 | Personal retrospective journal*
+*Milestone 4 | Retrospective build notes*
 
-## Design and iteration
+Eight positions gives me 45 degrees per station, but the controller can't do much with that until it's tied to the driver configuration. The saved direct-drive setup uses 200 full steps and 32 microsteps: 6400 pulses per revolution, 800 per slot.
 
-I translated the carousel's eight equal positions into motor commands. Geometrically, adjacent stations are 45 degrees apart. Electrically, the corresponding pulse count depends on full steps, microsteps, and any motor-to-disk transmission ratio.
+The integral count was useful. I didn't want rounding at each station gradually changing the commanded alignment. But having a clean calculation didn't make the starting slot known, and it didn't detect missed motion.
 
-The saved step-count firmware uses 200 full steps per revolution, 32 microsteps, and direct drive. That gives 6400 pulses per disk revolution and 800 per station. An integral station count avoids rounding accumulation, but it still assumes that the installed driver settings match the program and that the disk follows the commanded motion.
+![Current Rotary Disk V2 Part Studio showing eight openings, two plates, spacers, and central indexing features.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/cad_main_rotary.jpg)
 
-I also separated a known reference from the ability to move between slots. The recovered firmware starts with position unknown and requires the operator to declare an aligned slot. Later application text describes a switch and detent arrangement. Because those are different source states, I documented the manual reference behavior actually present in the step-count code rather than combining them into an automatic homing claim.
+Current Rotary Disk V2 Part Studio showing eight openings, two plates, spacers, and central indexing features.
 
-## Technical detail
+In the recovered step-count firmware, position starts UNKNOWN. The operator aligns a hopper and declares its slot with SET SLOT. That's a reference-setting operation, not automatic homing. It matters because a program can keep perfectly tidy counts from a wrong starting assumption.
+
+There's still a version mismatch in the archive: later app wording mentions a switch and indent, while the recovered disk code uses bidirectional counted steps without that switch-homing implementation. I can explain each version, but I can't merge them into a final setup the source doesn't identify.
+
+## Steps, slots, and UNKNOWN
 
 The timer-based disk firmware specifies eight slots, 200 full steps per motor revolution, 32 microsteps, and a 1:1 motor-to-disk ratio. The calibration is therefore 200 times 32 divided by eight, or 800 step pulses per station and 6400 per revolution. This is the configuration actually declared in the saved file; the driver must physically use the matching microstep mode for the calculation to hold.
 
 The geometry gives 45 degrees per slot, while the motor configuration gives electrical pulses per slot. They agree only if the gearing, microstep mode, direction, and physical reference are correct. Changing the driver microstep switch without updating the software would change disk travel even though the slot-number arithmetic remains unchanged.
 
-The step-count firmware starts with position unknown. SET SLOT n validates the requested range 1 through 8, refuses while auger or disk motion is active, stores the current slot, marks position known, and enables the disk driver. It does not rotate to a sensor or discover the physical location; the operator must already align the disk correctly before declaring the slot.
+The step-count firmware starts with position unknown. SET SLOT n validates the requested range 1 through 8, refuses while auger or disk motion is active, stores the current slot, marks position known, and enables the disk driver. It doesn't rotate to a sensor or discover the physical location; the operator must already align the disk correctly before declaring the slot.
 
 A requested movement is rejected when the reference is unknown. DISK STOP and DISK DISABLE stop motion and invalidate position as appropriate. That state handling prevents the program from continuing to treat an interrupted movement as a completed index. A later open/reset cycle also needs the known slot restored if the physical disk has not moved.
 
 The later app mentions a switch, an indent, and counterclockwise indexing. The recovered disk firmware instead uses bidirectional counted steps and no matching switch-homing implementation. These are different source states. The account therefore describes the SET SLOT reference procedure for the saved firmware, while the final matched switch-based configuration remains unidentified.
 
-The pulse count defines intended travel, while a known physical starting alignment gives slot numbers their meaning. Repeated alignment around all eight stations and recovery after interruption are separate physical checks. No measured home-position error or full station-error series is preserved with this revision.
+## More views
 
-## Archived implementation
+![Physical multi-doser assembly photograph included in M4.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m4_2.jpg)
+
+Physical multi-doser assembly photograph included in M4.
+
+## Code for this revision
 
 Exact archived source excerpts. The file labels identify their revisions.
 
@@ -79,19 +87,14 @@ Recovered later Library Uno firmware; uses Timer1 for auger and Timer2 with step
   requestedSlot = 0;
 ```
 
-## Process images
+For this firmware, 800 pulses means one intended station, starting from a position the operator has established. Interrupt a move and that position may no longer be trustworthy. Keeping UNKNOWN as a real state was more useful than pretending the last requested slot was where the disk must have ended up.
 
-![Current Rotary Disk V2 Part Studio showing eight openings, two plates, spacers, and central indexing features.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/cad_main_rotary.jpg)
+<details>
+<summary>Notes added while reconstructing this entry</summary>
 
-Current Rotary Disk V2 Part Studio showing eight openings, two plates, spacers, and central indexing features.
+The pulse count defines intended travel, while a known physical starting alignment gives slot numbers their meaning. Repeated alignment around all eight stations and recovery after interruption are separate physical checks. No measured home-position error or full station-error series is preserved with this revision.
 
-![Physical multi-doser assembly photograph included in M4.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m4_2.jpg)
-
-Physical multi-doser assembly photograph included in M4.
-
-## Outcome and reflection
-
-Slot motion became an explicit combination of geometry, pulse calibration, and a known starting reference. The recovered code also invalidates position after interrupted motion instead of trusting an unfinished index. The unresolved switch-based versus step-count revision remains a configuration limitation, while the 800-pulse station calculation is fully specified for the archived direct-drive setup.
+</details>
 
 ## Sources
 

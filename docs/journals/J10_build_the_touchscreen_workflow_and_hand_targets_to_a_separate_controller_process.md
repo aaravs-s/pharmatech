@@ -1,18 +1,20 @@
-# J10 Build the touchscreen workflow and hand targets to a separate controller process
+# J10 Making the screen talk to the controller
 
-*Milestone 2 | Personal retrospective journal*
+*Milestone 2 | Retrospective build notes*
 
-## Design and iteration
+I wanted the doser to be operable without changing a number in the Python file for every run. The Pi's seven-inch touchscreen became the place to choose the powder and enter the requested mass. Even with one working hopper, I was already thinking in slots because the carousel would need that later.
 
-I added a touchscreen workflow so a user could choose a powder and enter a requested mass without editing the control program. The hardware used a seven-inch DSI touchscreen connected to the Raspberry Pi 4. Although I was still developing a single active doser, the slot-based layout anticipated the later eight-position machine.
+I split the app from the motor-and-scale controller. The screen handled the request; the other program dealt with the balance and feeding phases. That sounded tidy, but it also meant the two programs needed to agree on what they sent each other.
 
-I separated the visible application from the motor-and-scale program. The app collected the request; the controller handled serial scale readings and phase decisions. That boundary kept recipe interaction distinct from the faster feedback work and gave me a clear place to pass the target and powder profile.
+![Single-doser test arrangement with scale, screen, and controller wiring.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m2_4.jpg)
 
-The operating procedure captures the early interaction: edit slot 1, select and load the powder, tare the scale, enter the mass, save, and start. The later app preserves a fuller implementation of the same division, including queued subprocess output and recipe data. I describe those later mechanisms as later code, rather than assigning the complete recipe interface to the first touchscreen version.
+Single-doser test arrangement with scale, screen, and controller wiring.
 
-## Technical detail
+The later implementation launches the controller as a subprocess and reads its output in the background. I didn't want waiting on serial data to freeze the interface. The progress labels also mattered more than they looked like they should: the app searches for 'Dispensed:' and 'Remaining:', so changing that text in only one file would break the display connection.
 
-The interface gathers the powder and requested grams, displays progress, and exposes stop controls. The separate controller owns scale feedback and auger phase decisions. This division let the application describe the user's request while the controller translated measured mass into motion.
+The early SOP is the simpler workflow: select slot 1, choose and load powder, tare, enter mass, save, start. The full recipe checks in the later app came afterward. I'm keeping those stages distinct instead of making the first touchscreen version sound like it already did everything.
+
+## The handoff between programs
 
 The later app archive gives a detailed implementation of that design: CustomTkinter creates a fullscreen 800 by 480 interface, maintains slot and recipe data separately, and includes an on-screen keyboard. The powder list contains EMPTY plus the eight tested household powders. A recipe item contains the slot, powder name, and requested amount. This is later implementation evidence, not a claim that all recipe features were present in the first M2 interface.
 
@@ -20,11 +22,7 @@ The launch function chooses motor_scale_control.py, builds its path relative to 
 
 The output labels 'Dispensed:' and 'Remaining:' form a contract between the programs. The app extracts their following numbers with regular expressions, and the controller retains those labels in its output. Changing one side alone could leave the display stale while feeding continued, making the text protocol part of the implemented interface.
 
-The later app adds startup checks for empty recipe slots, unknown disk position, and active motion. Those safeguards belong to the later integrated source. The initial single-doser workflow and the complete recipe app share the process boundary, but they are not presented as one unchanged version.
-
-The source excerpts preserve the launch arguments and progress-parsing mechanism even where original development screenshots are unavailable. They explain how a target entered in the interface becomes a controller process and how its reported progress returns to the screen.
-
-## Archived implementation
+## Code for this revision
 
 Exact archived source excerpts. The file labels identify their revisions.
 
@@ -111,15 +109,18 @@ def launch_motor(amount_to_dispense, powder_type=None):
     check_motor_process()
 ```
 
-## Process images
+The useful result was a request going from the screen to a separate controller and progress coming back. Still two programs to keep in agreement, though. Once positioning was added, that handoff would carry state and device choices as well as the powder and target.
 
-![Single-doser test arrangement with scale, screen, and controller wiring.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m2_4.jpg)
+<details>
+<summary>Notes added while reconstructing this entry</summary>
 
-Single-doser test arrangement with scale, screen, and controller wiring.
+The interface gathers the powder and requested grams, displays progress, and exposes stop controls. The separate controller owns scale feedback and auger phase decisions. This division let the application describe the user's request while the controller translated measured mass into motion.
 
-## Outcome and reflection
+The later app adds startup checks for empty recipe slots, unknown disk position, and active motion. Those safeguards belong to the later integrated source. The initial single-doser workflow and the complete recipe app share the process boundary, but they aren't presented as one unchanged version.
 
-The interface made the doser easier to operate while the separate controller retained responsibility for feeding. The most important software dependency was the information crossing that boundary: powder, grams, progress messages, and exit state all had to mean the same thing in both programs. That contract became increasingly important as positioning and multi-item recipes were added.
+The source excerpts preserve the launch arguments and progress-parsing mechanism even where original development screenshots are unavailable. They explain how a target entered in the interface becomes a controller process and how its reported progress returns to the screen.
+
+</details>
 
 ## Sources
 

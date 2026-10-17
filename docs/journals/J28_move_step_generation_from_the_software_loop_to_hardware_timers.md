@@ -1,30 +1,38 @@
-# J28 Move STEP generation from the software loop to hardware timers
+# J28 The pulse generator was another speed limit
 
-*Milestone 5 | Personal retrospective journal*
+*Milestone 5 | Retrospective build notes*
 
-## Design and iteration
+After changing the drive hardware, I still had to look at what the Arduino was actually asking it to do. The early version toggled STEP in software. The main loop also had commands and timing work to handle, so pulse generation could become a bottleneck of its own.
 
-I revisited motor speed at the pulse-generation level after the mechanical drive upgrade. The early controller toggled STEP through software timing checks. As the main loop handled other work, generating the intended waveform became a separate question from whether the loaded motor could follow it.
+I moved the later version to hardware timers. Timer1 handled the auger and Timer2 handled the disk. That let the hardware generate the repeated transitions while software still counted finite motions and reported when they ended.
 
-I changed the later firmware to use hardware timers for the step outputs. Timer1 generated the auger waveform, while Timer2 handled the disk. This moved repeated output transitions away from ordinary loop timing and still allowed software to count finite motions and report their completion.
+![Breadboard motor-control wiring in the early prototype.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m2_2.jpg)
 
-The change also affected wiring. Hardware output-compare channels use particular pins, so retaining an old pin map with the new timing code would not produce the intended system. I documented the timer equation, configured rates, pins, and enable behavior together. Those settings describe the program; they are not a measured maximum loaded speed.
+Breadboard motor-control wiring in the early prototype.
 
-## Technical detail
+The pin change was part of the work, not a footnote. OC1A means the auger STEP output is on pin 9 in this setup, and the disk uses pin 11. Keeping the earlier wiring while loading this firmware would defeat the whole change.
+
+I kept the timer calculation with the configured rates below. It tells me the intended electrical waveform. It doesn't prove the loaded motor can follow every pulse at 20 kHz. Getting the timing source out of the busy loop was one problem; getting the mechanism through resistant powder was still another.
+
+## Timers, pins, and rates
 
 The M5 notes distinguish a basic pulse-generation version from a hardware-timer version. The early July firmware calculates halfPeriodMicros as 500000 divided by the current step rate and toggles STEP in software. That arrangement depends on how often the main loop returns to the timing check. Serial handling, acceleration updates, and other work compete with pulse timing.
 
 The later firmware assigns auger STEP to pin 9, the AVR OC1A output, and uses Timer1 in CTC mode with prescaler 1. The output toggles on each compare match. The source's conversion is frequency = F_CPU divided by twice (OCR1A + 1). On a 16 MHz configuration, 20,000 pulses per second corresponds to OCR1A = 399. This is a calculated timer setting, not a measured maximum loaded motor speed.
 
-Continuous auger motion starts at 2000 Hz and changes by 500 Hz on nominal 10 ms ramp updates. The timer-based settings use 20,000 Hz TURBO for both families, 2400 Hz FREE NORMAL, and 9000 Hz NONFREE NORMAL. These are later parameters and differ from the early July rates; they are not one speed configuration carried unchanged through the project.
+Continuous auger motion starts at 2000 Hz and changes by 500 Hz on nominal 10 ms ramp updates. The timer-based settings use 20,000 Hz TURBO for both families, 2400 Hz FREE NORMAL, and 9000 Hz NONFREE NORMAL. These are later parameters and differ from the early July rates; they aren't one speed configuration carried unchanged through the project.
 
-Finite auger pulses enable the Timer1 compare interrupt and count two compare matches per requested step. When the count reaches zero, the interrupt disconnects the timer output and sets a completion flag. The main loop reports completion separately. Hardware creates the waveform while software retains a finite-motion boundary and command reporting.
+Finite auger pulses enable the Timer1 compare interrupt and count two compare matches per requested step. When the count reaches zero, the interrupt disconnects the timer output and sets a completion flag. The main loop reports completion separately. Hardware creates the waveform while software retains a defined end to the motion and command reporting.
 
 The disk uses Timer2 and pin 11, OC2A, with a prescaler of 64 and its own compare-match count. Timer selection therefore changes the wiring: auger STEP moves from the early pin 2 to pin 9, and disk STEP uses pin 11. The later integrated drive also uses HIGH for enable and LOW for disable. These pin and polarity changes must accompany the firmware change.
 
-Timer configuration establishes the intended electrical timing, while the motor and powder load determine whether the shaft follows it. The record contains no preserved waveform measurement paired with a loaded-speed series. The configured 20 kHz rate is therefore reported as a command setting, without assigning it the meaning of a demonstrated reliable mechanical limit.
+## More views
 
-## Archived implementation
+![Physical multi-doser assembly photograph included in M4.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m4_2.jpg)
+
+Physical multi-doser assembly photograph included in M4.
+
+## Code for this revision
 
 Exact archived source excerpts. The file labels identify their revisions.
 
@@ -118,19 +126,14 @@ void updateContinuousRamp() {
 }
 ```
 
-## Process images
+This was a more concrete improvement than just raising the requested speed again. I had changed how the waveform was produced. A measured pulse trace paired with a loaded run would be the next way to check both halves of that change; that paired measurement isn't in the saved record.
 
-![Breadboard motor-control wiring in the early prototype.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m2_2.jpg)
+<details>
+<summary>Notes added while reconstructing this entry</summary>
 
-Breadboard motor-control wiring in the early prototype.
+Timer configuration establishes the intended electrical timing, while the motor and powder load determine whether the shaft follows it. The record contains no preserved waveform measurement paired with a loaded-speed series. The configured 20 kHz rate is therefore reported as a command setting, without assigning it the meaning of a demonstrated reliable mechanical limit.
 
-![Physical multi-doser assembly photograph included in M4.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m4_2.jpg)
-
-Physical multi-doser assembly photograph included in M4.
-
-## Outcome and reflection
-
-Hardware timers provided a more regular timing source while preserving phase commands and bounded pulses. The optimization addressed how steps were generated, leaving motor torque and powder resistance as separate limits. Keeping the frequency calculation and pin map with the firmware made this revision more reproducible than describing it only as a faster controller.
+</details>
 
 ## Sources
 

@@ -1,30 +1,36 @@
-# J29 Add driver-alarm handling and an interactive motor-speed test
+# J29 Changing speed without uploading another sketch
 
-*Milestone 5 | Personal retrospective journal*
+*Milestone 5 | Retrospective build notes*
 
-## Design and iteration
+Recompiling and uploading for every new speed setting was an unnecessary part of the test cycle. I added an interactive speed-test workflow so I could type a rate, observe the response, and try another. The M5 notes describe recording the commanded speed associated with a driver fault too.
 
-I added an interactive speed-test workflow so I could enter a new requested speed without editing and uploading the program for every setting. The milestone notes describe recording the commanded speed associated with a driver-reported problem. That shortened the experiment cycle and made a fault more informative than an unexplained stop.
+That made a stopped motor more informative. Instead of only noticing something had gone wrong, there was a requested operating point to connect to it. I don't have the standalone transcript, though, so there isn't a failure-speed number I can honestly recover from this account.
 
-The later production firmware also contains explicit alarm handling. A fault can stop motion, latch a state, and produce a serial message. I kept those paths distinct from the communication watchdog and from ordinary status reporting, because each responds to different information.
+![Physical multi-doser assembly photograph included in M4.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m4_2.jpg)
 
-A generic driver alarm did not identify the underlying cause by itself. I did not turn that signal into a specific overcurrent, temperature, or stall diagnosis without supporting status data. The standalone test transcript is not available in the source record, so this account documents the workflow and implemented fault paths without assigning a numerical failure-speed limit.
+Physical multi-doser assembly photograph included in M4.
 
-## Technical detail
+The later production firmware has explicit alarm paths: stop motion, latch the fault, report it. Status and the communication watchdog do different jobs. I wanted to keep those distinctions because 'fault handling' can hide quite a few unrelated behaviors.
 
-The M5 speed-test workflow accepted a typed speed and recorded the requested rate associated with a driver fault. This reduced recompilation between experiments. The standalone test source and captured output are not preserved in the available set, so no numerical fault-speed threshold is reconstructed from that description.
+The alarm message itself stays generic. It doesn't tell me whether the cause was current, temperature, or position error without more information from the driver. I shouldn't turn a useful fault signal into a more detailed diagnosis than it actually provides.
 
-The later production firmware does contain concrete fault paths. Auger alarm is pin 7 and disk alarm is pin 6. The auger alarm check reads LOW as a fault while the mechanism is running, stops auger motion, latches faulted state, and emits FAULT DRIVER ALARM. The source uses INPUT_PULLUP and notes that an unconnected alarm line reads HIGH, so an unused input does not establish functional driver fault detection.
+## Alarm and watchdog behavior
+
+The later production firmware does contain concrete fault paths. Auger alarm is pin 7 and disk alarm is pin 6. The auger alarm check reads LOW as a fault while the mechanism is running, stops auger motion, latches faulted state, and emits FAULT DRIVER ALARM. The source uses INPUT_PULLUP and notes that an unconnected alarm line reads HIGH, so an unused input doesn't establish functional driver fault detection.
 
 RESET FAULT clears the latched fault states and stops the auger. STATUS reports the run mode, current frequency, target frequency, and OCR1A. The 2000 ms serial watchdog stops active auger motion if serial contact disappears. These are distinct mechanisms: driver alarm reports the driver signal, status describes configured motion, and watchdog detects lost controller communication.
 
-FAULT DRIVER ALARM identifies the received fault signal, rather than a detailed cause. Without the installed driver's corresponding status information, it does not separately diagnose temperature, current, or position error. The active-LOW interpretation in the saved source is a wiring assumption tied to that revision.
+FAULT DRIVER ALARM identifies the received fault signal, rather than a detailed cause. Without the installed driver's corresponding status information, it doesn't separately diagnose temperature, current, or position error. The active-LOW interpretation in the saved source is a wiring assumption tied to that revision.
 
-Requested frequency, microsteps, acceleration, supply, and powder load all affect how a speed test is interpreted. An unloaded shaft test and an auger moving cornstarch are different operating conditions. I did not infer a grams-per-second rate or universal speed ceiling from the presence of a regular timer output.
+Requested frequency, microsteps, acceleration, supply, and powder load all affect how a speed test is interpreted. An unloaded shaft test and an auger moving cornstarch are different operating conditions. I didn't infer a grams-per-second rate or universal speed ceiling from the presence of a regular timer output.
 
-Alarm latching, fault reset, status output, and the watchdog are directly visible in the later firmware. The milestone notes separately describe the interactive test version. Together they document a more observable development process, while the missing raw speed trials limit quantitative conclusions.
+## More views
 
-## Archived implementation
+![Breadboard motor-control wiring in the early prototype.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m2_2.jpg)
+
+Breadboard motor-control wiring in the early prototype.
+
+## Code for this revision
 
 Exact archived source excerpts. The file labels identify their revisions.
 
@@ -98,19 +104,16 @@ void updateWatchdog() {
 }
 ```
 
-## Process images
+The testing workflow became easier to adjust, and the controller had clearer ways to expose its state. The numerical speed limit is still missing from the archive. What I can keep is the method and the fault logic, without pretending a source-code setting was a measured ceiling.
 
-![Physical multi-doser assembly photograph included in M4.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m4_2.jpg)
+<details>
+<summary>Notes added while reconstructing this entry</summary>
 
-Physical multi-doser assembly photograph included in M4.
+The M5 speed-test workflow accepted a typed speed and recorded the requested rate associated with a driver fault. This reduced recompilation between experiments. The standalone test source and captured output aren't preserved in the available set, so no numerical fault-speed threshold is reconstructed from that description.
 
-![Breadboard motor-control wiring in the early prototype.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m2_2.jpg)
+Alarm latching, fault reset, status output, and the watchdog are directly visible in the later firmware. The milestone notes separately describe the interactive test version. Together they document a more observable development process, while the missing raw speed trials limit quantitative conclusions.
 
-Breadboard motor-control wiring in the early prototype.
-
-## Outcome and reflection
-
-The controller became easier to investigate because requested speed, reported state, and alarm handling had explicit roles. Fault latching and reset behavior are present in the saved firmware. The milestone record supports the interactive test version, while the absence of its raw transcript limits the numerical conclusions I can draw from it.
+</details>
 
 ## Sources
 

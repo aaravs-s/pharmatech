@@ -1,30 +1,30 @@
-# J16 Make phase thresholds depend on dose size: the July 21 to July 24 controller revision
+# J16 A 55 mg request shouldn't start like a large dose
 
-*Milestone 3 | Personal retrospective journal*
+*Milestone 3 | Retrospective build notes*
 
-## Design and iteration
+The fixed thresholds were getting awkward across different target sizes. The bulk phase could be too cautious for a larger request and still be too aggressive for a tiny one. I kept revising where the controller changed behavior instead of only increasing motor speed.
 
-After improving the drive, I continued revising how the controller changed phases for different target masses. A threshold suitable for a large dispense could force a tiny dose into an unnecessarily aggressive phase or keep a larger dose slow for too long.
+The July 21 and July 24 snapshots give me a useful comparison. In the older code, a 5 g request didn't begin in TURBO because the condition was greater than a fixed 5 g remaining. The later version made that cutoff depend on the target.
 
-The July 21 and July 24 code snapshots preserve a concrete revision. The earlier program used a fixed TURBO cutoff, while the later program introduced target-size-dependent cutoffs and explicit micro-dose behavior. This gave me a way to treat a 55 mg request differently from a multi-gram request even when the powder profile was the same.
+![Single-doser test arrangement with scale, screen, and controller wiring.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m2_4.jpg)
 
-I also increased observation time near the end for free-flowing powders. These changes addressed different parts of the problem: target-dependent bulk thresholds controlled when fast feeding ended, while pulse selection and settling intervals controlled the final additions. The code dates identify the saved revisions; the test sheet does not establish which revision produced each listed powder result.
+Single-doser test arrangement with scale, screen, and controller wiring.
 
-## Technical detail
+At the small end, the change was more direct. Below 0.100 g, start with FINAL pulses. A 0.055 g sugar request had begun in FINE under the July 21 logic; the July 24 version treated it as FINAL from the beginning. That is a much clearer description of the change than simply saying I made the small doses more precise.
 
-The dated code emails provide an actual before/after pair. The July 21 motor_scale.py used a fixed 5.000 g TURBO cutoff and a 0.500 g micro-mode limit. At exactly a 5 g target, its initial remaining value was not greater than 5.000, so it did not start in TURBO. The July 24 motor_scale_control.py introduced target-size-aware cutoffs instead of using that fixed bulk threshold for every request.
+I also lengthened the near-target waits for the free-flowing profile. It cost time. The hope was to stop asking for more powder before the previous addition was fully reflected in the reading. I can't attach the recorded 55 mg results to one snapshot because the test sheet doesn't identify its code revision.
+
+## What changed between the snapshots
+
+The dated code emails provide an actual before/after pair. The July 21 motor_scale.py used a fixed 5.000 g TURBO cutoff and a 0.500 g micro-mode limit. At exactly a 5 g target, its initial remaining value wasn't greater than 5.000, so it didn't start in TURBO. The July 24 motor_scale_control.py introduced target-size-aware cutoffs instead of using that fixed bulk threshold for every request.
 
 The July 24 code introduces an ultra-small limit of 0.100 g and a micro-dose limit of 0.500 g. Requests below 0.100 g start with FINAL pulses. Requests from 0.100 g to below 0.500 g use FINE followed by FINAL. A 0.055 g sugar request therefore changes from an initial FINE pulse in the July 21 logic to FINAL in the July 24 logic.
 
-For free-flowing targets below 1.500 g, the TURBO cutoff becomes the larger of 0.250 g and 30% of the target. Targets up to 10.000 g use a 1.000 g cutoff, and larger targets use 2.000 g. For the other family, the respective choices are max(0.150 g, 20% of target), 0.600 g, and 1.000 g. These values define when the bulk phase ends; they do not mean the complete dose must stay inside those errors.
+For free-flowing targets below 1.500 g, the TURBO cutoff becomes the larger of 0.250 g and 30% of the target. Targets up to 10.000 g use a 1.000 g cutoff, and larger targets use 2.000 g. For the other family, the respective choices are max(0.150 g, 20% of target), 0.600 g, and 1.000 g. These values define when the bulk phase ends; they don't mean the complete dose must stay inside those errors.
 
 The July 24 free-flowing profile also changes continuous-to-pulse, APPROACH-to-FINE, and FINE-to-FINAL cutoffs to 0.500, 0.150, and 0.050 g remaining. Its settling intervals become 0.800 s after continuous motion, 0.300 s after APPROACH, and 2.0 s after each FINE or FINAL pulse. The non-free-flowing settings become 0.300, 0.120, and 0.040 g, with settling intervals of 0.350, 0.120, 0.220, and 0.300 s.
 
-The longer near-target delays, particularly the 2.0 s free-flowing FINE and FINAL intervals, trade run time for additional observation of the last addition. The July 24 email establishes availability of the revision, but does not connect each listed powder result to that version. The measured trials and the code comparison remain separate pieces of evidence.
-
-The later cleaned controller uses another arrangement, including a 0.005 g tolerance and a 120 s maximum duration. Those settings describe a subsequent source state. They do not establish an improvement over the July versions without a matched measured run, and the larger absolute tolerance is particularly relevant to evaluating small targets.
-
-## Archived implementation
+## Code for this revision
 
 Exact archived source excerpts. The file labels identify their revisions.
 
@@ -162,15 +162,16 @@ PROFILES = {
 }
 ```
 
-## Process images
+This gave the program a better way to distinguish tiny requests from multi-gram ones. The code change is clear; its measured benefit isn't established by the unmatched test sheet. I would need the same target and configuration on both sides of the revision to make that comparison properly.
 
-![Single-doser test arrangement with scale, screen, and controller wiring.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m2_4.jpg)
+<details>
+<summary>Notes added while reconstructing this entry</summary>
 
-Single-doser test arrangement with scale, screen, and controller wiring.
+The longer near-target delays, particularly the 2.0 s free-flowing FINE and FINAL intervals, trade run time for additional observation of the last addition. The July 24 email establishes availability of the revision, but doesn't connect each listed powder result to that version. The measured trials and the code comparison remain separate pieces of evidence.
 
-## Outcome and reflection
+The later cleaned controller uses another arrangement, including a 0.005 g tolerance and a 120 s maximum duration. Those settings describe a subsequent source state. They don't establish an improvement over the July versions without a matched measured run, and the larger absolute tolerance is particularly relevant to evaluating small targets.
 
-The revised controller made dose size an input to phase selection, rather than applying the same fixed boundaries to every request. The clearest example is a 0.055 g sugar target changing from an initial FINE pulse to FINAL-only behavior. That is a documented program change; its quantitative improvement still cannot be inferred without matched trial data.
+</details>
 
 ## Sources
 

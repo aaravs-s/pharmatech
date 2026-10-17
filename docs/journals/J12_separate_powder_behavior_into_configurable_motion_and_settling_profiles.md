@@ -1,20 +1,22 @@
-# J12 Separate powder behavior into configurable motion and settling profiles
+# J12 Sugar settings made cornstarch crawl
 
-*Milestone 2 | Personal retrospective journal*
+*Milestone 2 | Retrospective build notes*
 
-## Design and iteration
+The cautious finishing settings made sense for sugar. Put cornstarch through the same sort of small movements and the end of a run could get extremely slow. Sometimes a command that added useful sugar barely delivered anything from the clumpier material.
 
-The settings that limited sugar overshoot made cornstarch extremely slow near completion. A small command could release useful material from sugar or salt but almost nothing from a clumpier powder. I stopped treating the powder name as a label used only by the interface and made it select motion behavior.
+I split the behavior into two control families instead of continuing to look for one setting that suited everything. Powder selection now chose speed, pulse size, and waiting time. It was a much more manageable direction than maintaining eight separate control programs.
 
-I grouped the tested materials into two control families and gave each family its own speed, pulse size, and settling settings. This reduced the number of separate programs to maintain while preserving a way to make the more resistant materials move.
+![Physical auger and hopper component used to illustrate the cornstarch geometry discussion.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m1_9.jpg)
 
-The family names describe controller configuration, not a universal classification of powder physics. For example, the notes describe cocoa and cinnamon as feeding relatively readily in this mechanism, while the archived program assigns both to NON_FREE_FLOWING. The actual mapping matters more than an intuitive reading of the label. Moisture, compaction, and geometry could also change how a material behaved.
+Physical auger and hopper component used to illustrate the cornstarch geometry discussion.
 
-## Technical detail
+I had to keep the labels from misleading me, though. Cocoa and cinnamon fed relatively readily in the mechanism according to the notes, but the archived program places them in NON_FREE_FLOWING. That name means 'use these parameters' in this code. It isn't a complete description of the powder.
 
-A small finishing motion that limited sugar overshoot could deliver very little cornstarch. I made powder selection affect two layers: the mapping from a name to a control family and the motion and settling parameters assigned to that family. This preserved one control structure while allowing different behavior.
+Also, pulse speed and pulse size aren't the same adjustment. More steps changes the angular movement; a higher rate gets through those steps faster. Then the settling delay controls when I look at the scale again. Those three knobs were easy to blur together when all I wanted was a run that finished faster.
 
-The July Python archive maps granulated sugar and table salt to FREE_FLOWING. Powdered sugar, baking soda, cornstarch, ground cinnamon, flour, and cocoa are mapped to NON_FREE_FLOWING. The descriptive behavior notes call cocoa and cinnamon fine and relatively free-flowing, so the software family name is not a universal physical classification. It identifies a chosen control profile for this implementation.
+## Profiles and pulse settings
+
+The July Python archive maps granulated sugar and table salt to FREE_FLOWING. Powdered sugar, baking soda, cornstarch, ground cinnamon, flour, and cocoa are mapped to NON_FREE_FLOWING. The descriptive behavior notes call cocoa and cinnamon fine and relatively free-flowing, so the software family name isn't a universal physical classification. It identifies a chosen control profile for this implementation.
 
 In the July Arduino configuration, free-flowing APPROACH/FINE/FINAL pulses contain 8, 4, and 1 steps at 1100, 700, and 400 pulses per second. The other family uses 20, 10, and 3 steps at 1500, 1000, and 650 pulses per second. Continuous FREE rates are 4000 TURBO and 2500 NORMAL, while NONFREE uses 6000 and 4000. These values are electrical step pulses, not rotations per minute or grams dispensed.
 
@@ -22,9 +24,13 @@ The distinction between pulse size and pulse speed is important. Changing step r
 
 The later controller stores editable profiles in dictionaries, normalizes case and spacing in powder names, rejects unknown names, and checks for finite, ordered thresholds. It also contains a per-powder override dictionary, empty in the recovered file. That provides an extension point without establishing that all eight materials received individual calibration.
 
-The practical result was a smaller configuration space than eight completely independent programs or a barcode database. I still needed to retain the final measured result for each powder. Shared parameters can simplify operation, but the powder tests determine whether that simplification is adequate at the intended mass.
+## More views
 
-## Archived implementation
+![Single-doser test arrangement with scale, screen, and controller wiring.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m2_4.jpg)
+
+Single-doser test arrangement with scale, screen, and controller wiring.
+
+## Code for this revision
 
 Exact archived source excerpts. The file labels identify their revisions.
 
@@ -100,19 +106,18 @@ def get_profile(powder_name: str) -> tuple[str, dict]:
     return category, settings
 ```
 
-## Process images
+## Still to check
 
-![Physical auger and hopper component used to illustrate the cornstarch geometry discussion.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m1_9.jpg)
+Two families made the configuration less unwieldy. They still needed checking against each powder's actual result. A shared dictionary is convenient, but it can't make flour behave like salt just because both names are in the same menu.
 
-Physical auger and hopper component used to illustrate the cornstarch geometry discussion.
+<details>
+<summary>Notes added while reconstructing this entry</summary>
 
-![Single-doser test arrangement with scale, screen, and controller wiring.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m2_4.jpg)
+A small finishing motion that limited sugar overshoot could deliver very little cornstarch. I made powder selection affect two layers: the mapping from a name to a control family and the motion and settling parameters assigned to that family. This preserved one control structure while allowing different behavior.
 
-Single-doser test arrangement with scale, screen, and controller wiring.
+This left me with a smaller configuration space than eight completely independent programs or a barcode database. I still needed to retain the final measured result for each powder. Shared parameters can simplify operation, but the powder tests determine whether that simplification is adequate at the intended mass.
 
-## Outcome and reflection
-
-Two parameter families gave me a manageable configuration structure for the eight test powders. Separating pulse extent, pulse rate, and settling time clarified what each change could affect. Shared settings simplified operation, but the recorded mass tests still had to establish the performance of each powder at each requested dose.
+</details>
 
 ## Sources
 

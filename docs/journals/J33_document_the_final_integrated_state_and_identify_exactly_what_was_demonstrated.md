@@ -1,30 +1,30 @@
-# J33 Bring the prototype together and assess the documented results
+# J33 Putting the build in perspective
 
-*Milestone 5 | Personal retrospective journal*
+*Milestone 5 | Retrospective build notes*
 
-## Design and iteration
+By the final milestone, the project had the feeder, agitator, carousel, lifted drive, scale feedback, and touchscreen brought together into a prototype. The notes had shifted toward pulse generation, fault reporting, mounting, and wiring. Those last integration details were a lot less simple than the original raise-rotate-lower description made them sound.
 
-By the final milestone, I had brought the feeder, agitation, rotary selection, lifted drive, scale feedback, and touchscreen interface into an integrated prototype. The remaining work described in the notes concentrated on motor control, fault visibility, mounting, and wiring organization.
+Looking back, the failures connect fairly clearly. Sharing motors created the engagement problem. Sugar needed to stay put while idle and stop being added before the scale caught up. Cornstarch needed help both inside the screw and out near the hopper walls. Recipes added another layer where position and completion messages mattered as much as the motion itself.
 
-Looking back across the iterations, the major decisions were connected. Sharing the motors created the lift-and-coupling problem. Sugar required resistance to passive discharge and careful stopping. Cornstarch required attention to both the screw and the powder outside its active region. Moving to recipes made state, references, and completion messages as important as the motion itself.
+![Physical multi-doser assembly photograph included in M4.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m4_2.jpg)
 
-The clearest measured outcome is the powder test sheet: all eight recorded 5 g runs met the 3% target, while only three of eight at 0.055 g did. I kept that distinction in the closing account. The available source set does not establish a fully matched final software configuration or an ingredient-by-ingredient autonomous run, so the completed narrative closes the documented development without claiming those missing measurements.
+Physical multi-doser assembly photograph included in M4.
 
-## Technical detail
+The 5 g table is still the strongest numerical result: eight of eight listed runs inside 3%. The 55 mg table is the uncomfortable one: only three of eight. Both belong in the project. Leaving out the small-target failures would give a much cleaner ending and a much less useful picture of the machine.
 
-The integrated system spans feeder and disk CAD, printed interfaces, motor and actuator hardware, driver settings, wiring, the touchscreen app, the mass controller, and separate motion firmware. The archive preserves several real revisions of those elements, but not a confirmed final manifest matching every file to the installed hardware.
+There are gaps in the archive too. I don't have one confirmed final set matching every software file to the installed hardware, or the full per-ingredient data from an autonomous recipe run. That limits what I can conclude here. It doesn't erase the design work, but it does tell me what evidence to keep next.
 
-Two version boundaries remain especially important. The app describes switch-based indexing while the recovered disk firmware uses counted steps, and the later controller's 120 s timeout is shorter than several recorded powder trials. Those mismatches do not erase the trials; they prevent attributing all earlier results to one assumed final code set.
+## More views
 
-The intended integrated flow covers reference setup, recipe entry, lift clearance, disk movement, engagement, mass-controlled feeding, and the transition to the next ingredient. The saved app implements that ordering with state and completion checks. The available evidence does not include an uncut run and corresponding ingredient-by-ingredient data that establish the complete sequence's measured performance.
+![Current Main workspace SuperStructureAssem. Only one hopper is visible in this assembly view. CAD includes mate or linked-reference warnings; the image is not proof of a fully populated or validated mechanism.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/cad_main_assembly.jpg)
 
-Per-item CSV fields in the app can retain target, actual mass, error, remaining amount, and status. Those fields are part of the logging design; they are not populated test results in this account. Recipe duration, manual interventions, and final mixture measurements are therefore not assigned values that the source does not provide.
+Current Main workspace SuperStructureAssem. Only one hopper is visible in this assembly view. CAD includes mate or linked-reference warnings; the image is not proof of a fully populated or validated mechanism.
 
-The strongest numerical distinction remains the target size: eight of eight recorded 5 g trials met 3%, compared with three of eight at 0.055 g. These are single-powder results. The full assembly CAD shows one populated hopper, so its appearance does not independently establish the hopper count or success of a physical eight-ingredient demonstration.
+![Full frame, carousel, drive, and screen CAD from M4.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m4_4.jpg)
 
-My next priorities would be to freeze one matched hardware-and-code configuration, retain a complete integrated run, and repeat fixed-target measurements with controlled conditions. Those experiments would build directly on the documented mechanism and expose whether remaining error came from dispensing variability, feedback timing, positioning, or engagement. They are future work rather than additional completed tests.
+Full frame, carousel, drive, and screen CAD from M4.
 
-## Archived implementation
+## Code for this revision
 
 Exact archived source excerpts. The file labels identify their revisions.
 
@@ -49,23 +49,26 @@ Recovered full later Library app; contains automatic recipes, serial discovery, 
     if actuator_position == "UNKNOWN":
 ```
 
-## Process images
+## Next
 
-![Physical multi-doser assembly photograph included in M4.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m4_2.jpg)
+The next priority would be freezing one matched configuration and running it repeatedly, with the raw results kept alongside it. Especially at the small target. There's a real prototype and a lot of useful engineering behind it; the remaining job is to make the performance as clear as the mechanism.
 
-Physical multi-doser assembly photograph included in M4.
+<details>
+<summary>Notes added while reconstructing this entry</summary>
 
-![Current Main workspace SuperStructureAssem. Only one hopper is visible in this assembly view. CAD includes mate or linked-reference warnings; the image is not proof of a fully populated or validated mechanism.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/cad_main_assembly.jpg)
+The integrated system spans feeder and disk CAD, printed interfaces, motor and actuator hardware, driver settings, wiring, the touchscreen app, the mass controller, and separate motion firmware. The archive preserves several real revisions of those elements, but not a confirmed final manifest matching every file to the installed hardware.
 
-Current Main workspace SuperStructureAssem. Only one hopper is visible in this assembly view. CAD includes mate or linked-reference warnings; the image is not proof of a fully populated or validated mechanism.
+Two version boundaries remain especially important. The app describes switch-based indexing while the recovered disk firmware uses counted steps, and the later controller's 120 s timeout is shorter than several recorded powder trials. Those mismatches don't erase the trials; they prevent attributing all earlier results to one assumed final code set.
 
-![Full frame, carousel, drive, and screen CAD from M4.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m4_4.jpg)
+The intended integrated flow covers reference setup, recipe entry, lift clearance, disk movement, engagement, mass-controlled feeding, and the transition to the next ingredient. The saved app implements that ordering with state and completion checks. The available evidence doesn't include an uncut run and corresponding ingredient-by-ingredient data that establish the complete sequence's measured performance.
 
-Full frame, carousel, drive, and screen CAD from M4.
+Per-item CSV fields in the app can retain target, actual mass, error, remaining amount, and status. Those fields are part of the logging design; they aren't populated test results in this account. Recipe duration, manual interventions, and final mixture measurements are therefore not assigned values that the source doesn't provide.
 
-## Outcome and reflection
+The strongest numerical distinction remains the target size: eight of eight recorded 5 g trials met 3%, compared with three of eight at 0.055 g. These are single-powder results. The full assembly CAD shows one populated hopper, so its appearance doesn't independently establish the hopper count or success of a physical eight-ingredient demonstration.
 
-The project developed from a printable feeder into a coordinated powder-dispensing prototype with meaningful feedback and integration challenges. Its strongest measured evidence was at 5 g; its clearest remaining performance limitation was small-dose consistency. The next useful work was a version-matched integrated trial and repeated fixed-target measurements, building on the mechanisms and control structure already developed.
+My next priorities would be to freeze one matched hardware-and-code configuration, retain a complete integrated run, and repeat fixed-target measurements with controlled conditions. Those experiments would build directly on the documented mechanism and expose whether remaining error came from dispensing variability, feedback timing, positioning, or engagement. They are future work rather than additional completed tests.
+
+</details>
 
 ## Sources
 

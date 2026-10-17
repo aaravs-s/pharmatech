@@ -1,30 +1,32 @@
-# J11 Replace continuous feeding near the target with stop, settle, and pulse phases
+# J11 Stopping the motor didn't stop the added mass
 
-*Milestone 2 | Personal retrospective journal*
+*Milestone 2 | Retrospective build notes*
 
-## Design and iteration
+Sugar was exposing the gap between a motor command and a scale result. I could be close to the target on screen while more powder was already on its way. Stop at the displayed target, and the last bit could land afterward.
 
-Sugar made the stopping problem clear. A displayed reading near the target did not mean all the powder already released had reached the cup or appeared in the scale's output. Continuing at the bulk-feed rate until the display reached the requested mass could overshoot.
+I changed to faster feeding with a larger amount left, then shorter additions near the end. The important part was the pause after continuous motion. Stop, let the last addition show up, then decide what to do next. Sending a small pulse immediately from the same old reading would miss the point.
 
-I changed the control strategy to use fast movement while much of the target remained, followed by slower, finite additions near completion. After stopping continuous motion, the controller waited before deciding whether another pulse was needed. The notes describe developing this behavior with sugar and applying similar reasoning to salt.
+![Single-doser test arrangement with scale, screen, and controller wiring.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m2_4.jpg)
 
-The tradeoff was dispensing time. Small motions and long pauses created more opportunities to observe the last addition, but too much finishing time made the machine slow. I therefore treated thresholds, pulse lengths, and settling delays as separate tuning variables. The July 21 source below records one specific configuration, rather than a universal setting for every dose.
+Single-doser test arrangement with scale, screen, and controller wiring.
 
-## Technical detail
+This helped define the phases, but it also made run time a tuning problem. Tiny pulses and generous waits could make finishing painfully slow. Shorter waits could put me back in the overshoot problem. Sugar and salt were useful here because they moved readily enough for that delay to matter.
 
-The central control problem was that motor stop and mass stop were not simultaneous. Powder could already be in the outlet or falling toward the cup, and the scale could report that mass after a delay. If I continued feeding until the displayed mass reached the target, the last commanded material could arrive too late to be accounted for. The notes identify this clearly for sugar and salt.
+The values below are the July 21 settings. Later versions changed them. I want to keep that distinction clear because a list of thresholds is only useful if I know which program it belongs to.
 
-The July 21 controller selects among continuous TURBO, continuous NORMAL, and APPROACH/FINE/FINAL pulses. For a free-flowing profile, continuous motion ends at 1.250 g remaining; APPROACH changes to FINE at 0.120 g remaining; FINE changes to FINAL at 0.030 g remaining. The corresponding non-free-flowing cutoffs are 0.500, 0.120, and 0.050 g. These are grams remaining, not percentages of the target and not elapsed times.
+## The July 21 phase settings
 
-The transition out of continuous mode is deliberately a separate action. The controller sends an auger stop, clears its active-command state, waits for the profile's continuous-settling interval, and restarts the loop using a later mass reading. It does not immediately issue the first pulse using the same pre-stop value. That separation is the key implementation detail behind 'slow down near the target.'
+The July 21 controller selects among continuous TURBO, continuous NORMAL, and APPROACH/FINE/FINAL pulses. For a free-flowing profile, continuous motion ends at 1.250 g remaining; APPROACH changes to FINE at 0.120 g remaining; FINE changes to FINAL at 0.030 g remaining. The matching non-free-flowing cutoffs are 0.500, 0.120, and 0.050 g. These are grams remaining, not percentages of the target and not elapsed times.
+
+The transition out of continuous mode is deliberately a separate action. The controller sends an auger stop, clears its active-command state, waits for the profile's continuous-settling interval, and restarts the loop using a later mass reading. It doesn't immediately issue the first pulse using the same pre-stop value. That separation is the key implementation detail behind 'slow down near the target.'
 
 For free-flowing material, the July 21 settling values are 0.650 s after continuous motion, 0.220 s after APPROACH, 0.450 s after FINE, and 0.750 s after FINAL. For the other family, they are 0.300, 0.100, 0.160, and 0.220 s. The Arduino owns how many steps are in each pulse; Python owns the decision about when to issue one and how long to wait before re-evaluating mass.
 
-Targets below 0.500 g bypass continuous motion in that archive. For a 0.055 g sugar target at the start, the remaining amount is below 0.120 but above 0.030, so the old logic chooses a FINE pulse. The later July 24 revision changes that behavior. This example makes the evolution visible: a small target cannot safely inherit the bulk-feed behavior of a large dose just because the powder name is the same.
+Targets below 0.500 g bypass continuous motion in that archive. For a 0.055 g sugar target at the start, the remaining amount is below 0.120 but above 0.030, so the old logic chooses a FINE pulse. The later July 24 revision changes that behavior. This example makes the evolution visible: a small target can't safely inherit the bulk-feed behavior of a large dose just because the powder name is the same.
 
 The 3% project criterion differs from the code's absolute 0.001 g stop tolerance. In the July loop, remaining <= tolerance is tested before the separate overshoot branch, so an overshoot can satisfy the first condition. That implementation detail limits what the 'target reached' path means. I assessed dose error from the recorded final mass rather than treating a successful process exit as proof of accuracy.
 
-## Archived implementation
+## Code for this revision
 
 Exact archived source excerpts. The file labels identify their revisions.
 
@@ -94,15 +96,14 @@ if __name__ == "__main__":
     signal.signal(signal.SIGINT, handle_stop_signal)
 ```
 
-## Process images
+There was another catch in the July loop: the order of the stopping checks could let an overshoot take the 'target reached' path. So even the completion message wasn't enough. The final scale reading still had to be the result I judged.
 
-![Single-doser test arrangement with scale, screen, and controller wiring.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m2_4.jpg)
+<details>
+<summary>Notes added while reconstructing this entry</summary>
 
-Single-doser test arrangement with scale, screen, and controller wiring.
+The central control problem was that motor stop and mass stop weren't simultaneous. Powder could already be in the outlet or falling toward the cup, and the scale could report that mass after a delay. If I continued feeding until the displayed mass reached the target, the last commanded material could arrive too late to be accounted for. The notes identify this clearly for sugar and salt.
 
-## Outcome and reflection
-
-The controller gained an explicit stop-settle-reassess step between bulk feeding and final pulses. That was more useful than simply reducing speed: it prevented the first finishing command from being based on the same delayed reading that ended continuous motion. Final scale mass remained the measure of success, because a software completion message alone could also occur after an overshoot.
+</details>
 
 ## Sources
 

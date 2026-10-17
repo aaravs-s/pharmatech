@@ -1,32 +1,24 @@
-# J14 Plan the electronics mounting and PCB while the control system is still changing
+# J14 A PCB sounded like the way out of the wiring
 
-*Milestone 2 | Personal retrospective journal*
+*Milestone 2 | Retrospective build notes*
 
-## Design and iteration
+The breadboard was useful, but it was getting awkward to package. Loose wiring is one thing on a bench and another when it has to live on the frame. I started planning a PCB to organize the controller connections and give the electronics a more manageable footprint.
 
-I began planning a PCB because the breadboard wiring was awkward to mount and service. The idea was to organize the controller connections into a more compact arrangement rather than leave the working circuit spread across the bench.
-
-The schematic image records this direction, but the board did not become a finalized, validated part of the prototype. At the time I expected a more permanent electrical arrangement in a later milestone. The architecture was still changing, including the motor hardware, controller interface, and actuator requirements.
-
-That made the PCB decision dependent on more than whether I could draw a board. A layout based on the early Pi and TMC2209 configuration could become obsolete when pins, enable polarity, or driver alarm connections changed. I kept development moving while that boundary remained unsettled, and eventually returned to a modular mounting approach.
-
-## Technical detail
-
-By the end of early feedback development, the breadboard combined power, motor-control, and Pi connections. The PCB proposal aimed to reduce loose wiring and improve mounting. The M2 notes anticipated that improvement in M3, but the record does not establish a fabricated board operating in the machine.
-
-The challenge was that the electrical architecture was still evolving. The first Pi/TMC2209 arrangement, the later Arduino command interface, and the eventual integrated NEMA 23 drivers did not share one unchanged pin map. A board layout based on an early configuration could become obsolete when motor, enable polarity, pulse generation, or actuator control changed.
-
-The electrical functions spanned supply connections, controller logic, STEP/DIR/EN, serial scale feedback, and later alarm and actuator paths. A fixed board would need compatible interfaces for the chosen revision. The available schematic image records the proposal, while a complete verified schematic and routed-board revision are not preserved.
-
-I later abandoned the custom PCB because the design had not stabilized enough to finalize it. This explains the continued use of adaptable connections and a printed mount. The decision was a change in implementation strategy, rather than a missing fabricated-board success.
-
-Keeping the circuit modifiable allowed motor control and integration to continue. The tradeoff was retaining more manual wiring and a greater dependence on version-specific pin maps. A permanent board could address those issues after the electrical architecture settled, rather than forcing the prototype to conform to an early layout.
-
-## Process images
+The schematic image records that direction. It wasn't a finished board running the machine, even though I expected the PCB work to lead into a later milestone. The circuit was still changing underneath that plan.
 
 ![Electronics schematic proposal from M2. It is not evidence that a PCB was manufactured.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m2_1.jpg)
 
 Electronics schematic proposal from M2. It is not evidence that a PCB was manufactured.
+
+That was the catch. A board for the early Pi and TMC2209 arrangement wouldn't automatically suit the later Arduino interface or integrated NEMA 23 drive. Pins, enable behavior, alarms, actuator connections: those were still moving targets.
+
+I didn't end up finalizing the PCB. It's easy to make that sound like a small omitted step, but it was a real change of direction. I still needed to mount the circuit and keep testing; I just hadn't reached a stable enough electrical design to freeze into that board.
+
+## Why the board never stabilized
+
+The challenge was that the electrical architecture was still evolving. The first Pi/TMC2209 arrangement, the later Arduino command interface, and the eventual integrated NEMA 23 drivers didn't share one unchanged pin map. A board layout based on an early configuration could become obsolete when motor, enable polarity, pulse generation, or actuator control changed.
+
+## More views
 
 ![Breadboard motor-control wiring in the early prototype.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m2_2.jpg)
 
@@ -36,9 +28,20 @@ Breadboard motor-control wiring in the early prototype.
 
 IMG_8167.HEIC Drive preview: breadboard wiring beside an unsoldered perfboard. Supports the board-packaging discussion; does not show a completed failed perfboard circuit.
 
-## Outcome and reflection
+The packaging problem stayed with the project. A PCB could eventually make it neater, but trying to lock down the wrong revision wouldn't save much work. For now I kept the electronics changeable and came back to mounting later.
 
-The PCB proposal identified a real packaging problem, but committing to a fixed layout before the interfaces stabilized would have locked in an early revision. The board remained a proposal. The later perfboard attempt and half-size breadboard mount were responses to that continuing need for adaptability.
+<details>
+<summary>Notes added while reconstructing this entry</summary>
+
+By the end of early feedback development, the breadboard combined power, motor-control, and Pi connections. The PCB proposal aimed to reduce loose wiring and improve mounting. The M2 notes anticipated that improvement in M3, but the record doesn't establish a fabricated board operating in the machine.
+
+The electrical functions spanned supply connections, controller logic, STEP/DIR/EN, serial scale feedback, and later alarm and actuator paths. A fixed board would need compatible interfaces for the chosen revision. The available schematic image records the proposal, while a complete verified schematic and routed-board revision aren't preserved.
+
+I later abandoned the custom PCB because the design had not stabilized enough to finalize it. This explains the continued use of adaptable connections and a printed mount. The decision was a change in implementation strategy, rather than a missing fabricated-board success.
+
+Keeping the circuit modifiable allowed motor control and integration to continue. The tradeoff was retaining more manual wiring and a greater dependence on version-specific pin maps. A permanent board could address those issues after the electrical architecture settled, rather than forcing the prototype to conform to an early layout.
+
+</details>
 
 ## Sources
 

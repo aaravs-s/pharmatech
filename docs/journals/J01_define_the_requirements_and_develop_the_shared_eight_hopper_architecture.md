@@ -1,32 +1,32 @@
-# J01 Define the requirements and develop the shared eight-hopper architecture
+# J01 Eight hoppers, but start with one
 
-*Milestone 1 | Personal retrospective journal*
+*Milestone 1 | Retrospective build notes*
 
-## Design and iteration
+Eight hoppers sounded manageable until I started counting the motors. One for the auger and another for agitation on each hopper would mean sixteen motors. Then all the wiring, mounting, and weight that came with them. I didn't want to build that much hardware before knowing whether one feeder even worked properly.
 
-I began by breaking automated powder compounding into a sequence I could build and test: choose an ingredient, move it to a dispensing position, add a requested mass, and stop using feedback from a scale. I organized the work into five milestones so the single-powder mechanism could be tested before I committed to a complete carousel.
-
-My initial requirements were eight powder positions, a 100 g capacity per doser, a 50 by 50 by 50 cm operating envelope, and a final mass within 3% of the requested dose. These were design targets. I selected sugar, salt, cocoa, cinnamon, baking soda, cornstarch, powdered sugar, and flour because their different flow behavior would expose weaknesses that one easy material could hide.
-
-The central layout decision was to share the active drive hardware at one dispensing station. Putting an auger motor and a separate agitation motor on every hopper could require sixteen motors. A shared station reduced that duplication, but introduced a harder mechanical interface: the drive had to disengage before the disk rotated and reconnect afterward. I accepted that tradeoff and focused first on one complete powder path.
-
-## Technical detail
-
-I separated the ingredient-selection problem from the mass-measurement problem. The disk chooses which powder path sits over the receiving container; the auger controls movement through that path; the scale measures the consequence of that motion. This distinction matters because selecting the correct hopper does not guarantee the correct mass, and controlling motor steps does not establish how much a particular powder actually dispensed.
-
-The first architecture therefore had three interfaces to resolve: the hopper-to-feeder connection, the rotating disk-to-frame support, and the stationary motor-to-rotating auger engagement. Each powder retained its own contact path. Sharing a drive motor could reduce electrical duplication without requiring different ingredients to pass through the same auger. The contact surfaces would still need cleaning and inspection; independent paths alone do not demonstrate an absence of contamination.
-
-For the eight-position layout, I used equal angular spacing as the starting constraint. A full revolution divided by eight gives 45 degrees per station. The later archived disk makes this concept concrete: eight pockets surround the central axis. I had to account for the hopper diameter, radial position, room around the center attachment, and the space needed by the fixed drive station. Those dimensions are coupled: enlarging a hopper can force a larger disk or reduce the material between stations.
-
-I also distinguished capacity from dosing range. A 100 g hopper-capacity target describes how much material the hopper should hold; it does not by itself validate a 100 g dispensing run. Likewise, a 3% accuracy target needs a specified requested mass. At 5 g, 3% permits 0.150 g of error, while at 0.055 g it permits only 0.00165 g. I needed a test plan that included both useful larger doses and the difficult small-dose case rather than treating the percentage as one universal setting.
-
-The shared drive station became the main architectural tradeoff. It reduced the number of motors carried around the carousel, but required reliable vertical engagement and disengagement. I deferred the complete carousel build while testing one powder path. That left a practical next step: obtain a printable single doser and learn whether its interfaces and powder movement were good enough to reproduce eight times.
-
-## Process images
+So I settled on a carousel with a shared drive station. Rotate the selected powder into position over the scale, engage the drive, dispense, then move on. Simple enough to describe. The awkward bit was already there, though: the motor would have to disconnect and reconnect every time the disk moved. Saving motors was going to make that connection much more important.
 
 ![Early eight-position solid rotary disk concept from the M1 notes.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m1_2.jpg)
 
 Early eight-position solid rotary disk concept from the M1 notes.
+
+I wrote down the targets: eight positions, 100 g capacity per doser, a 50 x 50 x 50 cm envelope, and final mass within 3%. I also chose the eight test powders: sugar, salt, cocoa, cinnamon, baking soda, cornstarch, powdered sugar, and flour. I wanted differences in behavior, because a machine that only worked with sugar wouldn't tell me much about the other ingredients.
+
+For now, one powder path. A hopper, an auger, an outlet, and somewhere for the powder to land. I could come back to the full disk once there was something worth copying eight times.
+
+## Layout notes
+
+I kept coming back to three separate jobs. The disk selects the powder, the auger moves it, and the scale tells me what arrived. Getting the right hopper into position won't make its dose right. Counting screw steps won't tell me the mass unless the powder behaves consistently enough, which is the thing I still needed to test.
+
+That left three mechanical connections to work through: hopper to feeder, disk to frame, and fixed drive to the auger on the rotating disk. Each powder would keep its own contact path. Sharing the drive didn't mean sharing one screw between ingredients, and it didn't remove the cleaning work on those separate paths.
+
+Eight equally spaced stations means 45 degrees between them. The later disk model makes the layout easier to see, but even at the concept stage the dimensions pulled on each other. Larger hoppers need more room around the disk. They also leave less material between stations and less space near the fixed drive and center attachment.
+
+The 100 g target was hopper capacity. It wasn't evidence that a 100 g dispense worked. The percentage target also hides how different the small doses are: at 5 g, 3% gives 0.150 g of room; at 0.055 g it gives only 0.00165 g. I needed both ends in the testing plan rather than one comfortable example that made the percentage look easy.
+
+I kept the full carousel behind the single feeder in the build order. A shared station saved motors, but it also depended on vertical clearance and repeatable engagement. Those were already real design obligations. I wanted one powder path worth repeating before I committed to the larger structure.
+
+## More views
 
 ![Early rotary and fixed-drive concept in top view.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m1_10.jpg)
 
@@ -44,9 +44,9 @@ V5 solid carousel: Sketch 1, Top-plane circle with displayed diameter 33 cm, bef
 
 V5 solid carousel: Sketch 2 on the disk face shows eight pockets, displayed 12 cm radial location and 7 cm diameter.
 
-## Outcome and reflection
+## First build target
 
-I finished this stage with a defined architecture and a useful order of development: prove one doser, add mass feedback, then reproduce the feeding station around the carousel. The largest lesson was that reducing the motor count transferred complexity into alignment and engagement. Those interfaces became design problems to solve deliberately, rather than details to leave until final assembly.
+The layout was taking shape, but there was still a lot hidden in the word 'engage.' The drive couldn't just sit permanently on one shaft anymore. I put that problem aside long enough to get one doser built; making eight untested feeders would only multiply whatever was wrong with the first one.
 
 ## Sources
 

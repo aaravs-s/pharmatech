@@ -1,76 +1,76 @@
-# Pill Compounder: Complete Personal Journal
+# Pill Compounder: Personal Build Journal
 
-AI-assisted retrospective narratives for personal documentation. No session dates or hours are assigned. These are not Forge submissions. See the [collection notes](README.md) for scope and image provenance.
+AI-assisted retrospective build notes for personal documentation. The conversational voice is an editorial interpretation. These are not contemporaneous session records or Forge submissions. See the [collection notes](README.md) for scope and image provenance.
 
 ## Contents
 
-- [J01: Define the requirements and develop the shared eight-hopper architecture](#j01)
-- [J02: Construct the first hopper, adapter, and bottom-feeder CAD](#j02)
-- [J03: Build the auger from a helix and flight profile, then obtain a usable print](#j03)
-- [J04: Test the removable threaded hopper and replace it with a short locking interface](#j04)
-- [J05: Simplify the powder path and reduce sugar leaking during loading](#j05)
-- [J06: Diagnose cornstarch jamming and the first agitator's incomplete coverage](#j06)
-- [J07: Model the two-arm agitator and compare uniform and tapered-flight concepts](#j07)
-- [J08: Wire the first NEMA 17 and TMC2209 drive and establish controlled motion](#j08)
-- [J09: Read serial scale data and establish the baseline mass for each dispense](#j09)
-- [J10: Build the touchscreen workflow and hand targets to a separate controller process](#j10)
-- [J11: Replace continuous feeding near the target with stop, settle, and pulse phases](#j11)
-- [J12: Separate powder behavior into configurable motion and settling profiles](#j12)
-- [J13: Stop unwanted motion after program termination and add layered shutdown behavior](#j13)
-- [J14: Plan the electronics mounting and PCB while the control system is still changing](#j14)
-- [J15: Investigate loaded speed limits and upgrade the NEMA 17 drive](#j15)
-- [J16: Make phase thresholds depend on dose size: the July 21 to July 24 controller revision](#j16)
-- [J17: Replace the barcode plan with selectable profiles and run the doser from the Pi](#j17)
-- [J18: Measure 5 g performance with sugar, salt, cocoa, and cinnamon](#j18)
-- [J19: Test 5 g dispensing with baking soda, cornstarch, powdered sugar, and flour](#j19)
-- [J20: Evaluate the 0.055 g limit and separate accuracy from repeatability](#j20)
-- [J21: Build the solid eight-pocket carousel and evolve it into an open two-plate structure](#j21)
-- [J22: Develop the lift mechanism that clears the drive before indexing](#j22)
-- [J23: Replace the angle-sensitive drive coupling with serrated mating teeth](#j23)
-- [J24: Construct the extrusion frame and integrate the carousel, scale, lift, and screen](#j24)
-- [J25: Convert carousel positions to step counts and establish a known reference](#j25)
-- [J26: Choose the shortest carousel route and wait for completed indexing](#j26)
-- [J27: Sequence lift, indexing, engagement, and mass feedback for a multi-powder recipe](#j27)
-- [J28: Move STEP generation from the software loop to hardware timers](#j28)
-- [J29: Add driver-alarm handling and an interactive motor-speed test](#j29)
-- [J30: Drop the fixed-board plan, troubleshoot perfboard, and mount a half-size breadboard](#j30)
-- [J31: Design protective covers and consolidate wiring along the frame](#j31)
-- [J32: Write an operating and cleaning procedure consistent with the actual prototype](#j32)
-- [J33: Bring the prototype together and assess the documented results](#j33)
+- [J01: Eight hoppers, but start with one](#j01)
+- [J02: Getting the first powder path into CAD](#j02)
+- [J03: The auger print had to work first](#j03)
+- [J04: The thread looked better in CAD](#j04)
+- [J05: Sugar was falling out before I started](#j05)
+- [J06: Cornstarch changed the problem](#j06)
+- [J07: Adding arms without losing the screw](#j07)
+- [J08: Getting commanded motion out of the feeder](#j08)
+- [J09: The scale reading is behind the powder](#j09)
+- [J10: Making the screen talk to the controller](#j10)
+- [J11: Stopping the motor didn't stop the added mass](#j11)
+- [J12: Sugar settings made cornstarch crawl](#j12)
+- [J13: The program ended. The motor kept moving.](#j13)
+- [J14: A PCB sounded like the way out of the wiring](#j14)
+- [J15: Trying to get more out of the NEMA 17](#j15)
+- [J16: A 55 mg request shouldn't start like a large dose](#j16)
+- [J17: Dropping the scanner and getting off the laptop](#j17)
+- [J18: The 5 g results were encouraging, with a lid problem](#j18)
+- [J19: Close to 5 g, but it took a while](#j19)
+- [J20: The 55 mg tests didn't go nearly as well](#j20)
+- [J21: Back to the carousel, and a lot less solid material](#j21)
+- [J22: The drive has to get out of the way](#j22)
+- [J23: Lowering the motor wasn't enough to connect it](#j23)
+- [J24: Getting the separate mechanisms onto one frame](#j24)
+- [J25: The controller needs to know which hopper is there](#j25)
+- [J26: One slot backward instead of seven forward](#j26)
+- [J27: Getting the recipe to wait for the mechanisms](#j27)
+- [J28: The pulse generator was another speed limit](#j28)
+- [J29: Changing speed without uploading another sketch](#j29)
+- [J30: Back to a breadboard, but make it fit](#j30)
+- [J31: The wiring needed somewhere to live](#j31)
+- [J32: Writing down the steps I was already taking for granted](#j32)
+- [J33: Putting the build in perspective](#j33)
 
 ---
 
 <a id="j01"></a>
 
-# J01 Define the requirements and develop the shared eight-hopper architecture
+# J01 Eight hoppers, but start with one
 
-*Milestone 1 | Personal retrospective journal*
+*Milestone 1 | Retrospective build notes*
 
-## Design and iteration
+Eight hoppers sounded manageable until I started counting the motors. One for the auger and another for agitation on each hopper would mean sixteen motors. Then all the wiring, mounting, and weight that came with them. I didn't want to build that much hardware before knowing whether one feeder even worked properly.
 
-I began by breaking automated powder compounding into a sequence I could build and test: choose an ingredient, move it to a dispensing position, add a requested mass, and stop using feedback from a scale. I organized the work into five milestones so the single-powder mechanism could be tested before I committed to a complete carousel.
-
-My initial requirements were eight powder positions, a 100 g capacity per doser, a 50 by 50 by 50 cm operating envelope, and a final mass within 3% of the requested dose. These were design targets. I selected sugar, salt, cocoa, cinnamon, baking soda, cornstarch, powdered sugar, and flour because their different flow behavior would expose weaknesses that one easy material could hide.
-
-The central layout decision was to share the active drive hardware at one dispensing station. Putting an auger motor and a separate agitation motor on every hopper could require sixteen motors. A shared station reduced that duplication, but introduced a harder mechanical interface: the drive had to disengage before the disk rotated and reconnect afterward. I accepted that tradeoff and focused first on one complete powder path.
-
-## Technical detail
-
-I separated the ingredient-selection problem from the mass-measurement problem. The disk chooses which powder path sits over the receiving container; the auger controls movement through that path; the scale measures the consequence of that motion. This distinction matters because selecting the correct hopper does not guarantee the correct mass, and controlling motor steps does not establish how much a particular powder actually dispensed.
-
-The first architecture therefore had three interfaces to resolve: the hopper-to-feeder connection, the rotating disk-to-frame support, and the stationary motor-to-rotating auger engagement. Each powder retained its own contact path. Sharing a drive motor could reduce electrical duplication without requiring different ingredients to pass through the same auger. The contact surfaces would still need cleaning and inspection; independent paths alone do not demonstrate an absence of contamination.
-
-For the eight-position layout, I used equal angular spacing as the starting constraint. A full revolution divided by eight gives 45 degrees per station. The later archived disk makes this concept concrete: eight pockets surround the central axis. I had to account for the hopper diameter, radial position, room around the center attachment, and the space needed by the fixed drive station. Those dimensions are coupled: enlarging a hopper can force a larger disk or reduce the material between stations.
-
-I also distinguished capacity from dosing range. A 100 g hopper-capacity target describes how much material the hopper should hold; it does not by itself validate a 100 g dispensing run. Likewise, a 3% accuracy target needs a specified requested mass. At 5 g, 3% permits 0.150 g of error, while at 0.055 g it permits only 0.00165 g. I needed a test plan that included both useful larger doses and the difficult small-dose case rather than treating the percentage as one universal setting.
-
-The shared drive station became the main architectural tradeoff. It reduced the number of motors carried around the carousel, but required reliable vertical engagement and disengagement. I deferred the complete carousel build while testing one powder path. That left a practical next step: obtain a printable single doser and learn whether its interfaces and powder movement were good enough to reproduce eight times.
-
-## Process images
+So I settled on a carousel with a shared drive station. Rotate the selected powder into position over the scale, engage the drive, dispense, then move on. Simple enough to describe. The awkward bit was already there, though: the motor would have to disconnect and reconnect every time the disk moved. Saving motors was going to make that connection much more important.
 
 ![Early eight-position solid rotary disk concept from the M1 notes.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m1_2.jpg)
 
 Early eight-position solid rotary disk concept from the M1 notes.
+
+I wrote down the targets: eight positions, 100 g capacity per doser, a 50 x 50 x 50 cm envelope, and final mass within 3%. I also chose the eight test powders: sugar, salt, cocoa, cinnamon, baking soda, cornstarch, powdered sugar, and flour. I wanted differences in behavior, because a machine that only worked with sugar wouldn't tell me much about the other ingredients.
+
+For now, one powder path. A hopper, an auger, an outlet, and somewhere for the powder to land. I could come back to the full disk once there was something worth copying eight times.
+
+## Layout notes
+
+I kept coming back to three separate jobs. The disk selects the powder, the auger moves it, and the scale tells me what arrived. Getting the right hopper into position won't make its dose right. Counting screw steps won't tell me the mass unless the powder behaves consistently enough, which is the thing I still needed to test.
+
+That left three mechanical connections to work through: hopper to feeder, disk to frame, and fixed drive to the auger on the rotating disk. Each powder would keep its own contact path. Sharing the drive didn't mean sharing one screw between ingredients, and it didn't remove the cleaning work on those separate paths.
+
+Eight equally spaced stations means 45 degrees between them. The later disk model makes the layout easier to see, but even at the concept stage the dimensions pulled on each other. Larger hoppers need more room around the disk. They also leave less material between stations and less space near the fixed drive and center attachment.
+
+The 100 g target was hopper capacity. It wasn't evidence that a 100 g dispense worked. The percentage target also hides how different the small doses are: at 5 g, 3% gives 0.150 g of room; at 0.055 g it gives only 0.00165 g. I needed both ends in the testing plan rather than one comfortable example that made the percentage look easy.
+
+I kept the full carousel behind the single feeder in the build order. A shared station saved motors, but it also depended on vertical clearance and repeatable engagement. Those were already real design obligations. I wanted one powder path worth repeating before I committed to the larger structure.
+
+## More views
 
 ![Early rotary and fixed-drive concept in top view.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m1_10.jpg)
 
@@ -88,9 +88,9 @@ V5 solid carousel: Sketch 1, Top-plane circle with displayed diameter 33 cm, bef
 
 V5 solid carousel: Sketch 2 on the disk face shows eight pockets, displayed 12 cm radial location and 7 cm diameter.
 
-## Outcome and reflection
+## First build target
 
-I finished this stage with a defined architecture and a useful order of development: prove one doser, add mass feedback, then reproduce the feeding station around the carousel. The largest lesson was that reducing the motor count transferred complexity into alignment and engagement. Those interfaces became design problems to solve deliberately, rather than details to leave until final assembly.
+The layout was taking shape, but there was still a lot hidden in the word 'engage.' The drive couldn't just sit permanently on one shaft anymore. I put that problem aside long enough to get one doser built; making eight untested feeders would only multiply whatever was wrong with the first one.
 
 ## Sources
 
@@ -110,19 +110,27 @@ CAD construction captures are retrospective inspections of saved models, capture
 
 <a id="j02"></a>
 
-# J02 Construct the first hopper, adapter, and bottom-feeder CAD
+# J02 Getting the first powder path into CAD
 
-*Milestone 1 | Personal retrospective journal*
+*Milestone 1 | Retrospective build notes*
 
-## Design and iteration
+I started with the holder, tube adapter, and bottom feeder. Nothing especially dramatic yet, but these were the parts that had to agree with each other. The shaft centerline mattered across all three. Getting each part to look right separately wasn't going to help if they forced the auger off-axis when assembled.
 
-I modeled the first complete single doser as a set of related parts: a powder holder, a tube adapter, and a bottom feeder. The purpose was to create a physical route from the loaded hopper to a receiving container, with enough access to assemble the auger and remove powder-contact components.
+I also wanted to be able to take the feeder apart. Powder would touch the hopper, screw, outlet, and the joints between them, so cleaning couldn't be something I considered after everything was mounted. At this point, separate parts seemed like a sensible way to keep access and make revisions less painful.
 
-I treated cleaning access and shaft alignment as design requirements from the beginning. Separate parts made it possible to change an interface without redrawing the entire machine, but each added joint also created another place for residue or misalignment. The holder, adapter, and feeder therefore had to work as an assembly rather than as three attractive individual models.
+![V1 holder: Sketch 2 on Front plane, before holder extrusion; displayed concentric diameters approximately 1.476 in and 1.777 in.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/cad_v1_hopper_sketch.jpg)
 
-The archived V1 features preserve the construction order below. They show the profiles and feature settings behind the model, including dimensions that would be invisible in a finished assembly view. These are nominal CAD dimensions for this early revision; I have not substituted them for measurements of the later printed machine.
+V1 holder: Sketch 2 on Front plane, before holder extrusion; displayed concentric diameters approximately 1.476 in and 1.777 in.
 
-## Technical detail
+![V1 holder: Extrude 1, New solid, blind depth 4.724 in. Read-only feature construction preview.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/cad_v1_hopper_extrude.jpg)
+
+V1 holder: Extrude 1, New solid, blind depth 4.724 in. Read-only feature construction preview.
+
+The V1 model below is useful because I can follow the actual features instead of trying to explain the whole shape from an assembly screenshot. Sketch, extrusion, adapter, then the geometry around the lower shaft support. The dimensions are for this early model. The design kept changing after it.
+
+Having a complete path to assemble was the goal here. I needed something physical to push back against the CAD assumptions, especially around fit and shaft support.
+
+## The V1 features
 
 The V1 Part Studio contains three main groups: powder holder, tube adapter, and bottom feeder. The holder is built through Sketch 2 and Extrude 1, the adapter through Sketch 3 and Extrude 2, and the feeder through subsequent sketches, extrusions, and Revolve 1. Separating these features preserved the construction of each interface while keeping them in one assembly context.
 
@@ -134,17 +142,7 @@ The bottom feeder adds geometry around the shaft end. Revolve 1 selects faces of
 
 I treated the separate parts as one assembly problem. The adapter bore, shaft centerline, and feeder support have to remain concentric; a small offset can make a nominally suitable shaft bind. The construction views follow the holder sketch, extrusion, adapter definition, feeder revolution, and complete V1 model, retaining the relationships behind the finished shape.
 
-The physical prototype established an assembled hopper and an outlet above the receiving container. The saved record does not contain a complete tolerance stack or dimensional inspection of that print. I therefore use V1 to explain the nominal construction and assembly relationships, with later trials supplying evidence of feeding behavior.
-
-## Process images
-
-![V1 holder: Sketch 2 on Front plane, before holder extrusion; displayed concentric diameters approximately 1.476 in and 1.777 in.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/cad_v1_hopper_sketch.jpg)
-
-V1 holder: Sketch 2 on Front plane, before holder extrusion; displayed concentric diameters approximately 1.476 in and 1.777 in.
-
-![V1 holder: Extrude 1, New solid, blind depth 4.724 in. Read-only feature construction preview.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/cad_v1_hopper_extrude.jpg)
-
-V1 holder: Extrude 1, New solid, blind depth 4.724 in. Read-only feature construction preview.
+## The rest of the V1 construction
 
 ![V1 adapter: Extrude 2, New solid, depth 5.118 in, starting offset 0.197 in. Read-only feature construction preview.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/cad_v1_adapter_extrude.jpg)
 
@@ -166,9 +164,14 @@ Physical single-hopper prototype during powder handling.
 
 Single doser positioned above the balance. This photo provides setup context, not a trial result.
 
-## Outcome and reflection
+There was now a single doser I could put above the receiving container. That felt like a much more useful starting point than adding more of the carousel. Next was the screw itself, and finding out which parts of the nice concentric model survived printing and assembly.
 
-The assembled single doser gave me a practical platform for testing fit, powder movement, and the auger drive. Modeling the support and outlet together made the next problems easier to identify: an auger could look correct in isolation and still rub or feed poorly once constrained by its housing. I moved next to producing a usable screw and checking the real printed interfaces.
+<details>
+<summary>Notes added while reconstructing this entry</summary>
+
+The physical prototype established an assembled hopper and an outlet above the receiving container. The saved record doesn't contain a complete tolerance stack or dimensional inspection of that print. I use V1 to explain the nominal construction and assembly relationships, with later trials supplying evidence of feeding behavior.
+
+</details>
 
 ## Sources
 
@@ -185,33 +188,13 @@ CAD construction captures are retrospective inspections of saved models, capture
 
 <a id="j03"></a>
 
-# J03 Build the auger from a helix and flight profile, then obtain a usable print
+# J03 The auger print had to work first
 
-*Milestone 1 | Personal retrospective journal*
+*Milestone 1 | Retrospective build notes*
 
-## Design and iteration
+Before I could learn anything useful about powder flow, I had to get a usable auger off the printer. The early attempts had bed-adhesion problems. Applying glue helped keep the print attached, which finally let me move past that immediate obstacle.
 
-I chose an auger because its rotation could move powder through a constrained path and provide a motion variable for later feedback control. I could command steps or pulses, then use the scale to measure their effect. I did not assume that one revolution would deliver the same mass for every powder.
-
-The first manufacturing obstacle was bed adhesion. My early print attempts did not stay attached well enough to produce a usable part. Applying glue to the print surface helped the prototype remain attached and allowed me to continue. This mattered mechanically: a warped shaft or damaged flight changes the running clearance inside the feeder, even if the rest of the model is dimensionally correct.
-
-I initially concentrated on the screw before adding a working agitator. The V5 construction views illustrate the later constant-pitch auger and its feature sequence. They are retrospective views of that saved model, rather than photographs of the first failed print. Keeping the revisions distinct lets me explain the construction without assigning an undocumented print setting or failure to the wrong version.
-
-## Technical detail
-
-The archived V5 model exposes the screw construction through Helix 1, Sketch 1, and Sweep 1. In Helix 1, the selected input is a circular edge from Extrude 2. The helix uses pitch input, a 2-degree start angle, a height end condition of 3.81 cm, a target pitch of 0.635 cm, and clockwise handedness. In millimetres, the height is 38.1 and the pitch is 6.35. Dividing height by pitch gives six turns for this helix definition.
-
-The path alone is not a screw flight. Sketch 1 defines the section to be carried along it on the Top plane. In the construction view, the shaft and helix are present while the small flight section remains highlighted at the start of the path. Sweep 1 then selects the faces of Sketch 1, uses Curve 1 as its path, and adds the resulting material to the part named tube adapter. The archived feature has no additional profile-control mode, and Twist and Scale are unchecked.
-
-These settings define a constant-pitch screw. A later planning note proposed flights that funnel downward, which is a different geometric idea. The six-turn helix shown here documents the uniform construction; it does not establish that the tapered alternative was manufactured or tested.
-
-The manufacturing record identifies bed adhesion as the early printing problem and glue as the practical change that allowed a usable print. The failed print's exact revision and first-layer settings are not preserved. The later V5 views explain the screw construction, including the subsequently added arms, without claiming to depict that first failed part.
-
-A successful print still had to function inside the housing. Flight thickness, shaft straightness, surface roughness, and seam position all affect the space between the screw and its enclosure. Adhesion solved the immediate manufacturing obstacle, while the following powder trials tested the suitability of the feeding geometry.
-
-The result of this update was a usable prototype for powder trials. It was not a calibrated grams-per-revolution device yet. Sugar loading and cornstarch movement supplied the next information about whether the outlet resistance and flight geometry suited different materials.
-
-## Process images
+It's a frustrating kind of delay because it isn't the feeding problem I set out to solve. But a warped screw or damaged flight would change the clearance inside the housing, so carrying a bad print into the next test would only make the diagnosis messier.
 
 ![V5 screw path: Helix 1, circular edge input, 2 deg start angle, 3.81 cm height, 0.635 cm target pitch, clockwise.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/cad_v5_helix.jpg)
 
@@ -221,6 +204,22 @@ V5 screw path: Helix 1, circular edge input, 2 deg start angle, 3.81 cm height, 
 
 V5 flight section: Sketch 1 on Top plane before Sweep 1. The highlighted section supplies the profile for the helix sweep.
 
+I used an auger because I could control its motion and then measure what that motion delivered. I didn't expect a fixed grams-per-revolution number to work across all eight powders. The scale would eventually handle the mass; the screw first needed to give me a reasonably controllable way of adding it.
+
+The construction views here are from the later V5 model. They show the helix, flight profile, and sweep clearly, along with the arms added later. They aren't pictures of the failed first print. I don't have its exact settings or model revision in the saved record.
+
+## Helix and sweep settings
+
+The archived V5 model exposes the screw construction through Helix 1, Sketch 1, and Sweep 1. In Helix 1, the selected input is a circular edge from Extrude 2. The helix uses pitch input, a 2-degree start angle, a height end condition of 3.81 cm, a target pitch of 0.635 cm, and clockwise handedness. In millimetres, the height is 38.1 and the pitch is 6.35. Dividing height by pitch gives six turns for this helix definition.
+
+The path alone isn't a screw flight. Sketch 1 defines the section to be carried along it on the Top plane. In the construction view, the shaft and helix are present while the small flight section remains highlighted at the start of the path. Sweep 1 then selects the faces of Sketch 1, uses Curve 1 as its path, and adds the resulting material to the part named tube adapter. The archived feature has no additional profile-control mode, and Twist and Scale are unchecked.
+
+These settings define a constant-pitch screw. A later planning note proposed flights that funnel downward, which is a different geometric idea. The six-turn helix shown here documents the uniform construction; it doesn't establish that the tapered alternative was manufactured or tested.
+
+A successful print still had to function inside the housing. Flight thickness, shaft straightness, surface roughness, and seam position all affect the space between the screw and its enclosure. Adhesion solved the immediate manufacturing obstacle, while the following powder trials tested the suitability of the feeding geometry.
+
+## From profile to screw
+
 ![V5 flight: Sweep 1 adds the Sketch 1 faces along Curve 1 into tube adapter; no extra Twist or Scale is enabled.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/cad_v5_flight_sweep.jpg)
 
 V5 flight: Sweep 1 adds the Sketch 1 faces along Curve 1 into tube adapter; no extra Twist or Scale is enabled.
@@ -229,9 +228,16 @@ V5 flight: Sweep 1 adds the Sketch 1 faces along Curve 1 into tube adapter; no e
 
 V5 Part Studio 1, saved July 2 2026. Auger geometry with two agitator arms.
 
-## Outcome and reflection
+Getting a usable print only cleared the first hurdle. It still had to rotate inside the housing and move actual powder. Sugar and cornstarch were going to be much more informative than judging the flight by how clean it looked on the screen.
 
-Resolving adhesion produced a usable prototype for powder trials. The helix and sweep gave me a controllable screw geometry, but a printed screw was only the start of the feeding problem. The following tests with sugar and cornstarch determined whether the outlet resistance, flight geometry, and hopper circulation suited the materials.
+<details>
+<summary>Notes added while reconstructing this entry</summary>
+
+The manufacturing record identifies bed adhesion as the early printing problem and glue as the practical change that allowed a usable print. The failed print's exact revision and first-layer settings aren't preserved. The later V5 views explain the screw construction, including the subsequently added arms, without claiming to depict that first failed part.
+
+The result of this update was a usable prototype for powder trials. It wasn't a calibrated grams-per-revolution device yet. Sugar loading and cornstarch movement supplied the next information about whether the outlet resistance and flight geometry suited different materials.
+
+</details>
 
 ## Sources
 
@@ -249,35 +255,29 @@ CAD construction captures are retrospective inspections of saved models, capture
 
 <a id="j04"></a>
 
-# J04 Test the removable threaded hopper and replace it with a short locking interface
+# J04 The thread looked better in CAD
 
-*Milestone 1 | Personal retrospective journal*
+*Milestone 1 | Retrospective build notes*
 
-## Design and iteration
+The threaded hopper connection seemed like a good idea. Screw it in, keep it secure, unscrew it for cleaning. No separate latch to design. I liked how much that one interface was supposed to do.
 
-I first made the hopper removable using a threaded connection to its funnel. The thread offered both retention and a straightforward way to take the parts apart for cleaning, without adding separate catches or a complicated fastening system.
-
-The physical fit was worse than the CAD suggested. As I screwed the printed parts together, resistance increased and the material began to fray or deform instead of seating smoothly. A connection intended to simplify maintenance was becoming a source of damage. I did not have a controlled clearance study that isolated a single cause, so the reliable observation was the progressive binding itself.
-
-I reconsidered the connection and adapted the short locking movement used by a blender container. The replacement used slots and projecting tabs rather than several turns of printed thread. This changed the engagement path and concentrated attention on insertion clearance, full seating, and the surfaces that located the hopper.
-
-## Technical detail
-
-The connection was supposed to satisfy two requirements at once: constrain the hopper during operation and allow removal for cleaning. A thread looked attractive because it combined retention and alignment in one printed interface. The physical trial showed why nominal mating geometry was not enough. The parts printed, but resistance increased as they were screwed together, and the surfaces crumpled or frayed rather than seating cleanly.
-
-The observation was progressive binding and damage. Clearance, pitch mismatch, surface roughness, first-layer distortion, and alignment were plausible contributors, but no controlled measurement series isolated one of them. I changed the engagement approach rather than assigning the failure to an unmeasured tolerance error.
-
-The alternative changed the engagement path. Instead of sliding along several turns of printed thread, the hopper would insert into an interface with slots and projecting tabs, then lock through a short movement. The blender mechanism supplied the general reference. The important design variables became tab thickness, slot width, the insertion clearance, the locking stop, and the supporting surface that made the hopper sit flush.
-
-The locking interface still had to locate the hopper, not merely retain it. Insertion clearance could make the connection easier to assemble while allowing unwanted rotation or lift. Full seating also mattered because an off-center outlet would undermine the powder path even if the tabs could be pushed into their slots.
-
-This revision exposed another design question: even if a short locking connection was easier to use, did the added joint actually simplify cleaning? Both sides still introduced contact surfaces and recesses. That led me to revisit the separation of the hopper and funnel in the next iteration.
-
-## Process images
+Then I tried the printed parts. The farther they screwed together, the harder they became to turn. Instead of seating smoothly, the material started to fray and deform. That was a pretty direct answer to whether this version was usable.
 
 ![Printed blue threaded hopper components from the M1 notes.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m1_1.jpg)
 
 Printed blue threaded hopper components from the M1 notes.
+
+I couldn't pin it on one measured cause. Clearance, rough surfaces, thread geometry, alignment, print distortion: several things could have contributed. What I did know was that a cleaning interface shouldn't damage itself during assembly. Forcing it harder wasn't much of a design strategy.
+
+I looked at the short locking movement on a blender container and tried a slot-and-tab arrangement instead. Insert the hopper, make a short movement to lock it, and let a seating surface locate it. That reduced the long sliding contact of the thread. It still left the fit, retention, and outlet alignment to get right.
+
+## What the two interfaces ask of the print
+
+The alternative changed the engagement path. Instead of sliding along several turns of printed thread, the hopper would insert into an interface with slots and projecting tabs, then lock through a short movement. The blender mechanism supplied the general reference. The details to work out were tab thickness, slot width, the insertion clearance, the locking stop, and the supporting surface that made the hopper sit flush.
+
+The locking interface still had to locate the hopper, not merely retain it. Insertion clearance could make the connection easier to assemble while allowing unwanted rotation or lift. Full seating also mattered because an off-center outlet would undermine the powder path even if the tabs could be pushed into their slots.
+
+## More views
 
 ![Printed cylindrical hopper or receiver component from the M1 notes.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m1_6.jpg)
 
@@ -291,9 +291,18 @@ Annotated hopper section showing the screw-in funnel concept and internal drive.
 
 Hopper interface with locking features from the M1 notes; exact CAD revision not identified.
 
-## Outcome and reflection
+The tab-and-slot idea gave me another route, but I was also starting to question why this joint existed at all. If both sides still needed cleaning, was making them separate actually saving any work? That question ended up mattering more than making the original thread fit.
 
-The failed thread led to a tab-and-slot alternative with a shorter engagement path. It also made me question the underlying requirement: a removable joint only helps if it reduces the work needed to clean the complete powder path. That question led directly to the next simplification of the hopper and funnel.
+<details>
+<summary>Notes added while reconstructing this entry</summary>
+
+The connection was supposed to satisfy two requirements at once: constrain the hopper during operation and allow removal for cleaning. A thread looked attractive because it combined retention and alignment in one printed interface. The physical trial showed why nominal mating geometry wasn't enough. The parts printed, but resistance increased as they were screwed together, and the surfaces crumpled or frayed rather than seating cleanly.
+
+The observation was progressive binding and damage. Clearance, pitch mismatch, surface roughness, first-layer distortion, and alignment were plausible contributors, but no controlled measurement series isolated one of them. I changed the engagement approach rather than assigning the failure to an unmeasured tolerance error.
+
+This revision exposed another design question: even if a short locking connection was easier to use, did the added joint actually simplify cleaning? Both sides still introduced contact surfaces and recesses. That led me to revisit the separation of the hopper and funnel in the next iteration.
+
+</details>
 
 ## Sources
 
@@ -310,37 +319,29 @@ CAD construction captures are retrospective inspections of saved models, capture
 
 <a id="j05"></a>
 
-# J05 Simplify the powder path and reduce sugar leaking during loading
+# J05 Sugar was falling out before I started
 
-*Milestone 1 | Personal retrospective journal*
+*Milestone 1 | Retrospective build notes*
 
-## Design and iteration
+I revisited the removable hopper after spending time on the connection. It was meant to make cleaning easier, but the joint itself added more surfaces and recesses. Combining the funnel and enclosure removed an interface and cut down the part count. The early integrated disk concept took that simplification further, although the carousel structure changed again later.
 
-After working through the detachable interfaces, I reconsidered whether the hopper and funnel needed to be separate. Both components still had internal surfaces to clean, and the joint added recesses and assembly work. Combining the funnel and enclosure reduced the number of parts and removed one interface from the powder path.
-
-I also explored an integrated rotary-disk concept containing eight hopper cavities. That concept belonged to the early solid carousel; the supporting structure changed again later. At this stage, the useful idea was reducing unnecessary interfaces while continuing to test one feeder.
-
-Sugar exposed a separate mechanical problem. It moved readily, but some escaped from the outlet during loading before I intentionally rotated the auger. I narrowed the opening near the auger exit to resist this passive flow while retaining a route for material driven by the screw. My milestone record describes that change resolving the immediate loading problem. It did not establish a leakage rate across different fill levels or powders.
-
-## Technical detail
-
-The removable hopper was initially a means to make cleaning easier, not an end in itself. I revisited it after the thread and locking iterations. If both the hopper and funnel still needed their internal surfaces wiped, separation could add cleaning work at the joint instead of reducing it. Combining the funnel and enclosure reduced the number of parts and removed an interface from the powder path.
-
-The early integrated-cavity concept appears in the solid carousel. The later skeletal two-plate structure is a subsequent revision with a different support arrangement. Comparing them preserves the evolution of the machine: reducing interfaces was an early design direction, while the eventual carousel continued to change during integration.
-
-Sugar exposed another issue during loading. Material escaped from the downstream end before the auger was intentionally turning. That was uncontrolled discharge, so adjusting a software stop threshold would not address it. The mechanical path needed enough resistance to retain the powder while the machine was idle and being filled.
-
-I narrowed the opening at the auger end according to the milestone notes. The aim was to restrict the bypass path through which sugar could fall immediately, while retaining a route for material pushed by the screw. This connects outlet geometry to the intended control model: the scale loop is most useful when auger motion is the main cause of additional material entering the cup.
-
-My milestone notes report that narrowing the end addressed the immediate sugar-loading spill and that sugar did not require agitation in those trials. The record contains neither the before-and-after aperture dimensions nor a measured leakage series. I regard the result as a practical response to the observed loading problem, with performance across other materials left to their own tests.
-
-The outcome was a simpler contact path and improved control over sugar before motion began. Cornstarch then challenged the same geometry in the opposite way: instead of passing too easily, it clumped, jammed, and left material untouched. That gave the next update a concrete reason to change the flights and add agitation.
-
-## Process images
+Then sugar gave me a much more immediate problem: it came out during loading, before I intentionally turned the auger. The feeder was doing something, just not something I had commanded.
 
 ![Cross-section CAD illustrating the internal hopper, auger path, and base.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m1_8.jpg)
 
 Cross-section CAD illustrating the internal hopper, auger path, and base.
+
+I narrowed the opening near the auger exit so there was more resistance to that passive flow. The idea was to hold sugar back while idle but still let the screw drive it through. My notes describe this fixing the immediate loading spill. I don't have before-and-after aperture dimensions or a leakage-mass series, so I can't turn that observation into a zero-leakage specification.
+
+This was a useful reminder to sort out the mechanical behavior before asking software to compensate for it. A better stop threshold couldn't prevent powder falling out before a run had even begun.
+
+## The flow path
+
+The early integrated-cavity concept appears in the solid carousel. The later skeletal two-plate structure is a subsequent revision with a different support arrangement. Comparing them preserves the evolution of the machine: reducing interfaces was an early design direction, while the eventual carousel continued to change during integration.
+
+I narrowed the opening at the auger end according to the milestone notes. The aim was to restrict the bypass path through which sugar could fall immediately, while retaining a route for material pushed by the screw. This connects outlet geometry to the intended control model: the scale loop is most useful when auger motion is the main cause of additional material entering the cup.
+
+## More views
 
 ![Single doser positioned above the balance. This photo provides setup context, not a trial result.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m1_7.jpg)
 
@@ -362,9 +363,20 @@ V5 solid carousel: Extrude 2 removes the eight pocket regions to 3 cm blind dept
 
 V5 solid carousel saved model after closing the pocket feature preview. Selected feature edges remain highlighted; later suppressed features remain visible in the tree.
 
-## Outcome and reflection
+Sugar didn't need agitation in the trials described here, which made the feeder look fairly straightforward for a while. Cornstarch was a different story. Restricting flow is helpful when material escapes too easily; it becomes a problem when the next material barely wants to move.
 
-I left this iteration with a simpler contact path and better control of sugar during loading. The important distinction was between powder released by a command and powder falling out while the machine was idle. Feedback control could regulate the former, but the latter first required a mechanical correction. Cornstarch then exposed the opposite problem: material that would not move consistently enough.
+<details>
+<summary>Notes added while reconstructing this entry</summary>
+
+The removable hopper was initially a means to make cleaning easier, not an end in itself. I revisited it after the thread and locking iterations. If both the hopper and funnel still needed their internal surfaces wiped, separation could add cleaning work at the joint instead of reducing it. Combining the funnel and enclosure reduced the number of parts and removed an interface from the powder path.
+
+Sugar exposed another issue during loading. Material escaped from the downstream end before the auger was intentionally turning. That was uncontrolled discharge, so adjusting a software stop threshold would not address it. The mechanical path needed enough resistance to retain the powder while the machine was idle and being filled.
+
+My milestone notes report that narrowing the end addressed the immediate sugar-loading spill and that sugar didn't require agitation in those trials. The record contains neither the before-and-after aperture dimensions nor a measured leakage series. I regard the result as a practical response to the observed loading problem, with performance across other materials left to their own tests.
+
+The outcome was a simpler contact path and improved control over sugar before motion began. Cornstarch then challenged the same geometry in the opposite way: instead of passing too easily, it clumped, jammed, and left material untouched. That gave the next update a concrete reason to change the flights and add agitation.
+
+</details>
 
 ## Sources
 
@@ -381,37 +393,29 @@ CAD construction captures are retrospective inspections of saved models, capture
 
 <a id="j06"></a>
 
-# J06 Diagnose cornstarch jamming and the first agitator's incomplete coverage
+# J06 Cornstarch changed the problem
 
-*Milestone 1 | Personal retrospective journal*
+*Milestone 1 | Retrospective build notes*
 
-## Design and iteration
+Cornstarch didn't behave like sugar at all. It clumped, jammed, and left powder around the hopper that the screw wasn't touching. Watching the auger rotate wasn't enough to tell whether the material was actually feeding.
 
-Cornstarch behaved very differently from sugar. It clumped, jammed, and remained in parts of the hopper that the screw did not disturb. The motor could be turning while some of the powder stayed effectively outside the feeding process.
-
-I widened the auger configuration and used larger flights to address the tight, inconsistent transport through the feeder. My milestone notes report improved movement after that change. I also tried adding an agitator, but the initial attempt had two independent problems: the print failed, and the arm geometry did not cover the full hopper width.
-
-That combination changed how I approached the redesign. Fixing the print alone would leave the untouched wall region; increasing motor speed alone would not bring stagnant material into the screw. I separated transport through the feeder from circulation inside the hopper, then developed an agitator envelope that reached farther toward the walls while retaining rotational clearance.
-
-## Technical detail
-
-Cornstarch produced two related but different symptoms. It was hard to push through the auger consistently and sometimes jammed; it also remained in regions of the hopper the screw did not reach. A larger motor might help overcome resistance, but it would not automatically bring stationary powder from the wall into the active feed region. I needed to treat transport through the screw and circulation inside the hopper as separate design problems.
-
-I increased the auger's width and flight size for cornstarch. The intention was to reduce tight compression in the feeding space and give the material a larger surface to engage. The reported improvement was qualitative powder movement; the record does not contain a measured torque reduction or an optimum-profile study.
-
-The first agitator attempt failed in printing and did not account for the full width of the hopper. Even a successful print of an undersized arm would have left the stagnant wall region largely untouched. The redesign therefore needed an arm envelope that approached the hopper boundary while leaving enough clearance to rotate after printing and assembly.
-
-The relevant geometry was a coupled set: screw outside diameter, housing bore, flight pitch, arm reach, and hopper wall position. Changing one affected both feeding and clearance. The saved V5 and V10 models show later auger-and-arm states, but the exact dimensional progression of the first cornstarch prototype is not preserved.
-
-The untouched powder near the hopper wall was an important result in its own right. Material collected in the cup could conceal that inactive region. It explained why an agitator needed to influence powder outside the screw's immediate sweep instead of only improving movement at the outlet.
-
-The subsequent two-arm configuration connected circulation to screw rotation. That created a way to encounter powder farther from the center while the screw conveyed material through the feeder. The initial failed print and limited reach explain why adding those features was a functional redesign rather than an aesthetic change.
-
-## Process images
+I made the auger wider and used larger flights. The notes describe better movement after that change, with less of the tight compression I was getting in the earlier arrangement. I don't have a torque comparison for it, so 'better movement' is as far as that result goes.
 
 ![Physical auger and hopper component used to illustrate the cornstarch geometry discussion.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m1_9.jpg)
 
 Physical auger and hopper component used to illustrate the cornstarch geometry discussion.
+
+The untouched material near the sides was another issue. A bigger drive wouldn't magically bring it into the screw. I tried an agitator, but that attempt had both a failed print and an arm that didn't cover the full hopper width. Two separate problems, which was annoying: even a successful print of that shape wouldn't have reached the powder I needed it to reach.
+
+The next geometry needed more sweep near the walls, with enough clearance to rotate after printing. I had to think about what volume of powder the mechanism actually disturbed, rather than only how much material appeared at the outlet.
+
+## Two problems to separate
+
+The first agitator attempt failed in printing and didn't account for the full width of the hopper. Even a successful print of an undersized arm would have left the stagnant wall region largely untouched. The redesign therefore needed an arm envelope that approached the hopper boundary while leaving enough clearance to rotate after printing and assembly.
+
+The untouched powder near the hopper wall was an important result in its own right. Material collected in the cup could conceal that inactive region. It explained why an agitator needed to influence powder outside the screw's immediate sweep instead of only improving movement at the outlet.
+
+## More views
 
 ![V5 flight section: Sketch 1 on Top plane before Sweep 1. The highlighted section supplies the profile for the helix sweep.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/cad_v5_flight_sketch.jpg)
 
@@ -425,9 +429,20 @@ V5 flight: Sweep 1 adds the Sketch 1 faces along Curve 1 into tube adapter; no e
 
 V10 Part Studio 1, saved July 10 2026. Later view of the auger and agitator arms.
 
-## Outcome and reflection
+I couldn't treat this as one generic 'powder isn't flowing' fault anymore. There was the screw's transport problem and the hopper's stagnant-region problem. The next arm design needed to address the second one without creating another rubbing or printing problem.
 
-The cornstarch trials showed why one powder could not stand in for the whole test set. Larger flights addressed the feeding region, while greater agitator reach addressed material outside it. I carried those two problems into the next CAD revision instead of treating a stronger motor or one successful print as a complete solution.
+<details>
+<summary>Notes added while reconstructing this entry</summary>
+
+Cornstarch produced two related but different symptoms. It was hard to push through the auger consistently and sometimes jammed; it also remained in regions of the hopper the screw didn't reach. A larger motor might help overcome resistance, but it would not automatically bring stationary powder from the wall into the active feed region. I needed to treat transport through the screw and circulation inside the hopper as separate design problems.
+
+I increased the auger's width and flight size for cornstarch. The intention was to reduce tight compression in the feeding space and give the material a larger surface to engage. The reported improvement was qualitative powder movement; the record doesn't contain a measured torque reduction or an optimum-profile study.
+
+The dimensions all affected each other: screw outside diameter, housing bore, flight pitch, arm reach, and hopper wall position. Changing one affected both feeding and clearance. The saved V5 and V10 models show later auger-and-arm states, but the exact dimensional progression of the first cornstarch prototype isn't preserved.
+
+The subsequent two-arm configuration connected circulation to screw rotation. That created a way to encounter powder farther from the center while the screw conveyed material through the feeder. The initial failed print and limited reach explain why adding those features was a functional redesign rather than an aesthetic change.
+
+</details>
 
 ## Sources
 
@@ -444,33 +459,13 @@ CAD construction captures are retrospective inspections of saved models, capture
 
 <a id="j07"></a>
 
-# J07 Model the two-arm agitator and compare uniform and tapered-flight concepts
+# J07 Adding arms without losing the screw
 
-*Milestone 1 | Personal retrospective journal*
+*Milestone 1 | Retrospective build notes*
 
-## Design and iteration
+I worked on a two-arm agitator connected to the same rotating component as the auger. That way one drive connection could move the screw and disturb powder farther out in the hopper. The saved models show the open triangular arms extending beyond the screw's narrow sweep.
 
-I developed a two-arm agitator connected to the rotating auger-related component. The intention was for one rotating connection to drive both powder circulation in the hopper and transport through the screw. The saved V5 and V10 views show the resulting auger-and-arm geometry.
-
-I also considered a second screw configuration with flights that funnel downward. That was an alternative to the uniform-flight construction, rather than another name for the same saved model. The available design note establishes the proposal, but does not establish a successful comparative print-and-test series for both versions.
-
-For the modeled arms, the important relationship was their reach inside the hopper. Extending the rotating envelope could disturb powder left near the wall, while too much reach could cause contact after printing and assembly. Connecting the arms to the screw also increased the load on the same drive and printed roots. Those consequences linked this mechanical revision to the later loaded-speed investigation.
-
-## Technical detail
-
-I proposed attaching two agitator arms beneath the rotating component so the same connection could turn the screw and agitation features. The design note considered both an existing-style screw with added arms and an alternative with downward-funneling flights. Only the saved configurations and explicitly recorded trials are treated as completed work in this account.
-
-The V5 feature history shows the arm geometry in Sketch 10 on the Top plane. The construction view highlights the arm profiles around the existing shaft and screw. Extrude 8 then selects two faces of that sketch, uses Add, enables Symmetric extrusion, sets the displayed depth to 0.318 cm, and merges into the part named tube adapter. The archived depth is approximately 3.18 mm. Recreating this feature requires the arm sketch and merge target as well as the thickness.
-
-The open triangular arms extend the rotating envelope beyond the screw. Their purpose is to encounter powder outside the narrow feeding region and move it toward the feeder. The clearance requirement belongs to the complete hopper assembly: an isolated arm view cannot establish the minimum gap throughout rotation.
-
-The saved Helix 1 has a single target pitch over its height. I kept that uniform screw distinct from the funneling proposal because their profiles are not interchangeable. The recovered record does not establish a comparative result for the tapered alternative.
-
-Adding arms also introduced a mechanical load change. The drive now moved the screw and encountered powder through the agitator at the same time. That made loaded rotation, powder accumulation near the arm roots, and the printed attachment points relevant to later speed testing. The notes describe agitation helping with clumps, but do not record stresses or a measured power comparison.
-
-The mechanical platform now combined a single powder path with a driven screw and an agitation design for stagnant material. Closed-loop operation still required a separate set of electrical and software interfaces: motor wiring, valid scale readings, profile commands, and reliable stopping. Those became the focus of M2.
-
-## Process images
+The reach mattered more than the isolated shape. An arm could look large on its own and still miss the wall region once it was inside the hopper. Go too far the other way and it could scrape the housing. This was exactly the part the first attempt hadn't accounted for well enough.
 
 ![V5 agitator: Sketch 10 highlights the two arm profiles before Extrude 8, with the earlier screw geometry present.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/cad_v5_agitator_sketch.jpg)
 
@@ -480,6 +475,20 @@ V5 agitator: Sketch 10 highlights the two arm profiles before Extrude 8, with th
 
 V5 agitator: Extrude 8 adds two sketch faces symmetrically at 0.318 cm depth into tube adapter. The archived tree shows feature warnings, not a fully validated assembly.
 
+I also considered a second screw with flights that funnel downward. That's in the planning note, but I don't have a documented comparison showing both alternatives successfully printed and tested. The constant-pitch model and the tapered proposal need to stay separate.
+
+Adding the arms also asked more of the drive. It now had to push through powder at the agitator as well as at the screw. That was going to matter when I started trying to run the loaded feeder faster. For this stage, I was getting the mechanical arrangement into a form I could actually control.
+
+## Arm geometry
+
+The V5 feature history shows the arm geometry in Sketch 10 on the Top plane. The construction view highlights the arm profiles around the existing shaft and screw. Extrude 8 then selects two faces of that sketch, uses Add, enables Symmetric extrusion, sets the displayed depth to 0.318 cm, and merges into the part named tube adapter. The archived depth is approximately 3.18 mm. Recreating this feature requires the arm sketch and merge target as well as the thickness.
+
+The open triangular arms extend the rotating envelope beyond the screw. Their purpose is to encounter powder outside the narrow feeding region and move it toward the feeder. The clearance requirement belongs to the complete hopper assembly: an isolated arm view can't establish the minimum gap throughout rotation.
+
+Adding arms also introduced a mechanical load change. The drive now moved the screw and encountered powder through the agitator at the same time. That made loaded rotation, powder accumulation near the arm roots, and the printed attachment points relevant to later speed testing. The notes describe agitation helping with clumps, but don't record stresses or a measured power comparison.
+
+## Saved arm and screw views
+
 ![V5 Part Studio 1, saved July 2 2026. Auger geometry with two agitator arms.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/cad_v5_auger_agitator.jpg)
 
 V5 Part Studio 1, saved July 2 2026. Auger geometry with two agitator arms.
@@ -488,9 +497,18 @@ V5 Part Studio 1, saved July 2 2026. Auger geometry with two agitator arms.
 
 V10 Part Studio 1, saved July 10 2026. Later view of the auger and agitator arms.
 
-## Outcome and reflection
+The feeder was no longer just a screw sitting in a hopper. There was a reason for the arm reach and a route for moving powder toward the feeding region. Next came the wiring and scale feedback. Plenty left to do before any of this could stop at a requested mass.
 
-This stage produced a documented two-arm agitation configuration and a separate tapered-flight proposal. The single-doser mechanism now had a powder path, a screw construction, and a way to disturb stagnant material. The next milestone was to make that mechanism respond to measured mass through wiring, scale communication, and explicit stop behavior.
+<details>
+<summary>Notes added while reconstructing this entry</summary>
+
+I proposed attaching two agitator arms beneath the rotating component so the same connection could turn the screw and agitation features. The design note considered both an existing-style screw with added arms and an alternative with downward-funneling flights. Only the saved configurations and explicitly recorded trials are treated as completed work in this account.
+
+The saved Helix 1 has a single target pitch over its height. I kept that uniform screw distinct from the funneling proposal because their profiles aren't interchangeable. The recovered record doesn't establish a comparative result for the tapered alternative.
+
+The mechanical platform now combined a single powder path with a driven screw and an agitation design for stagnant material. Closed-loop operation still required a separate set of electrical and software interfaces: motor wiring, valid scale readings, profile commands, and reliable stopping. Those became the focus of M2.
+
+</details>
 
 ## Sources
 
@@ -508,33 +526,37 @@ CAD construction captures are retrospective inspections of saved models, capture
 
 <a id="j08"></a>
 
-# J08 Wire the first NEMA 17 and TMC2209 drive and establish controlled motion
+# J08 Getting commanded motion out of the feeder
 
-*Milestone 2 | Personal retrospective journal*
+*Milestone 2 | Retrospective build notes*
 
-## Design and iteration
+I put together the first drive setup with the NEMA 17, TMC2209, and a breadboard, using the Pi 4 as the initial control connection. This was where the printed mechanism started becoming something I could command instead of only inspect or move by hand.
 
-I assembled the initial electrical drive using a NEMA 17, a TMC2209 driver, and a breadboard. The Raspberry Pi 4 provided the first control connection, with a touchscreen for the user interface. This moved the project from mechanical powder trials toward commanded feeding.
+I needed to keep the task small enough to debug. Direction, STEP pulses, and enable first. A spinning auger would be progress, but it wouldn't tell me how many grams had reached the cup. That was a separate job for the scale.
 
-I kept the basic motion task separate from target-mass accuracy. STEP pulses, direction, and driver enable determine what the motor is asked to do; none of them measure how much powder reaches the cup. Before a closed-loop controller could be useful, the feeder needed an electrical interface that could start, change behavior, and stop.
+![Breadboard motor-control wiring in the early prototype.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m2_2.jpg)
 
-The saved code includes multiple wiring stages. A small AccelStepper test uses STEP on pin 3 and DIR on pin 2, while the July controller assigns those signals differently. I have kept those configurations separate below. The exact original Pi GPIO map and driver current setting are not recorded in the material used for this account.
+Breadboard motor-control wiring in the early prototype.
 
-## Technical detail
+The saved test files make one source of confusion obvious: the pin assignments changed. The small AccelStepper test uses STEP 3 and DIR 2, while the July controller uses STEP 2 and DIR 3. Both are real versions. Mixing them would give me a wiring problem that had nothing to do with powder.
 
-M2 began with one active hopper, so the electrical prototype used one NEMA 17 and a TMC2209 on a breadboard. The Raspberry Pi 4 provided the initial control connection, and the touchscreen added the user interface. At this point I needed to prove direction, enable control, and repeatable commanded motion separately from target-mass accuracy.
+The exact original Pi GPIO map and TMC2209 current setting aren't in the record I'm reconstructing from. I've kept the concrete later pin maps below rather than filling that gap with whichever version happens to be easiest to find.
+
+## Pin maps to keep straight
 
 STEP, DIR, and EN control different aspects of the drive. STEP requests incremental motion, DIR selects its direction, and EN activates or disables the driver according to its polarity. The motor winding connections and shared signal reference are separate from those logic functions. A breadboard layout records packaging, while the corresponding pin assignments identify a particular controller revision.
 
-The later July Arduino source makes the eventual command interface concrete: auger STEP is pin 2, DIR is pin 3, and ENABLE is pin 4. In that file, LOW enables the driver and HIGH disables it, while HIGH is the dispensing direction. This is an archived Arduino configuration, not the original Pi GPIO map. The timer-based firmware later uses different pins and the opposite enable level, so those diagrams must be kept version-specific.
+The later July Arduino source makes the eventual command interface concrete: auger STEP is pin 2, DIR is pin 3, and ENABLE is pin 4. In that file, LOW enables the driver and HIGH disables it, while HIGH is the dispensing direction. That's the archived Arduino configuration. It isn't the original Pi GPIO map. The timer-based firmware later uses different pins and the opposite enable level, so those diagrams must be kept version-specific.
 
-The standalone repository test uses AccelStepper::DRIVER with stepPin 3 and directionPin 2, sets a 1000-step/s maximum, and calls runSpeed() at 600 steps/s. That is a motor-only test with a different pin order from the July controller. It does not contain the mass-feedback loop or establish the final integrated wiring.
+The standalone repository test uses AccelStepper::DRIVER with stepPin 3 and directionPin 2, sets a 1000-step/s maximum, and calls runSpeed() at 600 steps/s. That is a motor-only test with a different pin order from the July controller. It doesn't contain the mass-feedback loop or establish the final integrated wiring.
 
-The source record establishes the breadboard components and the motion-test configurations. It does not preserve a complete electrical test sequence, supply measurements, or the TMC2209 current setting for the initial setup. I have retained that boundary while documenting the actual code values, rather than describing unrecorded checks as successful trials.
+## More views
 
-The outcome was the motor system used for the first scale-controlled doser. The next step was to read meaningful mass data, because a rotating motor alone cannot tell the machine how much powder reached the cup.
+![Raspberry Pi and display connection with breadboard wiring.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m2_3.jpg)
 
-## Archived implementation
+Raspberry Pi and display connection with breadboard wiring.
+
+## Code for this revision
 
 Exact archived source excerpts. The file labels identify their revisions.
 
@@ -587,19 +609,18 @@ const uint8_t DISK_REVERSE_DIR_LEVEL = LOW;
 // ============================================================
 ```
 
-## Process images
+There was now an electrical route to drive the feeder. The next missing piece was a quantity the program could trust. Without scale input, I was still controlling motion and hoping the powder did something useful in response.
 
-![Breadboard motor-control wiring in the early prototype.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m2_2.jpg)
+<details>
+<summary>Notes added while reconstructing this entry</summary>
 
-Breadboard motor-control wiring in the early prototype.
+M2 began with one active hopper, so the electrical prototype used one NEMA 17 and a TMC2209 on a breadboard. The Raspberry Pi 4 provided the initial control connection, and the touchscreen added the user interface. At this point I needed to prove direction, enable control, and repeatable commanded motion separately from target-mass accuracy.
 
-![Raspberry Pi and display connection with breadboard wiring.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m2_3.jpg)
+The saved record establishes the breadboard components and the motion-test configurations. It doesn't preserve a complete electrical test sequence, supply measurements, or the TMC2209 current setting for the initial setup. I've retained that boundary while documenting the actual code values, rather than describing unrecorded checks as successful trials.
 
-Raspberry Pi and display connection with breadboard wiring.
+This was the motor setup for the first scale-controlled doser. The next step was to read meaningful mass data, because a rotating motor alone can't tell the machine how much powder reached the cup.
 
-## Outcome and reflection
-
-The first motor setup gave the single doser an electrically commanded drive. It also established the need to track wiring together with firmware: a pin assignment from a standalone test cannot be carried into a different controller by assumption. I then added scale feedback so the machine could act on the mass actually collected.
+</details>
 
 ## Sources
 
@@ -618,33 +639,37 @@ CAD construction captures are retrospective inspections of saved models, capture
 
 <a id="j09"></a>
 
-# J09 Read serial scale data and establish the baseline mass for each dispense
+# J09 The scale reading is behind the powder
 
-*Milestone 2 | Personal retrospective journal*
+*Milestone 2 | Retrospective build notes*
 
-## Design and iteration
+I connected the balance to the Pi through its RS232 output and a USB-to-serial adapter. Now the program could use what reached the cup instead of estimating mass from how long the motor ran. That was the feedback I needed, but it came with some awkward timing.
 
-I connected the balance's RS232 output to the Pi through a USB-to-serial adapter. The BOM lists a PL2303-based CableCreation adapter and a Bonvoisin balance advertised with a 0.001 g display resolution. The useful change was access to mass readings during motion, rather than relying on elapsed motor time as a substitute for quantity.
+Powder could already be in the cup before the new mass appeared in the serial reading. Smoothing the readings could make them look calmer while adding more delay. So a clean number on screen wasn't automatically a current number.
 
-The controller needed a clear definition of newly dispensed mass. I used a starting baseline and calculated the increase from that value, allowing the receiving cup to remain on the scale. This also provided the right conceptual model for later recipes, where earlier ingredients would already be in the container.
+![Single-doser test arrangement with scale, screen, and controller wiring.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m2_4.jpg)
 
-Reading a number was not enough. The balance could update after powder had landed, averaging could add delay, and disconnected serial hardware could leave an old value in memory. I separated the reader from the control loop, kept a timestamp for accepted readings, and included a stale-data stop condition. The archived implementation makes those choices explicit.
+Single-doser test arrangement with scale, screen, and controller wiring.
 
-## Technical detail
+I used a starting baseline and calculated the increase from it. That handled the cup mass and gave me a sensible way to deal with later ingredients already sitting on the scale. I also kept the scale reader separate from the control loop, with a timestamp for the last valid update.
 
-The controller defaults to /dev/ttyUSB0 at 9600 baud for the scale and /dev/ttyACM0 at 115200 baud for Arduino commands. These are separate serial devices with different roles. The mass data comes from the balance protocol through the RS232 adapter; it is not a measurement mode created by the color of a USB socket.
+The other obvious bad case was a disconnected scale leaving an old low reading in memory. The auger couldn't be allowed to keep feeding against that forever. The July code has a stale-data timeout for that reason. I don't have a timed disconnect test for this version, but the stop path itself is in the source.
 
-In the July controller, parse_weight() finds the first signed decimal number in a received line and converts it to a float. Invalid lines produce no accepted reading. This simple parser assumes that the first numeric field is mass and the unit is grams. The raw balance message is not preserved in the record, so stability and unit interpretation cannot be inferred beyond the parser's assumptions.
+## Reading and using the mass
+
+The controller defaults to /dev/ttyUSB0 at 9600 baud for the scale and /dev/ttyACM0 at 115200 baud for Arduino commands. These are separate serial devices with different roles. The mass data comes from the balance protocol through the RS232 adapter; it isn't a measurement mode created by the color of a USB socket.
+
+In the July controller, parse_weight() finds the first signed decimal number in a received line and converts it to a float. Invalid lines produce no accepted reading. This simple parser assumes that the first numeric field is mass and the unit is grams. The raw balance message isn't preserved in the record, so stability and unit interpretation can't be inferred beyond the parser's assumptions.
 
 The scale reader runs in a background thread. It appends accepted values to a deque with a maximum length of eight, computes their mean, and records the time of the last valid update while holding a lock. The control loop reads that shared state rather than waiting on a serial line each time. That keeps serial I/O separate from control decisions, but averaging eight samples also means the displayed/control mass can lag behind a changing physical load.
 
-Startup waits for at least five accepted readings, with a six-second timeout. The initial baseline routine samples the current averaged mass into another ten-value window and looks for a spread no larger than 0.003 g over a four-second interval. If it does not find that condition, it returns the latest value. This routine is an attempt at a stable starting mass, not a metrological proof of balance accuracy or ten independent balance transmissions.
+Startup waits for at least five accepted readings, with a six-second timeout. The initial baseline routine samples the current averaged mass into another ten-value window and looks for a spread no larger than 0.003 g over a four-second interval. If it doesn't find that condition, it returns the latest value. This routine is an attempt at a stable starting mass, not a metrological proof of balance accuracy or ten independent balance transmissions.
 
 The dispense amount is calculated as current mass minus the starting mass; remaining mass is requested target minus that difference. This allows a cup already on the scale to become the reference rather than assuming the raw balance reading starts at zero. The same distinction becomes important in a multi-ingredient recipe, where the next ingredient starts above the mass of earlier ingredients.
 
-The July control loop stops if 2.50 seconds pass without a valid scale update. This gives feedback validity a physical consequence: an old low mass cannot remain a reason to feed indefinitely. The saved code establishes the timeout path, while no unplugged-scale timing measurement is available for that revision.
+The July control loop stops if 2.50 seconds pass without a valid scale update. This gives feedback validity a physical consequence: an old low mass can't remain a reason to feed indefinitely. The saved code establishes the timeout path, while no unplugged-scale timing measurement is available for that revision.
 
-## Archived implementation
+## Code for this revision
 
 Exact archived source excerpts. The file labels identify their revisions.
 
@@ -711,15 +736,7 @@ def get_stable_weight(timeout: float = 4.0, spread: float = 0.003) -> float:
     return get_weight()
 ```
 
-## Process images
-
-![Single-doser test arrangement with scale, screen, and controller wiring.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m2_4.jpg)
-
-Single-doser test arrangement with scale, screen, and controller wiring.
-
-## Outcome and reflection
-
-The scale connection supplied feedback tied to the result of feeding rather than only the command sent to the motor. The main lesson was that feedback has timing and validity requirements: a smooth mass display can still be delayed, and an old reading must not keep the auger running. Those constraints shaped the phased controller that followed.
+Getting serial data was a big step, but it didn't remove uncertainty. The controller still had to deal with delay, averaging, and invalid input. That is why the next change couldn't just be 'stop when the display equals the target.' Too much could happen between those readings.
 
 ## Sources
 
@@ -737,21 +754,23 @@ CAD construction captures are retrospective inspections of saved models, capture
 
 <a id="j10"></a>
 
-# J10 Build the touchscreen workflow and hand targets to a separate controller process
+# J10 Making the screen talk to the controller
 
-*Milestone 2 | Personal retrospective journal*
+*Milestone 2 | Retrospective build notes*
 
-## Design and iteration
+I wanted the doser to be operable without changing a number in the Python file for every run. The Pi's seven-inch touchscreen became the place to choose the powder and enter the requested mass. Even with one working hopper, I was already thinking in slots because the carousel would need that later.
 
-I added a touchscreen workflow so a user could choose a powder and enter a requested mass without editing the control program. The hardware used a seven-inch DSI touchscreen connected to the Raspberry Pi 4. Although I was still developing a single active doser, the slot-based layout anticipated the later eight-position machine.
+I split the app from the motor-and-scale controller. The screen handled the request; the other program dealt with the balance and feeding phases. That sounded tidy, but it also meant the two programs needed to agree on what they sent each other.
 
-I separated the visible application from the motor-and-scale program. The app collected the request; the controller handled serial scale readings and phase decisions. That boundary kept recipe interaction distinct from the faster feedback work and gave me a clear place to pass the target and powder profile.
+![Single-doser test arrangement with scale, screen, and controller wiring.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m2_4.jpg)
 
-The operating procedure captures the early interaction: edit slot 1, select and load the powder, tare the scale, enter the mass, save, and start. The later app preserves a fuller implementation of the same division, including queued subprocess output and recipe data. I describe those later mechanisms as later code, rather than assigning the complete recipe interface to the first touchscreen version.
+Single-doser test arrangement with scale, screen, and controller wiring.
 
-## Technical detail
+The later implementation launches the controller as a subprocess and reads its output in the background. I didn't want waiting on serial data to freeze the interface. The progress labels also mattered more than they looked like they should: the app searches for 'Dispensed:' and 'Remaining:', so changing that text in only one file would break the display connection.
 
-The interface gathers the powder and requested grams, displays progress, and exposes stop controls. The separate controller owns scale feedback and auger phase decisions. This division let the application describe the user's request while the controller translated measured mass into motion.
+The early SOP is the simpler workflow: select slot 1, choose and load powder, tare, enter mass, save, start. The full recipe checks in the later app came afterward. I'm keeping those stages distinct instead of making the first touchscreen version sound like it already did everything.
+
+## The handoff between programs
 
 The later app archive gives a detailed implementation of that design: CustomTkinter creates a fullscreen 800 by 480 interface, maintains slot and recipe data separately, and includes an on-screen keyboard. The powder list contains EMPTY plus the eight tested household powders. A recipe item contains the slot, powder name, and requested amount. This is later implementation evidence, not a claim that all recipe features were present in the first M2 interface.
 
@@ -759,11 +778,7 @@ The launch function chooses motor_scale_control.py, builds its path relative to 
 
 The output labels 'Dispensed:' and 'Remaining:' form a contract between the programs. The app extracts their following numbers with regular expressions, and the controller retains those labels in its output. Changing one side alone could leave the display stale while feeding continued, making the text protocol part of the implemented interface.
 
-The later app adds startup checks for empty recipe slots, unknown disk position, and active motion. Those safeguards belong to the later integrated source. The initial single-doser workflow and the complete recipe app share the process boundary, but they are not presented as one unchanged version.
-
-The source excerpts preserve the launch arguments and progress-parsing mechanism even where original development screenshots are unavailable. They explain how a target entered in the interface becomes a controller process and how its reported progress returns to the screen.
-
-## Archived implementation
+## Code for this revision
 
 Exact archived source excerpts. The file labels identify their revisions.
 
@@ -850,15 +865,18 @@ def launch_motor(amount_to_dispense, powder_type=None):
     check_motor_process()
 ```
 
-## Process images
+The useful result was a request going from the screen to a separate controller and progress coming back. Still two programs to keep in agreement, though. Once positioning was added, that handoff would carry state and device choices as well as the powder and target.
 
-![Single-doser test arrangement with scale, screen, and controller wiring.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m2_4.jpg)
+<details>
+<summary>Notes added while reconstructing this entry</summary>
 
-Single-doser test arrangement with scale, screen, and controller wiring.
+The interface gathers the powder and requested grams, displays progress, and exposes stop controls. The separate controller owns scale feedback and auger phase decisions. This division let the application describe the user's request while the controller translated measured mass into motion.
 
-## Outcome and reflection
+The later app adds startup checks for empty recipe slots, unknown disk position, and active motion. Those safeguards belong to the later integrated source. The initial single-doser workflow and the complete recipe app share the process boundary, but they aren't presented as one unchanged version.
 
-The interface made the doser easier to operate while the separate controller retained responsibility for feeding. The most important software dependency was the information crossing that boundary: powder, grams, progress messages, and exit state all had to mean the same thing in both programs. That contract became increasingly important as positioning and multi-item recipes were added.
+The source excerpts preserve the launch arguments and progress-parsing mechanism even where original development screenshots are unavailable. They explain how a target entered in the interface becomes a controller process and how its reported progress returns to the screen.
+
+</details>
 
 ## Sources
 
@@ -877,33 +895,35 @@ CAD construction captures are retrospective inspections of saved models, capture
 
 <a id="j11"></a>
 
-# J11 Replace continuous feeding near the target with stop, settle, and pulse phases
+# J11 Stopping the motor didn't stop the added mass
 
-*Milestone 2 | Personal retrospective journal*
+*Milestone 2 | Retrospective build notes*
 
-## Design and iteration
+Sugar was exposing the gap between a motor command and a scale result. I could be close to the target on screen while more powder was already on its way. Stop at the displayed target, and the last bit could land afterward.
 
-Sugar made the stopping problem clear. A displayed reading near the target did not mean all the powder already released had reached the cup or appeared in the scale's output. Continuing at the bulk-feed rate until the display reached the requested mass could overshoot.
+I changed to faster feeding with a larger amount left, then shorter additions near the end. The important part was the pause after continuous motion. Stop, let the last addition show up, then decide what to do next. Sending a small pulse immediately from the same old reading would miss the point.
 
-I changed the control strategy to use fast movement while much of the target remained, followed by slower, finite additions near completion. After stopping continuous motion, the controller waited before deciding whether another pulse was needed. The notes describe developing this behavior with sugar and applying similar reasoning to salt.
+![Single-doser test arrangement with scale, screen, and controller wiring.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m2_4.jpg)
 
-The tradeoff was dispensing time. Small motions and long pauses created more opportunities to observe the last addition, but too much finishing time made the machine slow. I therefore treated thresholds, pulse lengths, and settling delays as separate tuning variables. The July 21 source below records one specific configuration, rather than a universal setting for every dose.
+Single-doser test arrangement with scale, screen, and controller wiring.
 
-## Technical detail
+This helped define the phases, but it also made run time a tuning problem. Tiny pulses and generous waits could make finishing painfully slow. Shorter waits could put me back in the overshoot problem. Sugar and salt were useful here because they moved readily enough for that delay to matter.
 
-The central control problem was that motor stop and mass stop were not simultaneous. Powder could already be in the outlet or falling toward the cup, and the scale could report that mass after a delay. If I continued feeding until the displayed mass reached the target, the last commanded material could arrive too late to be accounted for. The notes identify this clearly for sugar and salt.
+The values below are the July 21 settings. Later versions changed them. I want to keep that distinction clear because a list of thresholds is only useful if I know which program it belongs to.
 
-The July 21 controller selects among continuous TURBO, continuous NORMAL, and APPROACH/FINE/FINAL pulses. For a free-flowing profile, continuous motion ends at 1.250 g remaining; APPROACH changes to FINE at 0.120 g remaining; FINE changes to FINAL at 0.030 g remaining. The corresponding non-free-flowing cutoffs are 0.500, 0.120, and 0.050 g. These are grams remaining, not percentages of the target and not elapsed times.
+## The July 21 phase settings
 
-The transition out of continuous mode is deliberately a separate action. The controller sends an auger stop, clears its active-command state, waits for the profile's continuous-settling interval, and restarts the loop using a later mass reading. It does not immediately issue the first pulse using the same pre-stop value. That separation is the key implementation detail behind 'slow down near the target.'
+The July 21 controller selects among continuous TURBO, continuous NORMAL, and APPROACH/FINE/FINAL pulses. For a free-flowing profile, continuous motion ends at 1.250 g remaining; APPROACH changes to FINE at 0.120 g remaining; FINE changes to FINAL at 0.030 g remaining. The matching non-free-flowing cutoffs are 0.500, 0.120, and 0.050 g. These are grams remaining, not percentages of the target and not elapsed times.
+
+The transition out of continuous mode is deliberately a separate action. The controller sends an auger stop, clears its active-command state, waits for the profile's continuous-settling interval, and restarts the loop using a later mass reading. It doesn't immediately issue the first pulse using the same pre-stop value. That separation is the key implementation detail behind 'slow down near the target.'
 
 For free-flowing material, the July 21 settling values are 0.650 s after continuous motion, 0.220 s after APPROACH, 0.450 s after FINE, and 0.750 s after FINAL. For the other family, they are 0.300, 0.100, 0.160, and 0.220 s. The Arduino owns how many steps are in each pulse; Python owns the decision about when to issue one and how long to wait before re-evaluating mass.
 
-Targets below 0.500 g bypass continuous motion in that archive. For a 0.055 g sugar target at the start, the remaining amount is below 0.120 but above 0.030, so the old logic chooses a FINE pulse. The later July 24 revision changes that behavior. This example makes the evolution visible: a small target cannot safely inherit the bulk-feed behavior of a large dose just because the powder name is the same.
+Targets below 0.500 g bypass continuous motion in that archive. For a 0.055 g sugar target at the start, the remaining amount is below 0.120 but above 0.030, so the old logic chooses a FINE pulse. The later July 24 revision changes that behavior. This example makes the evolution visible: a small target can't safely inherit the bulk-feed behavior of a large dose just because the powder name is the same.
 
 The 3% project criterion differs from the code's absolute 0.001 g stop tolerance. In the July loop, remaining <= tolerance is tested before the separate overshoot branch, so an overshoot can satisfy the first condition. That implementation detail limits what the 'target reached' path means. I assessed dose error from the recorded final mass rather than treating a successful process exit as proof of accuracy.
 
-## Archived implementation
+## Code for this revision
 
 Exact archived source excerpts. The file labels identify their revisions.
 
@@ -973,15 +993,14 @@ if __name__ == "__main__":
     signal.signal(signal.SIGINT, handle_stop_signal)
 ```
 
-## Process images
+There was another catch in the July loop: the order of the stopping checks could let an overshoot take the 'target reached' path. So even the completion message wasn't enough. The final scale reading still had to be the result I judged.
 
-![Single-doser test arrangement with scale, screen, and controller wiring.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m2_4.jpg)
+<details>
+<summary>Notes added while reconstructing this entry</summary>
 
-Single-doser test arrangement with scale, screen, and controller wiring.
+The central control problem was that motor stop and mass stop weren't simultaneous. Powder could already be in the outlet or falling toward the cup, and the scale could report that mass after a delay. If I continued feeding until the displayed mass reached the target, the last commanded material could arrive too late to be accounted for. The notes identify this clearly for sugar and salt.
 
-## Outcome and reflection
-
-The controller gained an explicit stop-settle-reassess step between bulk feeding and final pulses. That was more useful than simply reducing speed: it prevented the first finishing command from being based on the same delayed reading that ended continuous motion. Final scale mass remained the measure of success, because a software completion message alone could also occur after an overshoot.
+</details>
 
 ## Sources
 
@@ -999,23 +1018,25 @@ CAD construction captures are retrospective inspections of saved models, capture
 
 <a id="j12"></a>
 
-# J12 Separate powder behavior into configurable motion and settling profiles
+# J12 Sugar settings made cornstarch crawl
 
-*Milestone 2 | Personal retrospective journal*
+*Milestone 2 | Retrospective build notes*
 
-## Design and iteration
+The cautious finishing settings made sense for sugar. Put cornstarch through the same sort of small movements and the end of a run could get extremely slow. Sometimes a command that added useful sugar barely delivered anything from the clumpier material.
 
-The settings that limited sugar overshoot made cornstarch extremely slow near completion. A small command could release useful material from sugar or salt but almost nothing from a clumpier powder. I stopped treating the powder name as a label used only by the interface and made it select motion behavior.
+I split the behavior into two control families instead of continuing to look for one setting that suited everything. Powder selection now chose speed, pulse size, and waiting time. It was a much more manageable direction than maintaining eight separate control programs.
 
-I grouped the tested materials into two control families and gave each family its own speed, pulse size, and settling settings. This reduced the number of separate programs to maintain while preserving a way to make the more resistant materials move.
+![Physical auger and hopper component used to illustrate the cornstarch geometry discussion.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m1_9.jpg)
 
-The family names describe controller configuration, not a universal classification of powder physics. For example, the notes describe cocoa and cinnamon as feeding relatively readily in this mechanism, while the archived program assigns both to NON_FREE_FLOWING. The actual mapping matters more than an intuitive reading of the label. Moisture, compaction, and geometry could also change how a material behaved.
+Physical auger and hopper component used to illustrate the cornstarch geometry discussion.
 
-## Technical detail
+I had to keep the labels from misleading me, though. Cocoa and cinnamon fed relatively readily in the mechanism according to the notes, but the archived program places them in NON_FREE_FLOWING. That name means 'use these parameters' in this code. It isn't a complete description of the powder.
 
-A small finishing motion that limited sugar overshoot could deliver very little cornstarch. I made powder selection affect two layers: the mapping from a name to a control family and the motion and settling parameters assigned to that family. This preserved one control structure while allowing different behavior.
+Also, pulse speed and pulse size aren't the same adjustment. More steps changes the angular movement; a higher rate gets through those steps faster. Then the settling delay controls when I look at the scale again. Those three knobs were easy to blur together when all I wanted was a run that finished faster.
 
-The July Python archive maps granulated sugar and table salt to FREE_FLOWING. Powdered sugar, baking soda, cornstarch, ground cinnamon, flour, and cocoa are mapped to NON_FREE_FLOWING. The descriptive behavior notes call cocoa and cinnamon fine and relatively free-flowing, so the software family name is not a universal physical classification. It identifies a chosen control profile for this implementation.
+## Profiles and pulse settings
+
+The July Python archive maps granulated sugar and table salt to FREE_FLOWING. Powdered sugar, baking soda, cornstarch, ground cinnamon, flour, and cocoa are mapped to NON_FREE_FLOWING. The descriptive behavior notes call cocoa and cinnamon fine and relatively free-flowing, so the software family name isn't a universal physical classification. It identifies a chosen control profile for this implementation.
 
 In the July Arduino configuration, free-flowing APPROACH/FINE/FINAL pulses contain 8, 4, and 1 steps at 1100, 700, and 400 pulses per second. The other family uses 20, 10, and 3 steps at 1500, 1000, and 650 pulses per second. Continuous FREE rates are 4000 TURBO and 2500 NORMAL, while NONFREE uses 6000 and 4000. These values are electrical step pulses, not rotations per minute or grams dispensed.
 
@@ -1023,9 +1044,13 @@ The distinction between pulse size and pulse speed is important. Changing step r
 
 The later controller stores editable profiles in dictionaries, normalizes case and spacing in powder names, rejects unknown names, and checks for finite, ordered thresholds. It also contains a per-powder override dictionary, empty in the recovered file. That provides an extension point without establishing that all eight materials received individual calibration.
 
-The practical result was a smaller configuration space than eight completely independent programs or a barcode database. I still needed to retain the final measured result for each powder. Shared parameters can simplify operation, but the powder tests determine whether that simplification is adequate at the intended mass.
+## More views
 
-## Archived implementation
+![Single-doser test arrangement with scale, screen, and controller wiring.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m2_4.jpg)
+
+Single-doser test arrangement with scale, screen, and controller wiring.
+
+## Code for this revision
 
 Exact archived source excerpts. The file labels identify their revisions.
 
@@ -1101,19 +1126,18 @@ def get_profile(powder_name: str) -> tuple[str, dict]:
     return category, settings
 ```
 
-## Process images
+## Still to check
 
-![Physical auger and hopper component used to illustrate the cornstarch geometry discussion.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m1_9.jpg)
+Two families made the configuration less unwieldy. They still needed checking against each powder's actual result. A shared dictionary is convenient, but it can't make flour behave like salt just because both names are in the same menu.
 
-Physical auger and hopper component used to illustrate the cornstarch geometry discussion.
+<details>
+<summary>Notes added while reconstructing this entry</summary>
 
-![Single-doser test arrangement with scale, screen, and controller wiring.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m2_4.jpg)
+A small finishing motion that limited sugar overshoot could deliver very little cornstarch. I made powder selection affect two layers: the mapping from a name to a control family and the motion and settling parameters assigned to that family. This preserved one control structure while allowing different behavior.
 
-Single-doser test arrangement with scale, screen, and controller wiring.
+This left me with a smaller configuration space than eight completely independent programs or a barcode database. I still needed to retain the final measured result for each powder. Shared parameters can simplify operation, but the powder tests determine whether that simplification is adequate at the intended mass.
 
-## Outcome and reflection
-
-Two parameter families gave me a manageable configuration structure for the eight test powders. Separating pulse extent, pulse rate, and settling time clarified what each change could affect. Shared settings simplified operation, but the recorded mass tests still had to establish the performance of each powder at each requested dose.
+</details>
 
 ## Sources
 
@@ -1131,33 +1155,39 @@ CAD construction captures are retrospective inspections of saved models, capture
 
 <a id="j13"></a>
 
-# J13 Stop unwanted motion after program termination and add layered shutdown behavior
+# J13 The program ended. The motor kept moving.
 
-*Milestone 2 | Personal retrospective journal*
+*Milestone 2 | Retrospective build notes*
 
-## Design and iteration
+The slow rotation after motor_scale terminated was a problem I couldn't leave in place. The software had finished, but the feeder could still be adding powder. From the machine's point of view, the run wasn't actually over.
 
-I observed slow motor motion after the motor-and-scale program terminated. That meant ending the software task was not consistently ending the physical feeding action. I rerouted the driver's enable connection to a Pi GPIO as the response recorded in the milestone notes.
+I rerouted EN to a Pi GPIO, which is the fix described in my M2 notes. Those notes call it electrical noise. I don't have a waveform showing the cause, so I can stand behind the symptom and wiring change without pretending the diagnosis went further than it did.
 
-The notes suspected electrical noise, but I did not have a waveform measurement establishing that cause. The observation I could support was the unwanted motion and the change to enable control. That was enough to make shutdown a design requirement rather than an assumption about what closing a program would do.
+![Breadboard motor-control wiring in the early prototype.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m2_2.jpg)
 
-As the controller developed, I added explicit stop commands, cleanup on process termination, and a firmware communication watchdog. The later app also handled cancellation across its child process and positioning state. These were successive layers with different responsibilities, rather than one wiring change that guaranteed every possible fault was covered.
+Breadboard motor-control wiring in the early prototype.
 
-## Technical detail
+That also pushed me to stop relying on one program exiting neatly. The July Python code explicitly sends STOP ALL during cleanup and handles termination signals. The firmware has a communication watchdog. Later, the app had its own cancellation work to do with the child process and positioning states.
 
-The early symptom was slow rotation after motor_scale terminated. I rerouted EN to a Pi GPIO as recorded in the M2 notes. Although those notes attribute the behavior to noise, no waveform or comparable measurement establishes the exact electrical mechanism. The observed unwanted motion and the enable-wiring change are the supported parts of the diagnosis.
+It isn't exciting compared with adding a carousel, but this is the sort of behavior that can ruin an otherwise decent dispense. Every way out of a run needs attention, not only the one where the target is reached and everything cooperates.
+
+## The stop paths in the code
 
 Enable control provides a way to deactivate the driver as well as stop step commands. The July firmware uses LOW to enable, while the later integrated motor setup uses HIGH. Those are version-specific electrical assumptions: reversing the intended polarity could leave a driver active when software believes it is disabled.
 
 The July Python shutdown function guards against repeated cleanup, sets its running state false, prints its shutdown action, sends STOP ALL through the Arduino client, waits briefly, closes connections, and exits. SIGINT and SIGTERM both call that path. This turns an ordinary process stop into an explicit motor-control action rather than assuming closing the terminal is enough.
 
-The firmware adds another layer: it stops automatically if serial contact is absent for 2000 ms while motion is active. Python sends a heartbeat approximately every 0.50 s during continuous feeding. The intent is to stop if the Pi program disappears even when it cannot deliver its normal shutdown command. That watchdog complements EN control; it does not prove that every wiring or power fault has been handled.
+The firmware adds another layer: it stops automatically if serial contact is absent for 2000 ms while motion is active. Python sends a heartbeat approximately every 0.50 s during continuous feeding. The intent is to stop if the Pi program disappears even when it can't deliver its normal shutdown command. That watchdog complements EN control; it doesn't prove that every wiring or power fault has been handled.
 
 In the later app, cancellation sends stop commands, signals the child process, marks actuator position UNKNOWN, and invalidates the disk reference. If the child remains alive, the app escalates to a kill after a delay. This is a later coordination layer in addition to the initial GPIO change and firmware watchdog.
 
-The saved code shows normal cleanup, signal handling, and lost-communication stop routes. It does not contain a measured physical stop time for each case. I kept the distinction between sending a stop and observing the shaft stopped, especially because residual motion could add powder after apparent software completion.
+## More views
 
-## Archived implementation
+![Raspberry Pi and display connection with breadboard wiring.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m2_3.jpg)
+
+Raspberry Pi and display connection with breadboard wiring.
+
+## Code for this revision
 
 Exact archived source excerpts. The file labels identify their revisions.
 
@@ -1207,19 +1237,16 @@ void updateWatchdog() {
 }
 ```
 
-## Process images
+I ended up with several stop paths, each for a different failure or exit case. I still don't have measured shaft-stop times for all of them. The practical change was that stopping had become something the programs deliberately requested, instead of something I assumed would follow from closing them.
 
-![Breadboard motor-control wiring in the early prototype.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m2_2.jpg)
+<details>
+<summary>Notes added while reconstructing this entry</summary>
 
-Breadboard motor-control wiring in the early prototype.
+The early symptom was slow rotation after motor_scale terminated. I rerouted EN to a Pi GPIO as recorded in the M2 notes. Although those notes attribute the behavior to noise, no waveform or comparable measurement establishes the exact electrical mechanism. The observed unwanted motion and the enable-wiring change are the supported parts of the diagnosis.
 
-![Raspberry Pi and display connection with breadboard wiring.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m2_3.jpg)
+The saved code shows normal cleanup, signal handling, and lost-communication stop routes. It doesn't contain a measured physical stop time for each case. I kept the distinction between sending a stop and observing the shaft stopped, especially because residual motion could add powder after apparent software completion.
 
-Raspberry Pi and display connection with breadboard wiring.
-
-## Outcome and reflection
-
-Stopping became an explicit part of the control protocol. Enable handling, Python cleanup, heartbeat loss, and later application cancellation each addressed a different way an operation could end. The remaining distinction was between code taking a stop path and a measured physical stop; the saved files establish the former without supplying timing measurements for every termination case.
+</details>
 
 ## Sources
 
@@ -1236,35 +1263,27 @@ CAD construction captures are retrospective inspections of saved models, capture
 
 <a id="j14"></a>
 
-# J14 Plan the electronics mounting and PCB while the control system is still changing
+# J14 A PCB sounded like the way out of the wiring
 
-*Milestone 2 | Personal retrospective journal*
+*Milestone 2 | Retrospective build notes*
 
-## Design and iteration
+The breadboard was useful, but it was getting awkward to package. Loose wiring is one thing on a bench and another when it has to live on the frame. I started planning a PCB to organize the controller connections and give the electronics a more manageable footprint.
 
-I began planning a PCB because the breadboard wiring was awkward to mount and service. The idea was to organize the controller connections into a more compact arrangement rather than leave the working circuit spread across the bench.
-
-The schematic image records this direction, but the board did not become a finalized, validated part of the prototype. At the time I expected a more permanent electrical arrangement in a later milestone. The architecture was still changing, including the motor hardware, controller interface, and actuator requirements.
-
-That made the PCB decision dependent on more than whether I could draw a board. A layout based on the early Pi and TMC2209 configuration could become obsolete when pins, enable polarity, or driver alarm connections changed. I kept development moving while that boundary remained unsettled, and eventually returned to a modular mounting approach.
-
-## Technical detail
-
-By the end of early feedback development, the breadboard combined power, motor-control, and Pi connections. The PCB proposal aimed to reduce loose wiring and improve mounting. The M2 notes anticipated that improvement in M3, but the record does not establish a fabricated board operating in the machine.
-
-The challenge was that the electrical architecture was still evolving. The first Pi/TMC2209 arrangement, the later Arduino command interface, and the eventual integrated NEMA 23 drivers did not share one unchanged pin map. A board layout based on an early configuration could become obsolete when motor, enable polarity, pulse generation, or actuator control changed.
-
-The electrical functions spanned supply connections, controller logic, STEP/DIR/EN, serial scale feedback, and later alarm and actuator paths. A fixed board would need compatible interfaces for the chosen revision. The available schematic image records the proposal, while a complete verified schematic and routed-board revision are not preserved.
-
-I later abandoned the custom PCB because the design had not stabilized enough to finalize it. This explains the continued use of adaptable connections and a printed mount. The decision was a change in implementation strategy, rather than a missing fabricated-board success.
-
-Keeping the circuit modifiable allowed motor control and integration to continue. The tradeoff was retaining more manual wiring and a greater dependence on version-specific pin maps. A permanent board could address those issues after the electrical architecture settled, rather than forcing the prototype to conform to an early layout.
-
-## Process images
+The schematic image records that direction. It wasn't a finished board running the machine, even though I expected the PCB work to lead into a later milestone. The circuit was still changing underneath that plan.
 
 ![Electronics schematic proposal from M2. It is not evidence that a PCB was manufactured.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m2_1.jpg)
 
 Electronics schematic proposal from M2. It is not evidence that a PCB was manufactured.
+
+That was the catch. A board for the early Pi and TMC2209 arrangement wouldn't automatically suit the later Arduino interface or integrated NEMA 23 drive. Pins, enable behavior, alarms, actuator connections: those were still moving targets.
+
+I didn't end up finalizing the PCB. It's easy to make that sound like a small omitted step, but it was a real change of direction. I still needed to mount the circuit and keep testing; I just hadn't reached a stable enough electrical design to freeze into that board.
+
+## Why the board never stabilized
+
+The challenge was that the electrical architecture was still evolving. The first Pi/TMC2209 arrangement, the later Arduino command interface, and the eventual integrated NEMA 23 drivers didn't share one unchanged pin map. A board layout based on an early configuration could become obsolete when motor, enable polarity, pulse generation, or actuator control changed.
+
+## More views
 
 ![Breadboard motor-control wiring in the early prototype.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m2_2.jpg)
 
@@ -1274,9 +1293,20 @@ Breadboard motor-control wiring in the early prototype.
 
 IMG_8167.HEIC Drive preview: breadboard wiring beside an unsoldered perfboard. Supports the board-packaging discussion; does not show a completed failed perfboard circuit.
 
-## Outcome and reflection
+The packaging problem stayed with the project. A PCB could eventually make it neater, but trying to lock down the wrong revision wouldn't save much work. For now I kept the electronics changeable and came back to mounting later.
 
-The PCB proposal identified a real packaging problem, but committing to a fixed layout before the interfaces stabilized would have locked in an early revision. The board remained a proposal. The later perfboard attempt and half-size breadboard mount were responses to that continuing need for adaptability.
+<details>
+<summary>Notes added while reconstructing this entry</summary>
+
+By the end of early feedback development, the breadboard combined power, motor-control, and Pi connections. The PCB proposal aimed to reduce loose wiring and improve mounting. The M2 notes anticipated that improvement in M3, but the record doesn't establish a fabricated board operating in the machine.
+
+The electrical functions spanned supply connections, controller logic, STEP/DIR/EN, serial scale feedback, and later alarm and actuator paths. A fixed board would need compatible interfaces for the chosen revision. The available schematic image records the proposal, while a complete verified schematic and routed-board revision aren't preserved.
+
+I later abandoned the custom PCB because the design had not stabilized enough to finalize it. This explains the continued use of adaptable connections and a printed mount. The decision was a change in implementation strategy, rather than a missing fabricated-board success.
+
+Keeping the circuit modifiable allowed motor control and integration to continue. The tradeoff was retaining more manual wiring and a greater dependence on version-specific pin maps. A permanent board could address those issues after the electrical architecture settled, rather than forcing the prototype to conform to an early layout.
+
+</details>
 
 ## Sources
 
@@ -1294,33 +1324,37 @@ CAD construction captures are retrospective inspections of saved models, capture
 
 <a id="j15"></a>
 
-# J15 Investigate loaded speed limits and upgrade the NEMA 17 drive
+# J15 Trying to get more out of the NEMA 17
 
-*Milestone 3 | Personal retrospective journal*
+*Milestone 3 | Retrospective build notes*
 
-## Design and iteration
+The feeder was slow enough that I started with the software. I changed speed requests, acceleration behavior, and powder settings to see how much more useful motion I could get. Replacing the motor before understanding the delays would have made it harder to tell what actually helped.
 
-The single doser was usable but slow, so I first investigated the software settings. I adjusted requested motor speed, acceleration behavior, and feeding profiles before changing the hardware. That order mattered because slow dispensing could come from conservative finishing behavior as well as limited drive capability.
+But a bigger requested rate doesn't mean the loaded shaft follows it. The notes describe reaching the NEMA 17's practical limit in this setup and changing to a NEMA 23. They report an improvement in usable dispensing speed afterward.
 
-The milestone record describes eventually identifying the NEMA 17 as a limitation and replacing it with a NEMA 23. It reports greater usable dispensing speed after the change. I have not converted that qualitative improvement into a numerical torque gain or a controlled before-and-after throughput result.
+![Single-doser test arrangement with scale, screen, and controller wiring.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m2_4.jpg)
 
-The replacement also affected mounting, coupling, power, and control signals. The BOM identifies integrated closed-loop NEMA 23 hardware, so this was more than increasing one speed constant. I retained phased feeding because a stronger bulk drive did not eliminate the scale delay or the need for fine additions near the target.
+Single-doser test arrangement with scale, screen, and controller wiring.
 
-## Technical detail
+That was encouraging, though it wasn't a controlled torque or throughput comparison. I don't have a matching series with the same fill, feeder, and finishing settings before and after. I can describe the upgrade without attaching a made-up percentage improvement to it.
 
-The single doser was usable but slow. I first investigated software because requested speed, acceleration, and finishing behavior all influence a run's duration. That investigation was reasonable, but a higher command rate is not proof that the physical shaft follows every step under powder load. I needed to compare commanded motion with actual rotation and powder output.
+The larger hardware also brought mounting, coupling, power, and signal changes along with it. And I still needed the slow finishing phases. More bulk-feed capability didn't make the scale instant or turn a clump into a predictable amount of powder.
+
+## Drive and timing notes
 
 The early Arduino implementation starts continuous motion at 400 pulses/s and ramps at a configured 9000 steps/s squared, updating every 5000 microseconds. STEP high and low intervals are generated in software. A separate AccelStepper test uses a fixed 600-step/s command. These are distinct experiments with different timing and pin assumptions.
 
 M3 notes state that the investigation eventually identified the NEMA 17 as a limitation and that it was replaced by a NEMA 23. The BOM lists integrated closed-loop NEMA 23 motors with pulse/direction control. That later motor architecture also changed driver handling and wiring, so the hardware upgrade was more than increasing a speed constant in Python.
 
-The notes report improved usable speed after the motor replacement, but contain no controlled before-and-after torque or duration series. Feeder geometry, hopper fill, and finishing parameters could also affect throughput. I therefore retained the qualitative upgrade result without assigning a numerical gain to the motor alone.
+The larger motor didn't remove the need to slow near the target. A machine can feed rapidly in the bulk phase while still requiring short movements and settling pauses in the final phase. I retained phased dosing after the hardware change so that improving throughput would not simply recreate the sugar-overshoot problem.
 
-The larger motor did not remove the need to slow near the target. A machine can feed rapidly in the bulk phase while still requiring short movements and settling pauses in the final phase. I retained phased dosing after the hardware change so that improving throughput would not simply recreate the sugar-overshoot problem.
+## More views
 
-The later M5 timing revision addressed software-generated pulses, which is a separate issue from loaded motor capability. Changing the motor and changing the pulse source occurred at different stages and solved different parts of the system. That distinction helped keep a requested frequency separate from verified shaft behavior.
+![Physical multi-doser assembly photograph included in M4.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m4_2.jpg)
 
-## Archived implementation
+Physical multi-doser assembly photograph included in M4.
+
+## Code for this revision
 
 Exact archived source excerpts. The file labels identify their revisions.
 
@@ -1354,19 +1388,18 @@ const uint32_t RAMP_UPDATE_MS      = 10;
 
 ```
 
-## Process images
+The motor upgrade moved the project forward, but it wasn't the last speed problem. Later I had to look at how the Arduino generated the pulses themselves. Different bottleneck, different change. I don't want to collapse both into 'the old motor was too slow.'
 
-![Single-doser test arrangement with scale, screen, and controller wiring.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m2_4.jpg)
+<details>
+<summary>Notes added while reconstructing this entry</summary>
 
-Single-doser test arrangement with scale, screen, and controller wiring.
+The single doser was usable but slow. I first investigated software because requested speed, acceleration, and finishing behavior all influence a run's duration. That investigation was reasonable, but a higher command rate isn't proof that the physical shaft follows every step under powder load. I needed to compare commanded motion with actual rotation and powder output.
 
-![Physical multi-doser assembly photograph included in M4.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m4_2.jpg)
+The notes report improved usable speed after the motor replacement, but contain no controlled before-and-after torque or duration series. Feeder geometry, hopper fill, and finishing parameters could also affect throughput. I retained the qualitative upgrade result without assigning a numerical gain to the motor alone.
 
-Physical multi-doser assembly photograph included in M4.
+The later M5 timing revision addressed software-generated pulses, which is a separate issue from loaded motor capability. Changing the motor and changing the pulse source occurred at different stages and solved different parts of the system. That distinction helped keep a requested frequency separate from verified shaft behavior.
 
-## Outcome and reflection
-
-The motor upgrade addressed the loaded drive limitation described in the milestone notes while preserving mass-based finishing control. It did not settle every speed question. The later timer investigation concerned pulse generation, a separate bottleneck from the motor and powder load, so I kept those changes as distinct engineering decisions.
+</details>
 
 ## Sources
 
@@ -1384,33 +1417,33 @@ CAD construction captures are retrospective inspections of saved models, capture
 
 <a id="j16"></a>
 
-# J16 Make phase thresholds depend on dose size: the July 21 to July 24 controller revision
+# J16 A 55 mg request shouldn't start like a large dose
 
-*Milestone 3 | Personal retrospective journal*
+*Milestone 3 | Retrospective build notes*
 
-## Design and iteration
+The fixed thresholds were getting awkward across different target sizes. The bulk phase could be too cautious for a larger request and still be too aggressive for a tiny one. I kept revising where the controller changed behavior instead of only increasing motor speed.
 
-After improving the drive, I continued revising how the controller changed phases for different target masses. A threshold suitable for a large dispense could force a tiny dose into an unnecessarily aggressive phase or keep a larger dose slow for too long.
+The July 21 and July 24 snapshots give me a useful comparison. In the older code, a 5 g request didn't begin in TURBO because the condition was greater than a fixed 5 g remaining. The later version made that cutoff depend on the target.
 
-The July 21 and July 24 code snapshots preserve a concrete revision. The earlier program used a fixed TURBO cutoff, while the later program introduced target-size-dependent cutoffs and explicit micro-dose behavior. This gave me a way to treat a 55 mg request differently from a multi-gram request even when the powder profile was the same.
+![Single-doser test arrangement with scale, screen, and controller wiring.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m2_4.jpg)
 
-I also increased observation time near the end for free-flowing powders. These changes addressed different parts of the problem: target-dependent bulk thresholds controlled when fast feeding ended, while pulse selection and settling intervals controlled the final additions. The code dates identify the saved revisions; the test sheet does not establish which revision produced each listed powder result.
+Single-doser test arrangement with scale, screen, and controller wiring.
 
-## Technical detail
+At the small end, the change was more direct. Below 0.100 g, start with FINAL pulses. A 0.055 g sugar request had begun in FINE under the July 21 logic; the July 24 version treated it as FINAL from the beginning. That is a much clearer description of the change than simply saying I made the small doses more precise.
 
-The dated code emails provide an actual before/after pair. The July 21 motor_scale.py used a fixed 5.000 g TURBO cutoff and a 0.500 g micro-mode limit. At exactly a 5 g target, its initial remaining value was not greater than 5.000, so it did not start in TURBO. The July 24 motor_scale_control.py introduced target-size-aware cutoffs instead of using that fixed bulk threshold for every request.
+I also lengthened the near-target waits for the free-flowing profile. It cost time. The hope was to stop asking for more powder before the previous addition was fully reflected in the reading. I can't attach the recorded 55 mg results to one snapshot because the test sheet doesn't identify its code revision.
+
+## What changed between the snapshots
+
+The dated code emails provide an actual before/after pair. The July 21 motor_scale.py used a fixed 5.000 g TURBO cutoff and a 0.500 g micro-mode limit. At exactly a 5 g target, its initial remaining value wasn't greater than 5.000, so it didn't start in TURBO. The July 24 motor_scale_control.py introduced target-size-aware cutoffs instead of using that fixed bulk threshold for every request.
 
 The July 24 code introduces an ultra-small limit of 0.100 g and a micro-dose limit of 0.500 g. Requests below 0.100 g start with FINAL pulses. Requests from 0.100 g to below 0.500 g use FINE followed by FINAL. A 0.055 g sugar request therefore changes from an initial FINE pulse in the July 21 logic to FINAL in the July 24 logic.
 
-For free-flowing targets below 1.500 g, the TURBO cutoff becomes the larger of 0.250 g and 30% of the target. Targets up to 10.000 g use a 1.000 g cutoff, and larger targets use 2.000 g. For the other family, the respective choices are max(0.150 g, 20% of target), 0.600 g, and 1.000 g. These values define when the bulk phase ends; they do not mean the complete dose must stay inside those errors.
+For free-flowing targets below 1.500 g, the TURBO cutoff becomes the larger of 0.250 g and 30% of the target. Targets up to 10.000 g use a 1.000 g cutoff, and larger targets use 2.000 g. For the other family, the respective choices are max(0.150 g, 20% of target), 0.600 g, and 1.000 g. These values define when the bulk phase ends; they don't mean the complete dose must stay inside those errors.
 
 The July 24 free-flowing profile also changes continuous-to-pulse, APPROACH-to-FINE, and FINE-to-FINAL cutoffs to 0.500, 0.150, and 0.050 g remaining. Its settling intervals become 0.800 s after continuous motion, 0.300 s after APPROACH, and 2.0 s after each FINE or FINAL pulse. The non-free-flowing settings become 0.300, 0.120, and 0.040 g, with settling intervals of 0.350, 0.120, 0.220, and 0.300 s.
 
-The longer near-target delays, particularly the 2.0 s free-flowing FINE and FINAL intervals, trade run time for additional observation of the last addition. The July 24 email establishes availability of the revision, but does not connect each listed powder result to that version. The measured trials and the code comparison remain separate pieces of evidence.
-
-The later cleaned controller uses another arrangement, including a 0.005 g tolerance and a 120 s maximum duration. Those settings describe a subsequent source state. They do not establish an improvement over the July versions without a matched measured run, and the larger absolute tolerance is particularly relevant to evaluating small targets.
-
-## Archived implementation
+## Code for this revision
 
 Exact archived source excerpts. The file labels identify their revisions.
 
@@ -1548,15 +1581,16 @@ PROFILES = {
 }
 ```
 
-## Process images
+This gave the program a better way to distinguish tiny requests from multi-gram ones. The code change is clear; its measured benefit isn't established by the unmatched test sheet. I would need the same target and configuration on both sides of the revision to make that comparison properly.
 
-![Single-doser test arrangement with scale, screen, and controller wiring.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m2_4.jpg)
+<details>
+<summary>Notes added while reconstructing this entry</summary>
 
-Single-doser test arrangement with scale, screen, and controller wiring.
+The longer near-target delays, particularly the 2.0 s free-flowing FINE and FINAL intervals, trade run time for additional observation of the last addition. The July 24 email establishes availability of the revision, but doesn't connect each listed powder result to that version. The measured trials and the code comparison remain separate pieces of evidence.
 
-## Outcome and reflection
+The later cleaned controller uses another arrangement, including a 0.005 g tolerance and a 120 s maximum duration. Those settings describe a subsequent source state. They don't establish an improvement over the July versions without a matched measured run, and the larger absolute tolerance is particularly relevant to evaluating small targets.
 
-The revised controller made dose size an input to phase selection, rather than applying the same fixed boundaries to every request. The clearest example is a 0.055 g sugar target changing from an initial FINE pulse to FINAL-only behavior. That is a documented program change; its quantitative improvement still cannot be inferred without matched trial data.
+</details>
 
 ## Sources
 
@@ -1574,21 +1608,23 @@ CAD construction captures are retrospective inspections of saved models, capture
 
 <a id="j17"></a>
 
-# J17 Replace the barcode plan with selectable profiles and run the doser from the Pi
+# J17 Dropping the scanner and getting off the laptop
 
-*Milestone 3 | Personal retrospective journal*
+*Milestone 3 | Retrospective build notes*
 
-## Design and iteration
+I had considered scanning powder containers and looking up their settings in a database. It could work, but it was another piece to integrate and another set of records to keep correct. For the eight test powders, selectable profiles were the simpler route.
 
-I considered identifying powder containers with a barcode scanner and retrieving settings from a database. That would have added container records, scanner integration, and another source of configuration to maintain. Testing the eight materials suggested a simpler operating workflow based on selecting their control profiles directly.
+So I dropped the scanner-and-database direction for this prototype. The BOM still contains a scanner, which makes sense as part of the design history, but it doesn't mean scanning stayed in the operating workflow.
 
-I abandoned the scanner-and-database direction for this prototype and moved the complete single-doser workflow onto the Pi. The result described in my notes was operation without a laptop: choose a powder, enter a mass, start dispensing, and see the result on the device. Connecting a display had been an earlier hardware step; running the interface and controller together with access to the serial devices was the integration step.
+![Raspberry Pi and display connection with breadboard wiring.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m2_3.jpg)
 
-The later app shows how that workflow grew as more controllers were attached. It stores powder assignments separately from requested amounts, resolves serial devices, and passes the selected device to the dispensing child process. I have kept those later implementation details distinguishable from the earlier single-doser deployment.
+Raspberry Pi and display connection with breadboard wiring.
 
-## Technical detail
+The more useful step was getting the app and controller running together on the Pi without a laptop. Powder selection, mass entry, start, result. Having a screen attached earlier wasn't quite the same thing as having the serial devices and controller launch working from the device itself.
 
-The barcode concept would have required a scanner, a mapping from container identifiers to powder records, and a database containing useful behavior settings. M3 notes record abandoning that route after recognizing that the tested powders could be handled through two control families. The important simplification was removing a dependency from the operating workflow, not claiming that all powders behave identically.
+As more controllers were connected, device selection needed more care too. The later app searches ports, avoids opening the scale as if it were the Uno, and passes the chosen Arduino device to the subprocess. It's the kind of detail that disappears in an overall machine photo but matters immediately when the wrong device gets opened.
+
+## Pi and device setup
 
 The standalone workflow needed more than displaying a window on the Pi. The app and controller files had to be available together, Python needed the serial and UI dependencies, device paths had to resolve, and the screen needed a usable input method. The later app's subprocess path is based on its own directory, which avoids relying on whichever working directory happened to launch it.
 
@@ -1598,9 +1634,13 @@ Serial discovery became important as more controllers were attached. The later a
 
 The later app passes the verified Arduino path and baud rate to the controller child, avoiding a handoff where the app checks one device and the child opens another default. It also passes the known disk slot. These details belong to later multi-device integration, while the M3 milestone establishes the reported single-doser workflow on the Pi without a laptop.
 
-The source supports the file-location and device-discovery architecture, and the milestone notes describe standalone operation. The record does not establish automatic startup after a cold boot or preserve a complete deployment transcript. I have not added those behaviors to the reported on-device achievement.
+## More views
 
-## Archived implementation
+![Single-doser test arrangement with scale, screen, and controller wiring.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m2_4.jpg)
+
+Single-doser test arrangement with scale, screen, and controller wiring.
+
+## Code for this revision
 
 Exact archived source excerpts. The file labels identify their revisions.
 
@@ -1650,19 +1690,16 @@ def disk_arduino_candidates():
     return unique
 ```
 
-## Process images
+The single-doser workflow could now live on the machine. I don't have evidence for automatic startup after a cold boot, so I'm not adding that claim. The reported step here was being able to operate the doser on the Pi without keeping the laptop attached.
 
-![Raspberry Pi and display connection with breadboard wiring.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m2_3.jpg)
+<details>
+<summary>Notes added while reconstructing this entry</summary>
 
-Raspberry Pi and display connection with breadboard wiring.
+The barcode concept would have required a scanner, a mapping from container identifiers to powder records, and a database containing useful behavior settings. M3 notes record abandoning that route after recognizing that the tested powders could be handled through two control families. The important simplification was removing a dependency from the operating workflow, not claiming that all powders behave identically.
 
-![Single-doser test arrangement with scale, screen, and controller wiring.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m2_4.jpg)
+The source supports the file-location and device-discovery architecture, and the milestone notes describe standalone operation. The record doesn't establish automatic startup after a cold boot or preserve a complete deployment transcript. I've not added those behaviors to the reported on-device achievement.
 
-Single-doser test arrangement with scale, screen, and controller wiring.
-
-## Outcome and reflection
-
-The standalone Pi workflow removed the laptop and barcode database from the normal single-doser interaction. A simpler user choice was useful only if it still selected the correct profile and device, so process paths, slot contents, and serial discovery became explicit application responsibilities as the machine expanded.
+</details>
 
 ## Sources
 
@@ -1683,31 +1720,29 @@ CAD construction captures are retrospective inspections of saved models, capture
 
 <a id="j18"></a>
 
-# J18 Measure 5 g performance with sugar, salt, cocoa, and cinnamon
+# J18 The 5 g results were encouraging, with a lid problem
 
-*Milestone 3 | Personal retrospective journal*
+*Milestone 3 | Retrospective build notes*
 
-## Design and iteration
+The 5 g results were a good sign. Sugar and salt both had a recorded final reading of 5 g, with times of 1:54 and 1:49. Cocoa and cinnamon took longer, but their listed masses were still comfortably inside the 3% target.
 
-I compared 5 g trials for sugar, salt, cocoa, and cinnamon to check both final mass and the time required to reach it. Sugar and salt fed readily and completed faster in the recorded runs. Cocoa and cinnamon needed longer, and cocoa also escaped near the lid.
+I needed that numerical check after so much time changing geometry and control behavior. 'It seems to feed better' only goes so far. Here there were actual final masses and durations to compare.
 
-The recorded sugar and salt readings both matched the 5 g target at the precision listed. Cocoa finished slightly above target and cinnamon slightly below it, with both still inside the 3% criterion. I kept containment separate from final mass: collecting the desired amount in the cup did not establish that all material stayed inside its intended path.
+![Single doser positioned above the balance. This photo provides setup context, not a trial result.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m1_7.jpg)
 
-These were individual recorded results. The sheet does not contain repeated runs at the same target for calculating a standard deviation or demonstrating that every attempt ended at the same mass. The distinction matters especially for the apparently exact sugar and salt readings, which express the recorded scale values rather than an absence of measurement uncertainty.
+Single doser positioned above the balance. This photo provides setup context, not a trial result.
 
-## Technical detail
+Cocoa still had an annoying side problem: powder escaped near the lid. The scale could end up close to target while some material went somewhere it shouldn't. So a good number in the cup didn't mean containment was finished. I don't have a documented lid change resolving that in this record.
 
-For the 5.000 g target, the sheet records sugar at 5.000 g in 1:54, salt at 5.000 g in 1:49, cocoa at 5.006 g in 3:32, and cinnamon at 4.985 g in 3:05. Absolute percentage error is abs(actual - target) / target times 100, giving 0.00%, 0.00%, 0.12%, and 0.30%. All four recorded values meet 3% at this target.
+The exact-looking sugar and salt values also need some restraint. They're what was recorded at the shown precision, not proof of literally zero physical error. And each powder has one listed 5 g run here. Useful results, but not the same as repeatedly getting that result under the same conditions.
 
-A displayed 5.000 g reading does not mean literally zero physical error. It means the recorded reading equals the requested value at the shown precision. The balance's resolution, calibration, drift, and final settling affect how closely that reading represents the actual delivered mass. Those quantities are not established by the test sheet, so I report the values as recorded rather than adding unsupported measurement certainty.
+## What the readings do and do not show
+
+A displayed 5.000 g reading doesn't mean literally zero physical error. It means the recorded reading equals the requested value at the shown precision. The balance's resolution, calibration, drift, and final settling affect how closely that reading represents the actual delivered mass. Those quantities aren't established by the test sheet, so I report the values as recorded rather than adding unsupported measurement certainty.
 
 The behavior notes describe sugar as easy to move but difficult to finish without overshoot because of rapid flow and scale delay. Salt behaved similarly. Cocoa and cinnamon were fine and delivered smaller quantities, leading to longer runs. Cocoa also escaped upward from the lid. That observation matters because material leaving the intended powder path can make the collected mass and total material removed from the hopper differ.
 
-Containment and dosing error described different outcomes. Cocoa escaping near the lid could increase material removed from the hopper without increasing the amount collected by the scale. The record identifies that symptom, but does not preserve a measured escaped-mass result or a confirmed lid change resolving it.
-
-I kept throughput and final error separate. Cocoa took longer than sugar even though both listed results met the criterion. The sheet provides one 5 g result per powder, rather than repeated runs or a matched tuning comparison. That limits the conclusions to the measured trials without discarding their usefulness.
-
-The next comparison used cohesive powders and a much smaller target. That was necessary because success at 5 g provides a comparatively large absolute error allowance and cannot establish that the same mechanism can dispense tens of milligrams to the same percentage error.
+The next comparison used cohesive powders and a much smaller target. That was necessary because success at 5 g provides a comparatively large absolute error allowance and can't establish that the same mechanism can dispense tens of milligrams to the same percentage error.
 
 ## Recorded measurements
 
@@ -1718,19 +1753,24 @@ The next comparison used cohesive powders and a much smaller target. That was ne
 | Cocoa powder | 5 | 5.006 | 0.12% | 3:32 | Yes |
 | Ground cinnamon | 5 | 4.985 | 0.30% | 3:05 | Yes |
 
-## Process images
-
-![Single doser positioned above the balance. This photo provides setup context, not a trial result.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m1_7.jpg)
-
-Single doser positioned above the balance. This photo provides setup context, not a trial result.
+## More views
 
 ![Single-doser test arrangement with scale, screen, and controller wiring.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m2_4.jpg)
 
 Single-doser test arrangement with scale, screen, and controller wiring.
 
-## Outcome and reflection
+All four passed the 3% check in these runs. Cocoa took 3:32 compared with sugar's 1:54, so the time difference was still there even when both final readings looked good. Next were the clumpier powders, then the much less forgiving small target.
 
-All four recorded 5 g runs met the 3% target, with different durations and powder-handling behavior. The results supported continuing with the feeder, while cocoa's escape at the lid showed that mass accuracy and containment needed separate attention. I then compared the more cohesive powders and the much smaller 0.055 g target.
+<details>
+<summary>Notes added while reconstructing this entry</summary>
+
+For the 5.000 g target, the sheet records sugar at 5.000 g in 1:54, salt at 5.000 g in 1:49, cocoa at 5.006 g in 3:32, and cinnamon at 4.985 g in 3:05. Absolute percentage error is abs(actual - target) / target times 100, giving 0.00%, 0.00%, 0.12%, and 0.30%. All four recorded values meet 3% at this target.
+
+Containment and dosing error described different outcomes. Cocoa escaping near the lid could increase material removed from the hopper without increasing the amount collected by the scale. The record identifies that symptom, but doesn't preserve a measured escaped-mass result or a confirmed lid change resolving it.
+
+I kept throughput and final error separate. Cocoa took longer than sugar even though both listed results met the criterion. The sheet provides one 5 g result per powder, rather than repeated runs or a matched tuning comparison. That limits the conclusions to the measured trials without discarding their usefulness.
+
+</details>
 
 ## Sources
 
@@ -1748,31 +1788,25 @@ CAD construction captures are retrospective inspections of saved models, capture
 
 <a id="j19"></a>
 
-# J19 Test 5 g dispensing with baking soda, cornstarch, powdered sugar, and flour
+# J19 Close to 5 g, but it took a while
 
-*Milestone 3 | Personal retrospective journal*
+*Milestone 3 | Retrospective build notes*
 
-## Design and iteration
+The four clumpier powders all ended up close to the 5 g target in the recorded tests. That was encouraging after the earlier cornstarch trouble. The agitator and feeding changes had given me something that could reach the requested mass with these materials.
 
-I tested baking soda, cornstarch, powdered sugar, and flour after the changes intended to help clumpier materials. The notes describe intermittent release, sometimes in clumps, and agitation helping keep powder moving toward the screw. Those behaviors could make a run slow even when its eventual final mass was close to target.
+The times were harder to ignore. Baking soda took 5:01, cornstarch 4:55, powdered sugar 4:57, and flour 4:39. Reaching a good final reading after that long is useful, but I wouldn't call the speed problem solved.
 
-All four recorded 5 g results were within 3%, but their durations were around five minutes. I treated that as useful performance with an obvious throughput cost, rather than describing the machine as equally fast for every ingredient.
+![V5 agitator: Sketch 10 highlights the two arm profiles before Extrude 8, with the earlier screw geometry present.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/cad_v5_agitator_sketch.jpg)
 
-I recalculated percentage error directly from the listed masses. Flour's recorded 4.993 g gives 0.14% absolute error against 5.000 g, while the source sheet lists 0.18%. I retained the original mass and reported the arithmetic discrepancy. I also kept these trials distinct from the later controller with a 120 s timeout, which is shorter than every run in this group.
+V5 agitator: Sketch 10 highlights the two arm profiles before Extrude 8, with the earlier screw geometry present.
 
-## Technical detail
+The notes describe uneven release, including clumps and much smaller additions between them. That fits the practical difficulty: a slow command might do very little until the material changes and more comes out together. The final mass doesn't show all of that behavior along the way.
 
-The 5.000 g results were baking soda at 4.994 g in 5:01, cornstarch at 4.991 g in 4:55, powdered sugar at 4.996 g in 4:57, and flour at 4.993 g in 4:39. Recalculated absolute errors are 0.12%, 0.18%, 0.08%, and 0.14%. The source's flour percentage is inconsistent with its recorded mass, so the calculation here uses the listed 4.993 g reading.
+I also caught an arithmetic mismatch while working through the sheet. Flour is listed at 4.993 g. Against 5 g, that is 0.14% absolute error, not the 0.18% written in the source. I kept the recorded mass and recalculated from it. There's also a later 120 s controller limit, so these roughly five-minute runs can't just be attributed to that newer file.
 
-All four final readings met 3%, while the durations exposed the cost of slower feeding and finishing. Intermittent discharge and clumps could coexist with a close final mass. I treated the time and transport observations as part of performance rather than reducing the result to a pass label.
+## Mass, time, and configuration
 
-The earlier mechanical changes addressed different regions: larger flights changed the feeding space, while agitator reach addressed powder outside the screw's active region. These final results do not isolate the contribution of either change because there is no matched one-variable comparison in the available sheet.
-
-The record contains no measured residual-powder mass or post-run coverage series for these trials. I therefore do not interpret successful collection as proof that the hopper fully cleared or that no powder remained around walls and arm roots. Those internal states are distinct from the final cup reading.
-
-The later controller's 120 s maximum dispense duration is shorter than all four of these runs. I kept their original recorded times and did not attribute them to that file. Version matching matters here because a configuration that times out after two minutes could not complete an uninterrupted five-minute test under the same limit.
-
-The outcome supports an individual 5 g dosing result for each tested cohesive powder. It does not establish general flow behavior for other materials, repeatability across refill levels, or an autonomous recipe containing all four. Those are separate tests with separate evidence.
+The earlier mechanical changes addressed different regions: larger flights changed the feeding space, while agitator reach addressed powder outside the screw's active region. These final results don't isolate the contribution of either change because there is no matched one-variable comparison in the available sheet.
 
 ## Recorded measurements
 
@@ -1783,11 +1817,7 @@ The outcome supports an individual 5 g dosing result for each tested cohesive po
 | Powdered sugar | 5 | 4.996 | 0.08% | 4:57 | Yes |
 | All purpose flour | 5 | 4.993 | 0.14% | 4:39 | Yes |
 
-## Process images
-
-![V5 agitator: Sketch 10 highlights the two arm profiles before Extrude 8, with the earlier screw geometry present.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/cad_v5_agitator_sketch.jpg)
-
-V5 agitator: Sketch 10 highlights the two arm profiles before Extrude 8, with the earlier screw geometry present.
+## More views
 
 ![V5 agitator: Extrude 8 adds two sketch faces symmetrically at 0.318 cm depth into tube adapter. The archived tree shows feature warnings, not a fully validated assembly.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/cad_v5_agitator_extrude.jpg)
 
@@ -1801,9 +1831,22 @@ V10 Part Studio 1, saved July 10 2026. Later view of the auger and agitator arms
 
 Physical auger and hopper component used to illustrate the cornstarch geometry discussion.
 
-## Outcome and reflection
+The 5 g result was good across all eight powders when combined with the previous group. The slow, uneven feeding was still something to work on. And I still hadn't earned the right to assume the same percentage accuracy would hold when the target dropped by almost two orders of magnitude.
 
-The tests supported a successful individual 5 g result for each cohesive powder, with substantially longer dispensing times than sugar or salt. They did not isolate the contribution of each mechanical change or establish repeatability across hopper fill levels. The next challenge was whether the same system could meet the percentage target at only 55 mg.
+<details>
+<summary>Notes added while reconstructing this entry</summary>
+
+The 5.000 g results were baking soda at 4.994 g in 5:01, cornstarch at 4.991 g in 4:55, powdered sugar at 4.996 g in 4:57, and flour at 4.993 g in 4:39. Recalculated absolute errors are 0.12%, 0.18%, 0.08%, and 0.14%. The source's flour percentage is inconsistent with its recorded mass, so the calculation here uses the listed 4.993 g reading.
+
+All four final readings met 3%, while the durations exposed the cost of slower feeding and finishing. Intermittent discharge and clumps could coexist with a close final mass. I treated the time and transport observations as part of performance rather than reducing the result to a pass label.
+
+The record contains no measured residual-powder mass or post-run coverage series for these trials. I don't interpret successful collection as proof that the hopper fully cleared or that no powder remained around walls and arm roots. Those internal states are distinct from the final cup reading.
+
+The later controller's 120 s maximum dispense duration is shorter than all four of these runs. I kept their original recorded times and didn't attribute them to that file. Version matching matters here because a configuration that times out after two minutes could not complete an uninterrupted five-minute test under the same limit.
+
+The outcome gives me one 5 g result for each tested cohesive powder. It doesn't establish general flow behavior for other materials, repeatability across refill levels, or an autonomous recipe containing all four. Those are separate tests with separate evidence.
+
+</details>
 
 ## Sources
 
@@ -1821,31 +1864,27 @@ CAD construction captures are retrospective inspections of saved models, capture
 
 <a id="j20"></a>
 
-# J20 Evaluate the 0.055 g limit and separate accuracy from repeatability
+# J20 The 55 mg tests didn't go nearly as well
 
-*Milestone 3 | Personal retrospective journal*
+*Milestone 3 | Retrospective build notes*
 
-## Design and iteration
+The 5 g results made the smaller target worth trying. At 0.055 g, though, 3% only gives me 0.00165 g of room. That's 1.65 mg. A difference that barely looks noticeable on the scale becomes a large part of the whole dose.
 
-I reduced the requested mass to 0.055 g to examine the difficult end of the dosing range. At 55 mg, the project's 3% criterion permits only 0.00165 g of absolute error. A small clump or a milligram-scale difference therefore matters far more than it does in a 5 g trial.
+Only three of the eight recorded runs met the target: sugar, cocoa, and baking soda. Salt overshot. Several others undershot, with flour ending at 0.047 g. That is about 14.55% absolute error. Definitely not a result I can smooth over with the successful 5 g table.
 
-The results were mixed. Sugar, cocoa, and baking soda met the criterion in their recorded runs; salt, cinnamon, cornstarch, powdered sugar, and flour did not. The worst listed result was flour at 0.047 g, or about 14.55% below target in absolute percentage terms.
+![Single doser positioned above the balance. This photo provides setup context, not a trial result.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m1_7.jpg)
 
-My milestone notes also describe consecutive same-target dispenses, but the available eight-powder sheet is not that repeatability series. Its two sections use different target masses. I therefore kept the small-dose accuracy observations separate from any statistical claim about repeated performance, and treated pulse size, clumping, feedback delay, and stopping behavior as possible contributors rather than a proven single cause.
+Single doser positioned above the balance. This photo provides setup context, not a trial result.
 
-## Technical detail
+There isn't one obvious correction hiding in the signs of the errors, either. Simply adding a fixed amount to every target wouldn't fix both the high and low results. Pulse size, clumps, delayed feedback, and the stopping logic could all be involved. I don't have the traces to separate their contributions here.
+
+The notes mention consecutive same-target tests, but the eight-powder sheet isn't that repeated series. Its two sections are different requested masses. I can't use them as replicates just because they're called trials. I need the actual repeated values before calculating a spread or claiming this is consistent.
+
+## Working through the small-dose result
 
 At a 0.055 g target, the absolute allowance for 3% is 0.00165 g, or 1.65 mg. A 0.001 g difference already represents about 1.82% of the request. The recorded values and recalculated errors are shown in the table below; all error values use the same absolute percentage formula as the 5 g trials.
 
-Only sugar, cocoa, and baking soda met 3% in these individual runs. Salt overshot while several other powders undershot, so the result does not support a single universal correction to the target. Material delivery per motion, scale response, and the stopping logic remained possible interacting factors.
-
 Run times ranged from 54 seconds for salt to 3 minutes 21 seconds for flour. Several finer or more cohesive materials took longer despite the very small target. Long finishing pauses and small additions are consistent with that pattern, but no phase trace identifies the cause of each trial's duration.
-
-The July 24 FINAL-only behavior below 0.100 g addresses the same class of small-target problem. The code snapshots and test sheet do not establish that these specific results were produced before or after that change. I retained the program comparison as a separate documented revision rather than assigning an improvement to unmatched data.
-
-The milestone notes describe consecutive same-target testing, but its raw series is not present in the available test sheet. The two target groups in that sheet are different-dose comparisons, not replicates. They cannot establish a repeated-run standard deviation or a general probability of meeting the criterion.
-
-A useful next experiment would hold the target, powder, feeder, code, baseline method, and fill conditions fixed, then retain each delivered mass and duration. That would distinguish a consistent offset from variation between runs and provide a direct comparison for revised pulse behavior. It remained a proposed next experiment rather than an added result.
 
 ## Recorded measurements
 
@@ -1860,19 +1899,28 @@ A useful next experiment would hold the target, powder, feeder, code, baseline m
 | Powdered sugar | 0.055 | 0.049 | 10.91% | 3:07 | No |
 | All purpose flour | 0.055 | 0.047 | 14.55% | 3:21 | No |
 
-## Process images
-
-![Single doser positioned above the balance. This photo provides setup context, not a trial result.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m1_7.jpg)
-
-Single doser positioned above the balance. This photo provides setup context, not a trial result.
+## More views
 
 ![Single-doser test arrangement with scale, screen, and controller wiring.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m2_4.jpg)
 
 Single-doser test arrangement with scale, screen, and controller wiring.
 
-## Outcome and reflection
+## What I need next
 
-The 55 mg trials established a real limitation: the eight successful 5 g results did not carry over to the smaller target. Three of eight small-dose runs met 3%. The next experimental priority was a matched series at a fixed target and configuration, so I could distinguish occasional accuracy from consistent delivery and evaluate changes such as FINAL-only control.
+This is where the limitation was obvious. A feeder that did well at 5 g was struggling at 55 mg. The next useful test would keep one small target and one configuration fixed, repeat it, and keep every result. More tuning without that comparison would leave me guessing at what helped.
+
+<details>
+<summary>Notes added while reconstructing this entry</summary>
+
+Only sugar, cocoa, and baking soda met 3% in these individual runs. Salt overshot while several other powders undershot, so the result doesn't support a single universal correction to the target. Material delivery per motion, scale response, and the stopping logic remained possible interacting factors.
+
+The July 24 FINAL-only behavior below 0.100 g addresses the same class of small-target problem. The code snapshots and test sheet don't establish that these specific results were produced before or after that change. I retained the program comparison as a separate documented revision rather than assigning an improvement to unmatched data.
+
+The milestone notes describe consecutive same-target testing, but its raw series isn't present in the available test sheet. The two target groups in that sheet are different-dose comparisons, not replicates. They can't establish a repeated-run standard deviation or a general probability of meeting the criterion.
+
+A useful next experiment would hold the target, powder, feeder, code, baseline method, and fill conditions fixed, then retain each delivered mass and duration. That would distinguish a consistent offset from variation between runs and provide a direct comparison for revised pulse behavior. It remained a proposed next experiment rather than an added result.
+
+</details>
 
 ## Sources
 
@@ -1890,35 +1938,13 @@ CAD construction captures are retrospective inspections of saved models, capture
 
 <a id="j21"></a>
 
-# J21 Build the solid eight-pocket carousel and evolve it into an open two-plate structure
+# J21 Back to the carousel, and a lot less solid material
 
-*Milestone 4 | Personal retrospective journal*
+*Milestone 4 | Retrospective build notes*
 
-## Design and iteration
+Once the single doser had real work behind it, I went back to the carousel. The early model was a solid disk with eight pockets. The later one opened that up into a much lighter-looking plate-and-rib arrangement. It was a fairly visible change, but the feature sequence is more useful than just putting two finished renders beside each other.
 
-With a developed single-doser mechanism, I returned to the eight-position carousel. The early design used a substantial solid disk with pockets; the later design used an open supporting arrangement. The archived feature history makes that structural change visible rather than reducing it to a before-and-after assembly photograph.
-
-I kept the relationship among station spacing, pocket diameter, and remaining material explicit. Enlarging a hopper pocket changes both the neighboring clearance and the material near the outside edge. The disk also needed interfaces for support and drive, so it could not be designed only as eight circles around a center.
-
-The later model retained the overall diameter while changing pocket size, plate geometry, lightening, and the repeated plate arrangement. The CAD feature reports a weight reduction, but I have kept that figure as a model result. The source material does not provide a measured printed-weight comparison or a loaded stiffness test establishing every reason for the revision.
-
-## Technical detail
-
-The V5 Rotary Disk studio starts with Sketch 1, a 33 cm diameter circle on the Top plane. Extrude 1 makes a new solid with a 6 cm blind depth, giving a nominal 330 mm diameter and 60 mm thickness. That is the early blank, rather than the later installed open structure.
-
-Sketch 2 is on a face of that blank and lays out the eight pockets. Its displayed dimensions include a 12 cm center-to-pocket radial dimension and a 7 cm pocket diameter. Eight equally spaced pocket centers imply 45-degree spacing. For this geometry, adjacent centers are approximately 91.84 mm apart, calculated as twice the 120 mm radius times sin(22.5 degrees). A 70 mm pocket leaves approximately 21.84 mm between adjacent circular boundaries before any further cuts.
-
-The outer edge also has limited material around each pocket. The disk radius is 165 mm; the station radius plus pocket radius is 120 + 35 = 155 mm. The nominal radial material outside a pocket is therefore about 10 mm at its outermost point. These calculations are geometric interpretations of this archived sketch, not finite-element results or measurements of a printed disk.
-
-Extrude 2 removes the eight regions of Sketch 2 to a blind depth of 3 cm. The sequence shows the solid blank, pocket layout, cut preview, and saved pocketed model. In this revision the pocket feature selects faces from one sketch; the construction is not inferred from the appearance of eight completed recesses.
-
-Rotary Disk V2 is a later open supporting arrangement. I compared its saved state with the earlier solid construction so the two revisions remained distinguishable. The change visibly altered the load-carrying material and access around the hopper stations, while measured stiffness and print-mass comparisons are not preserved in the record.
-
-The V18 Rotary Disk V2 archive gives more specific detail for the open structure. Sketch 1 retains a displayed 33 cm outer diameter but shows an 8.5 cm pocket diameter, larger than the earlier 7 cm pockets. Extrude 1 creates an initial plate at 0.635 cm depth, or 6.35 mm. The custom Part Lightening feature uses Manual mode, selects a face of Extrude 2 and 32 rib lines from Sketch 2, and sets wall and rib thicknesses to 0.5 cm each. Its tool-diameter parameter is 0.67 cm and its blind cut depth is 2.5 cm. The feature reports a 42.4% part-weight reduction in CAD; that is not a measured weight reduction of the printed machine. Plane 1 is offset 3 cm from the selected face of Sketch 1. Mirror 1 uses Part mirror in Add mode, selects Part 2, mirrors about Plane 1, and lists Part 1 as the merge scope. Those references define the repeated plate arrangement. The new views preserve the sketch, initial plate, lightening parameters, mirror reference, mirror operation, and saved disk state separately.
-
-Support, fastening, plate spacing, hopper seating, and the connection to the disk drive are assembly constraints in addition to the modeled pocket geometry. The CAD sequence explains how the saved parts were constructed, while the physical photograph establishes that a carousel assembly was built. Neither alone supplies a loaded deflection or indexing-error measurement.
-
-## Process images
+The original blank was 330 mm across and 60 mm thick. That's a substantial piece of geometry to carry into a rotating assembly. The pocket layout also constrained what could change: make a hopper opening bigger and I lose material between stations or near the edge.
 
 ![V5 solid carousel: Sketch 1, Top-plane circle with displayed diameter 33 cm, before creating the disk blank.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/cad_v5_disk_base_sketch.jpg)
 
@@ -1927,6 +1953,26 @@ V5 solid carousel: Sketch 1, Top-plane circle with displayed diameter 33 cm, bef
 ![V5 solid carousel: Extrude 1 creates a 6 cm deep New solid disk blank before pocket removal.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/cad_v5_disk_blank.jpg)
 
 V5 solid carousel: Extrude 1 creates a 6 cm deep New solid disk blank before pocket removal.
+
+The later model kept the overall diameter but changed the pockets and supporting structure. The lightening feature reports a 42.4% weight reduction in CAD. I don't have a weighed before-and-after print comparison or a stiffness test, so that number stays a CAD result.
+
+I wanted the construction stages kept visible here: the circle and blank, the pockets, then the later plate, ribs, and mirror. Otherwise it's too easy to make the carousel sound like one decision, when the saved geometry shows a fairly different support arrangement by the later revision.
+
+## The saved construction sequence
+
+The V5 Rotary Disk studio starts with Sketch 1, a 33 cm diameter circle on the Top plane. Extrude 1 makes a new solid with a 6 cm blind depth, giving a nominal 330 mm diameter and 60 mm thickness. That is the early blank, rather than the later installed open structure.
+
+Sketch 2 is on a face of that blank and lays out the eight pockets. Its displayed dimensions include a 12 cm center-to-pocket radial dimension and a 7 cm pocket diameter. Eight equally spaced pocket centers imply 45-degree spacing. For this geometry, adjacent centers are approximately 91.84 mm apart, calculated as twice the 120 mm radius times sin(22.5 degrees). A 70 mm pocket leaves approximately 21.84 mm between adjacent circular boundaries before any further cuts.
+
+The outer edge also has limited material around each pocket. The disk radius is 165 mm; the station radius plus pocket radius is 120 + 35 = 155 mm. The nominal radial material outside a pocket is therefore about 10 mm at its outermost point. These calculations are geometric interpretations of this archived sketch, not finite-element results or measurements of a printed disk.
+
+Extrude 2 removes the eight regions of Sketch 2 to a blind depth of 3 cm. The sequence shows the solid blank, pocket layout, cut preview, and saved pocketed model. In this revision the pocket feature selects faces from one sketch; the construction isn't inferred from the appearance of eight completed recesses.
+
+Rotary Disk V2 is a later open supporting arrangement. I compared its saved state with the earlier solid construction so the two revisions remained distinguishable. The change visibly altered the load-carrying material and access around the hopper stations, while measured stiffness and print-mass comparisons aren't preserved in the record.
+
+The V18 Rotary Disk V2 archive gives more specific detail for the open structure. Sketch 1 retains a displayed 33 cm outer diameter but shows an 8.5 cm pocket diameter, larger than the earlier 7 cm pockets. Extrude 1 creates an initial plate at 0.635 cm depth, or 6.35 mm. The custom Part Lightening feature uses Manual mode, selects a face of Extrude 2 and 32 rib lines from Sketch 2, and sets wall and rib thicknesses to 0.5 cm each. Its tool-diameter parameter is 0.67 cm and its blind cut depth is 2.5 cm. The feature reports a 42.4% part-weight reduction in CAD; that isn't a measured weight reduction of the printed machine. Plane 1 is offset 3 cm from the selected face of Sketch 1. Mirror 1 uses Part mirror in Add mode, selects Part 2, mirrors about Plane 1, and lists Part 1 as the merge scope. Those references define the repeated plate arrangement. The new views preserve the sketch, initial plate, lightening parameters, mirror reference, mirror operation, and saved disk state separately.
+
+## Pocket cuts, ribs, and the later plates
 
 ![V5 solid carousel: Sketch 2 on the disk face shows eight pockets, displayed 12 cm radial location and 7 cm diameter.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/cad_v5_disk_pocket_sketch.jpg)
 
@@ -1976,9 +2022,14 @@ V18 saved Rotary Disk V2 after closing its feature preview. The archive contains
 
 Later open rotary structure with upper and lower plates and spacers.
 
-## Outcome and reflection
+There was now much more to the disk than repeating one hopper eight times. Pocket size, material between stations, support, and drive alignment all had to coexist. The open model gave the assembly its later form; the frame and lifted drive still had to make that form useful.
 
-The carousel developed from an early solid pocketed blank into an open plate-and-rib structure. Recovering the sketch, cut, lightening, and mirror stages made the geometry reproducible at the CAD level. The next integration work was to support it in the frame and coordinate its motion with the lift and shared drive.
+<details>
+<summary>Notes added while reconstructing this entry</summary>
+
+Support, fastening, plate spacing, hopper seating, and the connection to the disk drive are assembly constraints in addition to the modeled pocket geometry. The CAD sequence explains how the saved parts were constructed, while the physical photograph establishes that a carousel assembly was built. Neither alone supplies a loaded deflection or indexing-error measurement.
+
+</details>
 
 ## Sources
 
@@ -1996,37 +2047,31 @@ CAD construction captures are retrospective inspections of saved models, capture
 
 <a id="j22"></a>
 
-# J22 Develop the lift mechanism that clears the drive before indexing
+# J22 The drive has to get out of the way
 
-*Milestone 4 | Personal retrospective journal*
+*Milestone 4 | Retrospective build notes*
 
-## Design and iteration
+Sharing the motor saved hardware, but now I had to physically move it out of the carousel's way. Leave it engaged and the disk can't index. Lower it too soon and it can meet the wrong part of the moving mechanism.
 
-The shared motor could not remain engaged while the carousel moved. I needed a way to lift it clear of the active hopper, rotate the disk, and return the motor to the selected auger. That added a vertical motion stage to a mechanism that previously only needed to feed powder.
+The sequence I needed was straightforward: raise, rotate, lower. Making the mechanism follow it with known positions was the less straightforward part.
 
-I initially considered constructing the lift, then decided to purchase a linear mechanism under the cost constraints recorded in the milestone notes. The CAD includes a servo/lead-screw concept in the B4 branch, while later software controls an actuator through a separate XIAO. These represent different stages of the design, not confirmation that every modeled or listed actuator was installed.
+![B4 servo actuator assem. CAD of the lift concept with lead screw, brackets, and motor assembly. Confirm its relationship to the built mechanism.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/cad_b4_lift.jpg)
 
-The key mechanical requirement was clearance relative to the coupling overlap and surrounding hoppers. More commanded steps did not automatically mean more known physical travel. The later app also depended on an operator-established UP reference, making position knowledge part of the operating sequence as well as the mechanical layout.
+B4 servo actuator assem. CAD of the lift concept with lead screw, brackets, and motor assembly. Confirm its relationship to the built mechanism.
 
-## Technical detail
+I initially considered building the lift and then chose to buy a mechanism under the cost constraints in the notes. The B4 branch still has the servo/lead-screw concept, while the later app talks to a separate actuator controller. Those are different stages, not a collection of actuators that were all installed at once.
 
-The shared-motor architecture required a motion sequence the single doser did not need. While a hopper is feeding, the motor must engage its auger. While the carousel indexes, that engagement must be clear of the rotating parts. The lift supplies the missing degree of freedom: raise the drive, index the disk, then lower the drive to the selected hopper.
+I also had to be careful with the travel value in software. The later app uses 69,000 steps, which looks very definite but isn't a stroke measurement by itself. Without the actual lead, gearing, and microsteps it doesn't tell me millimeters. The app's UP position is an operator-established reference too, not an automatically sensed top limit.
 
-The B4 branch preserves a servo/lead-screw lift concept. The notes record moving from a plan to construct the lift to purchasing a mechanism, and the later app communicates with a separate actuator controller. I kept these stages distinct because the saved sources do not identify one unchanged lift across the entire project.
+## Lift geometry and references
 
-The required clearance depends on coupling overlap, the nearby hopper envelope, and how the drive is guided. The motor and its wiring move with the stage, while the carousel passes beneath it. A commanded travel value only becomes a physical stroke after applying the actual microsteps, lead, and gearing; it is not an independent measurement of clearance.
+The required clearance depends on coupling overlap, the nearby hopper envelope, and how the drive is guided. The motor and its wiring move with the stage, while the carousel passes beneath it. A commanded travel value only becomes a physical stroke after applying the actual microsteps, lead, and gearing; it isn't an independent measurement of clearance.
 
 The later app sets a travel constant of 69,000 steps and sends ACTUATOR UP or ACTUATOR DOWN to a separate XIAO over USB serial, with a default actuator port of /dev/ttyACM1 at 115200 baud. That is a commanded step count, not millimetres. The mechanical conversion requires the actuator's steps per revolution, microsteps, and lead or gearing.
 
 The app also starts from an assumption that the actuator is physically at its top reference. It has a SET CURRENT AS UP operation and blocks a recipe if the position is UNKNOWN. The source states there are no actuator limit switches in that operating arrangement. This reference-setting behavior must not be described as automatically sensing the top end of travel.
 
-The next mechanical issue was engagement at the bottom of the stroke. Even with enough clearance to index, the coupler could fail if the auger and motor reached incompatible angular orientations. That motivated the separate coupling redesign rather than increasing actuator travel or motor speed.
-
-## Process images
-
-![B4 servo actuator assem. CAD of the lift concept with lead screw, brackets, and motor assembly. Confirm its relationship to the built mechanism.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/cad_b4_lift.jpg)
-
-B4 servo actuator assem. CAD of the lift concept with lead screw, brackets, and motor assembly. Confirm its relationship to the built mechanism.
+## More views
 
 ![B4 workspace SuperStructureAssem. The alternate arrangement shows a servo and lead-screw lift structure above the auger drive. This is a CAD revision, not proof of installed final hardware.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/cad_b4_assembly.jpg)
 
@@ -2040,9 +2085,18 @@ Full frame, carousel, drive, and screen CAD from M4.
 
 Current Main workspace Superstructure Part Studio. CAD geometry capture, not a validated structural test.
 
-## Outcome and reflection
+The lift gave the carousel room to move. It didn't guarantee the drive would connect when it came back down. That became the next roadblock: the axes could line up and the coupling could still land at the wrong angle.
 
-The lift supplied the disengagement motion required by the shared-drive architecture. Its control also introduced a distinct position state and serial device. Clearing the disk was only half the problem: after lowering, the coupling still had to engage at the angular position left by the previous dispense, which led to the next redesign.
+<details>
+<summary>Notes added while reconstructing this entry</summary>
+
+The shared-motor architecture required a motion sequence the single doser didn't need. While a hopper is feeding, the motor must engage its auger. While the carousel indexes, that engagement must be clear of the rotating parts. The lift supplies the missing degree of freedom: raise the drive, index the disk, then lower the drive to the selected hopper.
+
+The B4 branch preserves a servo/lead-screw lift concept. The notes record moving from a plan to construct the lift to purchasing a mechanism, and the later app communicates with a separate actuator controller. I kept these stages distinct because the saved sources don't identify one unchanged lift across the entire project.
+
+The next mechanical issue was engagement at the bottom of the stroke. Even with enough clearance to index, the coupler could fail if the auger and motor reached incompatible angular orientations. That motivated the separate coupling redesign rather than increasing actuator travel or motor speed.
+
+</details>
 
 ## Sources
 
@@ -2060,35 +2114,13 @@ CAD construction captures are retrospective inspections of saved models, capture
 
 <a id="j23"></a>
 
-# J23 Replace the angle-sensitive drive coupling with serrated mating teeth
+# J23 Lowering the motor wasn't enough to connect it
 
-*Milestone 4 | Personal retrospective journal*
+*Milestone 4 | Retrospective build notes*
 
-## Design and iteration
+This coupling problem held up the integrated machine. I could select a hopper and bring the motor down, but the two mating features didn't necessarily arrive at an angle where they could engage.
 
-I reached a mechanical roadblock when lowering the motor did not consistently connect it to the auger. The first coupling depended on a particular relative angle. After a hopper change or an auger stop, the mating features could arrive in an orientation that prevented them from seating.
-
-This was different from a coupling slipping under load. Before torque transfer could be assessed, the connection had to form through vertical motion alone. Concentric shaft axes were necessary but did not solve the angular registration problem.
-
-I experimented with the interface and changed it to serrated mating teeth. The milestone notes describe that revision as the practical solution to the engagement problem. I interpret the claim of alignment at any angle as the reported aim and outcome of that redesign, rather than a measured guarantee across every orientation. The archived keyed adapter below documents an earlier geometric stage; it is not substituted for the unrecovered tooth-generating features.
-
-## Technical detail
-
-The first coupling concept had an angular-registration problem. The motor-side feature and auger-side feature could mate only when they arrived at a specific orientation. The carousel selected the correct hopper, but lowering the drive did not guarantee that the coupling features lined up. The notes describe this as a roadblock because unsuccessful engagement prevented further integrated tests.
-
-The failure showed that coincident shaft axes were necessary but insufficient. Angular orientation and engagement depth determined whether the features could lower into place. A model could appear concentric while opposing projections still collided during the approach, explaining why a connection that transmitted torque when assembled could fail during automatic re-engagement.
-
-The V18 auger studio preserves a keyed motor-adapter stage. Sketch 15 is on a face of Extrude 2 with a displayed 2.5 cm circular profile. Extrude 13 adds two selected regions at 0.2 cm depth into Part 4. Sketch 13 lies on a face of that extrusion, displays a 2.3 cm circular boundary, and divides the profile into keyed regions; Onshape marks it not fully defined. Extrude 11 adds two regions at 0.75 cm depth into Part 4. These features explain an angularly registered geometry, but this archive is not matched to the exact failed printed coupler or to the later serrated tooth dimensions.
-
-I changed the interface to repeated serrated teeth. More repeated mating features reduced dependence on one relative orientation, and the milestone notes report that change as the practical solution. No orientation sweep or engagement success-rate series is preserved, so the reported behavior remains distinct from a guarantee for every possible initial angle.
-
-Tooth count, spacing, height, flank shape, lead-in, clearance, and axial overlap govern whether the halves seat or meet tip-to-tip. Both halves also need a secure shaft connection. The notes establish the serrated redesign, but its detailed tooth-generating sketch and dimensions are not available in this source set.
-
-The relevant performance question was repeatable seating after independent auger stops, followed by torque transfer. A single assembled connection could not address the original failure mode. The record does not supply a measured failure rate or a controlled old-versus-new engagement series, so I have not assigned one to the redesign.
-
-The lift, disk, and coupling now had complementary jobs: separate the drive, select a hopper, and reconnect to transmit torque. That relationship dictated the later application's order of operations. It also explained why changing only actuator travel or motor speed would not solve a misregistered engagement face.
-
-## Process images
+It was especially awkward because the connection could work once assembled. That wasn't the same job as reconnecting after an independent auger stop. The mechanism had to find engagement from whatever relative orientation was left, without me lining the faces up by hand.
 
 ![V18 auger motor adapter: Sketch 15 on a face of Extrude 2, displayed 2.5 cm circular profile before the adapter base is added.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/cad_v18_adapter_base_sketch.jpg)
 
@@ -2097,6 +2129,18 @@ V18 auger motor adapter: Sketch 15 on a face of Extrude 2, displayed 2.5 cm circ
 ![V18 motor adapter: Extrude 13 adds two selected Sketch 15 regions at 0.2 cm blind depth into Part 4.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/cad_v18_adapter_base_extrude.jpg)
 
 V18 motor adapter: Extrude 13 adds two selected Sketch 15 regions at 0.2 cm blind depth into Part 4.
+
+I tried different interface ideas and moved to serrated mating teeth. The notes describe that as the practical solution. More repeated teeth reduced the dependence on one particular angular alignment, although I don't have an orientation sweep or engagement failure-rate log to put numbers behind it.
+
+The earlier keyed adapter in V18 is worth showing because it makes the registration issue visible. It isn't a recovered feature history for the later serrations, and I haven't matched it to the exact failed print. I don't want a convenient saved model to quietly stand in for a different physical part.
+
+## The earlier adapter and the tooth redesign
+
+The V18 auger studio preserves a keyed motor-adapter stage. Sketch 15 is on a face of Extrude 2 with a displayed 2.5 cm circular profile. Extrude 13 adds two selected regions at 0.2 cm depth into Part 4. Sketch 13 lies on a face of that extrusion, displays a 2.3 cm circular boundary, and divides the profile into keyed regions; Onshape marks it not fully defined. Extrude 11 adds two regions at 0.75 cm depth into Part 4. These features explain an angularly registered geometry, but this archive isn't matched to the exact failed printed coupler or to the later serrated tooth dimensions.
+
+I changed the interface to repeated serrated teeth. More repeated mating features reduced dependence on one relative orientation, and the milestone notes report that change as the practical solution. No orientation sweep or engagement success-rate series is preserved, so the reported behavior remains distinct from a guarantee for every possible initial angle.
+
+## Saved adapter stages
 
 ![V18 motor adapter: Sketch 13 on a face of Extrude 13 shows a 2.3 cm circular boundary and keyed engagement profile. Onshape reports this sketch is not fully defined.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/cad_v18_adapter_key_sketch.jpg)
 
@@ -2122,9 +2166,22 @@ Full frame, carousel, drive, and screen CAD from M4.
 
 B4 servo actuator assem. CAD of the lift concept with lead screw, brackets, and motor assembly. Confirm its relationship to the built mechanism.
 
-## Outcome and reflection
+The shared-drive idea depended on this detail more than the early layout made it seem. The disk could get to the right hopper and the lift could get to the right height, yet neither would help if the faces couldn't seat. I needed a connection that could form again, not just one that could transmit torque when already together.
 
-The coupling redesign completed the mechanical sequence behind the shared-drive idea: lift to disconnect, rotate to select a hopper, then lower and transfer torque. The important lesson was to design for forming the connection, not just for carrying torque once connected. The source record supports the serrated redesign without supplying a quantified engagement failure rate.
+<details>
+<summary>Notes added while reconstructing this entry</summary>
+
+The first coupling concept had an angular-registration problem. The motor-side feature and auger-side feature could mate only when they arrived at a specific orientation. The carousel selected the correct hopper, but lowering the drive didn't guarantee that the coupling features lined up. The notes describe this as a roadblock because unsuccessful engagement prevented further integrated tests.
+
+The failure showed that coincident shaft axes were necessary but insufficient. Angular orientation and engagement depth determined whether the features could lower into place. A model could appear concentric while opposing projections still collided during the approach, explaining why a connection that transmitted torque when assembled could fail during automatic re-engagement.
+
+Tooth count, spacing, height, flank shape, lead-in, clearance, and axial overlap govern whether the halves seat or meet tip-to-tip. Both halves also need a secure shaft connection. The notes establish the serrated redesign, but its detailed tooth-generating sketch and dimensions aren't available in this source set.
+
+The relevant performance question was repeatable seating after independent auger stops, followed by torque transfer. A single assembled connection could not address the original failure mode. The record doesn't supply a measured failure rate or a controlled old-versus-new engagement series, so I've not assigned one to the redesign.
+
+The lift, disk, and coupling now had complementary jobs: separate the drive, select a hopper, and reconnect to transmit torque. That relationship dictated the later application's order of operations. It also explained why changing only actuator travel or motor speed would not solve a misregistered engagement face.
+
+</details>
 
 ## Sources
 
@@ -2141,35 +2198,13 @@ CAD construction captures are retrospective inspections of saved models, capture
 
 <a id="j24"></a>
 
-# J24 Construct the extrusion frame and integrate the carousel, scale, lift, and screen
+# J24 Getting the separate mechanisms onto one frame
 
-*Milestone 4 | Personal retrospective journal*
+*Milestone 4 | Retrospective build notes*
 
-## Design and iteration
+I built the frame from aluminum extrusion, cutting the members with an electric saw and assembling the structure around the mechanisms. The BOM lists 3030 T-slot parts and connectors. This was where the project stopped being a set of things that could sit separately on the bench.
 
-I built an aluminum-extrusion frame to bring the carousel, lift, scale, screen, and electronics into one supported machine. The milestone notes describe cutting the members with an electric saw and assembling them around the intended operating envelope. The BOM identifies 3030 T-slot extrusion and associated connectors.
-
-Integration made the alignment chain much clearer: the lift held the motor, the motor had to meet the selected auger, and the outlet had to remain over the receiving container on the scale. Each subsystem could function on the bench while still interfering with another once mounted.
-
-The CAD sequence below records the frame layout, rails, uprights, and plates before the full assembly. I kept the archived nominal dimensions separate from the manufactured cut list and overall measurements, which are not available in this record. The physical assembly image connects the layout to the built prototype without turning the CAD into a collision or load-validation report.
-
-## Technical detail
-
-The V18 Superstructure studio begins with Sketch 1 on the Top plane, containing the frame layout and repeated rail and attachment geometry. Visible dimensions include 50 and 35 in the centimetre-based studio. Extrude 1 creates the first base rail solids from multiple selected sketch faces at a 3 cm depth.
-
-Subsequent features build the structure upward and add plates. Extrude 3 uses selected Sketch 1 regions at a 0.5 cm depth, with existing uprights and new base plate geometry visible in the preview. Further sketches, extrusions, and mirrors lead to the saved superstructure, preserving the order from layout to rails, uprights, and plates.
-
-Extrude 2 selects four faces of Sketch 1, creates New solids, and uses a 48 cm blind depth for the uprights. That is the archived CAD member height. Attachments and supports can extend the overall machine beyond a nominal rail length, so it does not independently establish the measured assembled envelope.
-
-I used the 3030 extrusion and connectors identified in the BOM, cutting and assembling the frame as described in M4. The saved CAD contains nominal design dimensions; the fabrication record does not preserve a complete measured cut list, kerf allowances, and bracket offsets. Those remain limits on dimensional reproduction from this account alone.
-
-Integration brought several alignment requirements together. The disk axis had to be supported by the frame, the selected hopper outlet had to sit over the receiving container, and the lifted motor's axis had to meet the auger coupling when lowered. The scale also needed access for the cup and a support arrangement that did not mechanically interfere with the powder path.
-
-The frame also carried the screen and electronics. Their placement affected control access, visibility of mass feedback, removal of contact parts, and wiring service. The later full assembly CAD shows one populated hopper and linked or mate warnings. It records packaging, without constituting a resolved simulation of a fully loaded eight-hopper machine.
-
-The physical assembly photograph shows the carousel and drive packaged into the frame. The archived construction views provide the preceding CAD stages, while photographs of every physical installation step are not preserved. I kept those two forms of evidence separate rather than treating a final view as a record of frame squaring and every fitting adjustment.
-
-## Process images
+The alignment chain was pretty unforgiving. Motor to auger, auger and hopper to outlet, outlet to receiving cup, cup on the scale. Moving one mounting position could affect several of those relationships.
 
 ![V18 frame: Sketch 1 on Top plane, including rail/attachment layout and visible 50 and 35 dimensions in the centimetre-based model.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/cad_v18_frame_sketch.jpg)
 
@@ -2178,6 +2213,22 @@ V18 frame: Sketch 1 on Top plane, including rail/attachment layout and visible 5
 ![V18 frame: Extrude 1 creates the first base rail solids from selected Sketch 1 faces, blind depth 3 cm.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/cad_v18_frame_rails.jpg)
 
 V18 frame: Extrude 1 creates the first base rail solids from selected Sketch 1 faces, blind depth 3 cm.
+
+The screen and electronics needed places too. I wanted the controls reachable, but not at the cost of blocking powder loading, cleaning access, or the drive's raised space. Everything that looked like spare room in one isolated CAD model was potentially needed by something else.
+
+The archived frame sequence below shows the layout, rails, uprights, and plates. Those are nominal design dimensions. I don't have the complete physical cut list or measured overall envelope in this record. The assembly photo is the bridge to the actual build, not a substitute for every fitting adjustment made during it.
+
+## Frame construction notes
+
+The V18 Superstructure studio begins with Sketch 1 on the Top plane, containing the frame layout and repeated rail and attachment geometry. Visible dimensions include 50 and 35 in the centimetre-based studio. Extrude 1 creates the first base rail solids from multiple selected sketch faces at a 3 cm depth.
+
+Subsequent features build the structure upward and add plates. Extrude 3 uses selected Sketch 1 regions at a 0.5 cm depth, with existing uprights and new base plate geometry visible in the preview. Further sketches, extrusions, and mirrors lead to the saved superstructure, preserving the order from layout to rails, uprights, and plates.
+
+Extrude 2 selects four faces of Sketch 1, creates New solids, and uses a 48 cm blind depth for the uprights. That is the archived CAD member height. Attachments and supports can extend the overall machine beyond a nominal rail length, so it doesn't independently establish the measured assembled envelope.
+
+Integration brought several alignment requirements together. The disk axis had to be supported by the frame, the selected hopper outlet had to sit over the receiving container, and the lifted motor's axis had to meet the auger coupling when lowered. The scale also needed access for the cup and a support arrangement that didn't mechanically interfere with the powder path.
+
+## Building up the frame
 
 ![V18 frame: Extrude 3 creates plate geometry at 0.5 cm depth; previously created rails and uprights remain in the construction preview.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/cad_v18_frame_baseplates.jpg)
 
@@ -2207,9 +2258,18 @@ Physical multi-doser assembly photograph included in M4.
 
 Full frame, carousel, drive, and screen CAD from M4.
 
-## Outcome and reflection
+The machine had an overall structure now. That made the next software work less abstract: a slot number had to correspond to the hopper under a real lifted drive, above a real cup. Good-looking packaging wasn't enough if that chain of alignment didn't survive motion.
 
-The frame changed the project from several related mechanisms into one integrated physical arrangement. Alignment, cup access, lifted-drive clearance, and service access became shared constraints. The next work was to express that layout in slot references and ordered motion commands so software could select the correct feeder predictably.
+<details>
+<summary>Notes added while reconstructing this entry</summary>
+
+I used the 3030 extrusion and connectors identified in the BOM, cutting and assembling the frame as described in M4. The saved CAD contains nominal design dimensions; the fabrication record doesn't preserve a complete measured cut list, kerf allowances, and bracket offsets. Those remain limits on dimensional reproduction from this account alone.
+
+The frame also carried the screen and electronics. Their placement affected control access, visibility of mass feedback, removal of contact parts, and wiring service. The later full assembly CAD shows one populated hopper and linked or mate warnings. It records packaging, without constituting a resolved simulation of a fully loaded eight-hopper machine.
+
+The physical assembly photograph shows the carousel and drive packaged into the frame. The archived construction views provide the preceding CAD stages, while photographs of every physical installation step aren't preserved. I kept those two forms of evidence separate rather than treating a final view as a record of frame squaring and every fitting adjustment.
+
+</details>
 
 ## Sources
 
@@ -2227,33 +2287,41 @@ CAD construction captures are retrospective inspections of saved models, capture
 
 <a id="j25"></a>
 
-# J25 Convert carousel positions to step counts and establish a known reference
+# J25 The controller needs to know which hopper is there
 
-*Milestone 4 | Personal retrospective journal*
+*Milestone 4 | Retrospective build notes*
 
-## Design and iteration
+Eight positions gives me 45 degrees per station, but the controller can't do much with that until it's tied to the driver configuration. The saved direct-drive setup uses 200 full steps and 32 microsteps: 6400 pulses per revolution, 800 per slot.
 
-I translated the carousel's eight equal positions into motor commands. Geometrically, adjacent stations are 45 degrees apart. Electrically, the corresponding pulse count depends on full steps, microsteps, and any motor-to-disk transmission ratio.
+The integral count was useful. I didn't want rounding at each station gradually changing the commanded alignment. But having a clean calculation didn't make the starting slot known, and it didn't detect missed motion.
 
-The saved step-count firmware uses 200 full steps per revolution, 32 microsteps, and direct drive. That gives 6400 pulses per disk revolution and 800 per station. An integral station count avoids rounding accumulation, but it still assumes that the installed driver settings match the program and that the disk follows the commanded motion.
+![Current Rotary Disk V2 Part Studio showing eight openings, two plates, spacers, and central indexing features.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/cad_main_rotary.jpg)
 
-I also separated a known reference from the ability to move between slots. The recovered firmware starts with position unknown and requires the operator to declare an aligned slot. Later application text describes a switch and detent arrangement. Because those are different source states, I documented the manual reference behavior actually present in the step-count code rather than combining them into an automatic homing claim.
+Current Rotary Disk V2 Part Studio showing eight openings, two plates, spacers, and central indexing features.
 
-## Technical detail
+In the recovered step-count firmware, position starts UNKNOWN. The operator aligns a hopper and declares its slot with SET SLOT. That's a reference-setting operation, not automatic homing. It matters because a program can keep perfectly tidy counts from a wrong starting assumption.
+
+There's still a version mismatch in the archive: later app wording mentions a switch and indent, while the recovered disk code uses bidirectional counted steps without that switch-homing implementation. I can explain each version, but I can't merge them into a final setup the source doesn't identify.
+
+## Steps, slots, and UNKNOWN
 
 The timer-based disk firmware specifies eight slots, 200 full steps per motor revolution, 32 microsteps, and a 1:1 motor-to-disk ratio. The calibration is therefore 200 times 32 divided by eight, or 800 step pulses per station and 6400 per revolution. This is the configuration actually declared in the saved file; the driver must physically use the matching microstep mode for the calculation to hold.
 
 The geometry gives 45 degrees per slot, while the motor configuration gives electrical pulses per slot. They agree only if the gearing, microstep mode, direction, and physical reference are correct. Changing the driver microstep switch without updating the software would change disk travel even though the slot-number arithmetic remains unchanged.
 
-The step-count firmware starts with position unknown. SET SLOT n validates the requested range 1 through 8, refuses while auger or disk motion is active, stores the current slot, marks position known, and enables the disk driver. It does not rotate to a sensor or discover the physical location; the operator must already align the disk correctly before declaring the slot.
+The step-count firmware starts with position unknown. SET SLOT n validates the requested range 1 through 8, refuses while auger or disk motion is active, stores the current slot, marks position known, and enables the disk driver. It doesn't rotate to a sensor or discover the physical location; the operator must already align the disk correctly before declaring the slot.
 
 A requested movement is rejected when the reference is unknown. DISK STOP and DISK DISABLE stop motion and invalidate position as appropriate. That state handling prevents the program from continuing to treat an interrupted movement as a completed index. A later open/reset cycle also needs the known slot restored if the physical disk has not moved.
 
 The later app mentions a switch, an indent, and counterclockwise indexing. The recovered disk firmware instead uses bidirectional counted steps and no matching switch-homing implementation. These are different source states. The account therefore describes the SET SLOT reference procedure for the saved firmware, while the final matched switch-based configuration remains unidentified.
 
-The pulse count defines intended travel, while a known physical starting alignment gives slot numbers their meaning. Repeated alignment around all eight stations and recovery after interruption are separate physical checks. No measured home-position error or full station-error series is preserved with this revision.
+## More views
 
-## Archived implementation
+![Physical multi-doser assembly photograph included in M4.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m4_2.jpg)
+
+Physical multi-doser assembly photograph included in M4.
+
+## Code for this revision
 
 Exact archived source excerpts. The file labels identify their revisions.
 
@@ -2308,19 +2376,14 @@ Recovered later Library Uno firmware; uses Timer1 for auger and Timer2 with step
   requestedSlot = 0;
 ```
 
-## Process images
+For this firmware, 800 pulses means one intended station, starting from a position the operator has established. Interrupt a move and that position may no longer be trustworthy. Keeping UNKNOWN as a real state was more useful than pretending the last requested slot was where the disk must have ended up.
 
-![Current Rotary Disk V2 Part Studio showing eight openings, two plates, spacers, and central indexing features.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/cad_main_rotary.jpg)
+<details>
+<summary>Notes added while reconstructing this entry</summary>
 
-Current Rotary Disk V2 Part Studio showing eight openings, two plates, spacers, and central indexing features.
+The pulse count defines intended travel, while a known physical starting alignment gives slot numbers their meaning. Repeated alignment around all eight stations and recovery after interruption are separate physical checks. No measured home-position error or full station-error series is preserved with this revision.
 
-![Physical multi-doser assembly photograph included in M4.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m4_2.jpg)
-
-Physical multi-doser assembly photograph included in M4.
-
-## Outcome and reflection
-
-Slot motion became an explicit combination of geometry, pulse calibration, and a known starting reference. The recovered code also invalidates position after interrupted motion instead of trusting an unfinished index. The unresolved switch-based versus step-count revision remains a configuration limitation, while the 800-pulse station calculation is fully specified for the archived direct-drive setup.
+</details>
 
 ## Sources
 
@@ -2337,33 +2400,41 @@ CAD construction captures are retrospective inspections of saved models, capture
 
 <a id="j26"></a>
 
-# J26 Choose the shortest carousel route and wait for completed indexing
+# J26 One slot backward instead of seven forward
 
-*Milestone 4 | Personal retrospective journal*
+*Milestone 4 | Retrospective build notes*
 
-## Design and iteration
+Always rotating in one direction wastes a lot of movement near the numbering boundary. From slot 1 to slot 8, I only need one station in reverse, not seven forward. I added the shorter-route calculation to the step-count version.
 
-I added shortest-route selection so the carousel could reverse rather than make nearly a full revolution to reach a nearby hopper across the slot-number boundary. The step-count firmware compares forward and reverse distances and uses a consistent forward choice for a four-station tie.
+The four-station case needed a tie rule, so the code chooses forward when both distances are equal. Requesting the current slot doesn't need a move at all. These are simple cases, but they're exactly the sort of details that get lost if I just write 'shortest path added.'
 
-Reducing travel did not change the required mechanical order. The drive had to stay clear throughout the index, and the next action had to wait for completion. An accepted command was therefore not enough information for the Pi to lower the actuator.
+![Current Rotary Disk V2 Part Studio showing eight openings, two plates, spacers, and central indexing features.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/cad_main_rotary.jpg)
 
-I used separate command and completion responses, including the destination slot in the completion message. The code-derived examples below explain wraparound and tie behavior. They are calculations of what this revision requests, rather than a substituted set of measured physical alignment trials.
+Current Rotary Disk V2 Part Studio showing eight openings, two plates, spacers, and central indexing features.
 
-## Technical detail
+The more consequential part was waiting. An OK response says the command started; it doesn't mean the disk has stopped at the target. The Pi needed the destination in DONE DISK SLOT before lowering the drive.
+
+The timer counts the move, then the main loop updates the slot and reports completion. I kept the examples below as code-derived behavior. I don't have a full physical alignment table for every wraparound, tie, and interrupted move.
+
+## Route calculation and completion
 
 The step-count firmware calculates forward distance as (requested + 8 - current) modulo 8 and reverse distance as (current + 8 - requested) modulo 8. It chooses the smaller distance, with forward motion for a four-slot tie. This is a concrete implementation of the shortest-route note, rather than simply assuming the motor always turns in one direction.
 
 For example, from slot 1 to slot 8, the forward distance is seven slots and the reverse distance is one, so the firmware requests one reverse slot. From slot 2 to slot 6, both distances are four, so it takes the documented forward tie. Requesting the current slot performs no index and immediately reports that slot while maintaining driver hold. These are derived examples of the code, not recorded physical tests.
 
-startDiskMove() refuses indexing if the auger is moving, the disk is already busy, a disk alarm is latched, or the step calibration is not integral. It sets direction, enables the driver, allows a 20 ms enable-settling interval and a 20 microsecond direction-settling interval, then starts Timer2. The nominal disk frequency is 1000 pulses per second in the recovered configuration.
+startDiskMove() refuses indexing if the auger is moving, the disk is already busy, a disk alarm is latched, or the step calibration isn't integral. It sets direction, enables the driver, allows a 20 ms enable-settling interval and a 20 microsecond direction-settling interval, then starts Timer2. The disk is configured for 1000 pulses per second in the recovered configuration.
 
 The number of timer compare events is twice the number of steps because the output toggles once high and once low for each full pulse. The interrupt decrements that count and disconnects the output when the move ends. Completion is then handled in the main loop, which updates the slot reference and emits DONE DISK SLOT n. That response separates an accepted command from a completed move.
 
-The Pi-side recipe worker waits for a motion response and checks that the slot number in DONE DISK SLOT matches the requested target. It does not lower the actuator merely because an OK line says motion started. That distinction matters because the mechanical coupling must stay clear throughout indexing.
+The Pi-side recipe worker waits for a motion response and checks that the slot number in DONE DISK SLOT matches the requested target. It doesn't lower the actuator merely because an OK line says motion started. That matters here because the mechanical coupling must stay clear throughout indexing.
 
-These formulas and responses document the bidirectional step-count revision. Later switch and counterclockwise descriptions belong to a different state of the app. The available record contains the routing implementation, but no complete physical trial set for wraparound, ties, same-slot requests, and interruption recovery.
+## More views
 
-## Archived implementation
+![Physical multi-doser assembly photograph included in M4.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m4_2.jpg)
+
+Physical multi-doser assembly photograph included in M4.
+
+## Code for this revision
 
 Exact archived source excerpts. The file labels identify their revisions.
 
@@ -2434,19 +2505,14 @@ void updateDiskCompletion() {
 }
 ```
 
-## Process images
+Less rotation was useful, but it couldn't come at the expense of lowering into a moving disk. The completion response mattered more to the shared-drive sequence than the time saved by taking the shorter route.
 
-![Current Rotary Disk V2 Part Studio showing eight openings, two plates, spacers, and central indexing features.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/cad_main_rotary.jpg)
+<details>
+<summary>Notes added while reconstructing this entry</summary>
 
-Current Rotary Disk V2 Part Studio showing eight openings, two plates, spacers, and central indexing features.
+These formulas and responses document the bidirectional step-count revision. Later switch and counterclockwise descriptions belong to a different state of the app. The available record contains the routing implementation, but no complete physical trial set for wraparound, ties, same-slot requests, and interruption recovery.
 
-![Physical multi-doser assembly photograph included in M4.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m4_2.jpg)
-
-Physical multi-doser assembly photograph included in M4.
-
-## Outcome and reflection
-
-The routing logic reduced unnecessary commanded travel while preserving a clear completion boundary. The more significant integration detail was waiting for the correct DONE response before lowering the drive. Shorter rotation helped efficiency, but mechanical endpoint accuracy still depended on the reference, calibration, and installed disk following the motion.
+</details>
 
 ## Sources
 
@@ -2463,33 +2529,45 @@ CAD construction captures are retrospective inspections of saved models, capture
 
 <a id="j27"></a>
 
-# J27 Sequence lift, indexing, engagement, and mass feedback for a multi-powder recipe
+# J27 Getting the recipe to wait for the mechanisms
 
-*Milestone 4 | Personal retrospective journal*
+*Milestone 4 | Retrospective build notes*
 
-## Design and iteration
+Moving from one powder to a recipe made the application more demanding. It had to know the contents of each slot, the requested amount, and where the mechanisms were before it could even start the next dispense.
 
-I extended the application from a single target into a sequence of selected ingredients. Each active recipe item needed a slot, a powder name, and its own requested mass. The app then had to coordinate positioning before handing that item to the mass controller.
+I used the same basic sequence I had been building mechanically: raise, index, lower, feed. The app waits at the boundaries instead of firing all the commands and assuming the hardware keeps up. If the actuator position is unknown, it doesn't go on with an invented position.
 
-The sequence was raise, index, lower, and dispense. I made the transitions depend on state and completion responses rather than assuming each mechanism finished immediately. The controller for the actuator was separate from the Uno, so cancellation also had to reach more than one device.
+![Physical multi-doser assembly photograph included in M4.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m4_2.jpg)
 
-A new ingredient used a starting mass reference so earlier ingredients in the receiving container were not counted as newly added powder. The later app also retained per-item result fields for CSV output. That provides a useful structure for integrated trials, but the available record does not include a complete measured recipe series tied to one confirmed final app-and-firmware configuration.
+Physical multi-doser assembly photograph included in M4.
 
-## Technical detail
+Cancellation was another awkward edge. The actuator has its own controller, so STOP ALL on the Uno isn't a stop for the whole machine. The app has to reach both devices and stop trusting position after interruption.
+
+For the mass, each ingredient needs a new starting reference. Otherwise powder already in the cup could be mistaken for part of the next addition. The app also has CSV fields for per-item results. I don't have a complete measured recipe tied to one matched final software set here, so those fields are a logging feature rather than a result table I can populate from the single-powder trials.
+
+## The preparation sequence
 
 The later app builds active_run_items from slots with a positive requested amount, preserving each slot's powder name and target. It initializes per-item dispensed, remaining, and status values, computes the total recipe target, clears cancellation events, and begins preparing the first item. That is the data model behind the multi-powder workflow.
 
-The preparation worker first checks cancellation and actuator state. If the actuator is UNKNOWN, it refuses to continue. If it is not UP, it sends ACTUATOR UP and waits for a motion response with a 70 s timeout. If it is already UP, it checks status and handles the source's declared reference procedure. Only then does it request DISK GOTO for the next item.
+The preparation worker first checks cancellation and actuator state. If the actuator is UNKNOWN, it refuses to continue. If it isn't UP, it sends ACTUATOR UP and waits for a motion response with a 70 s timeout. If it is already UP, it checks status and handles the source's declared reference procedure. Only then does it request DISK GOTO for the next item.
 
 Disk motion has a 12 s timeout in the recipe worker. The returned line must contain DONE DISK SLOT with the requested slot number. Once that is confirmed, the app records the slot, checks cancellation again, sends ACTUATOR DOWN, waits for completion, and queues a ready result. The main UI then launches mass dispensing for the item. This is an explicit raise/index/lower/feed chain with completion checks between actions.
 
-The actuator has a separate controller, so Uno STOP ALL does not stop every moving mechanism by itself. The app's force-stop route also sends an actuator stop and marks actuator and disk state unknown. Cancellation checks between stages prevent a canceled preparation sequence from proceeding through the remaining actions on its old assumptions.
+The actuator has a separate controller, so Uno STOP ALL doesn't stop every moving mechanism by itself. The app's force-stop route also sends an actuator stop and marks actuator and disk state unknown. Cancellation checks between stages prevent a canceled preparation sequence from proceeding through the remaining actions on its old assumptions.
 
-After all recipe items have dispensed, preparation is called with no next item; the worker raises the actuator and queues completion. The app exports per-item results to CSV, including target, actual mass, error, remaining amount, and status. Those fields can document a real integrated trial, but their presence in source code does not prove that such a trial occurred successfully.
+After all recipe items have dispensed, preparation is called with no next item; the worker raises the actuator and queues completion. The app exports per-item results to CSV, including target, actual mass, error, remaining amount, and status. Those fields can document a real integrated trial, but their presence in source code doesn't prove that such a trial occurred successfully.
 
-The final paired actuator firmware, disk firmware, and measured recipe transcript are not identified in the available archive. In particular, switch-based app wording differs from the recovered step-count disk code. The state and command flow above describe the saved implementation without asserting that an arbitrary combination of those files is a validated final build.
+## More views
 
-## Archived implementation
+![Current Main workspace SuperStructureAssem. Only one hopper is visible in this assembly view. CAD includes mate or linked-reference warnings; the image is not proof of a fully populated or validated mechanism.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/cad_main_assembly.jpg)
+
+Current Main workspace SuperStructureAssem. Only one hopper is visible in this assembly view. CAD includes mate or linked-reference warnings; the image is not proof of a fully populated or validated mechanism.
+
+![Full frame, carousel, drive, and screen CAD from M4.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m4_4.jpg)
+
+Full frame, carousel, drive, and screen CAD from M4.
+
+## Code for this revision
 
 Exact archived source excerpts. The file labels identify their revisions.
 
@@ -2559,23 +2637,14 @@ def start_recipe_preparation():
     root.after(100, process_recipe_result_queue)
 ```
 
-## Process images
+The recipe logic was mostly about making each stage earn the next one: known position, completed movement, then feeding. That is much more than adding eight quantities to the screen. The remaining gap in this record is the matched firmware and full run data needed to check the whole sequence together.
 
-![Physical multi-doser assembly photograph included in M4.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m4_2.jpg)
+<details>
+<summary>Notes added while reconstructing this entry</summary>
 
-Physical multi-doser assembly photograph included in M4.
+The final paired actuator firmware, disk firmware, and measured recipe transcript aren't identified in the available archive. In particular, switch-based app wording differs from the recovered step-count disk code. The state and command flow above describe the saved implementation without asserting that an arbitrary combination of those files is a validated final build.
 
-![Current Main workspace SuperStructureAssem. Only one hopper is visible in this assembly view. CAD includes mate or linked-reference warnings; the image is not proof of a fully populated or validated mechanism.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/cad_main_assembly.jpg)
-
-Current Main workspace SuperStructureAssem. Only one hopper is visible in this assembly view. CAD includes mate or linked-reference warnings; the image is not proof of a fully populated or validated mechanism.
-
-![Full frame, carousel, drive, and screen CAD from M4.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m4_4.jpg)
-
-Full frame, carousel, drive, and screen CAD from M4.
-
-## Outcome and reflection
-
-The application encoded the complete preparation sequence and separated item results from recipe state. That was a substantial step beyond putting eight slots on a screen. The remaining verification boundary was the installed combination of actuator firmware, disk firmware, and app, together with a measured multi-ingredient run; the existing single-powder results cannot substitute for that evidence.
+</details>
 
 ## Sources
 
@@ -2593,33 +2662,41 @@ CAD construction captures are retrospective inspections of saved models, capture
 
 <a id="j28"></a>
 
-# J28 Move STEP generation from the software loop to hardware timers
+# J28 The pulse generator was another speed limit
 
-*Milestone 5 | Personal retrospective journal*
+*Milestone 5 | Retrospective build notes*
 
-## Design and iteration
+After changing the drive hardware, I still had to look at what the Arduino was actually asking it to do. The early version toggled STEP in software. The main loop also had commands and timing work to handle, so pulse generation could become a bottleneck of its own.
 
-I revisited motor speed at the pulse-generation level after the mechanical drive upgrade. The early controller toggled STEP through software timing checks. As the main loop handled other work, generating the intended waveform became a separate question from whether the loaded motor could follow it.
+I moved the later version to hardware timers. Timer1 handled the auger and Timer2 handled the disk. That let the hardware generate the repeated transitions while software still counted finite motions and reported when they ended.
 
-I changed the later firmware to use hardware timers for the step outputs. Timer1 generated the auger waveform, while Timer2 handled the disk. This moved repeated output transitions away from ordinary loop timing and still allowed software to count finite motions and report their completion.
+![Breadboard motor-control wiring in the early prototype.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m2_2.jpg)
 
-The change also affected wiring. Hardware output-compare channels use particular pins, so retaining an old pin map with the new timing code would not produce the intended system. I documented the timer equation, configured rates, pins, and enable behavior together. Those settings describe the program; they are not a measured maximum loaded speed.
+Breadboard motor-control wiring in the early prototype.
 
-## Technical detail
+The pin change was part of the work, not a footnote. OC1A means the auger STEP output is on pin 9 in this setup, and the disk uses pin 11. Keeping the earlier wiring while loading this firmware would defeat the whole change.
+
+I kept the timer calculation with the configured rates below. It tells me the intended electrical waveform. It doesn't prove the loaded motor can follow every pulse at 20 kHz. Getting the timing source out of the busy loop was one problem; getting the mechanism through resistant powder was still another.
+
+## Timers, pins, and rates
 
 The M5 notes distinguish a basic pulse-generation version from a hardware-timer version. The early July firmware calculates halfPeriodMicros as 500000 divided by the current step rate and toggles STEP in software. That arrangement depends on how often the main loop returns to the timing check. Serial handling, acceleration updates, and other work compete with pulse timing.
 
 The later firmware assigns auger STEP to pin 9, the AVR OC1A output, and uses Timer1 in CTC mode with prescaler 1. The output toggles on each compare match. The source's conversion is frequency = F_CPU divided by twice (OCR1A + 1). On a 16 MHz configuration, 20,000 pulses per second corresponds to OCR1A = 399. This is a calculated timer setting, not a measured maximum loaded motor speed.
 
-Continuous auger motion starts at 2000 Hz and changes by 500 Hz on nominal 10 ms ramp updates. The timer-based settings use 20,000 Hz TURBO for both families, 2400 Hz FREE NORMAL, and 9000 Hz NONFREE NORMAL. These are later parameters and differ from the early July rates; they are not one speed configuration carried unchanged through the project.
+Continuous auger motion starts at 2000 Hz and changes by 500 Hz on nominal 10 ms ramp updates. The timer-based settings use 20,000 Hz TURBO for both families, 2400 Hz FREE NORMAL, and 9000 Hz NONFREE NORMAL. These are later parameters and differ from the early July rates; they aren't one speed configuration carried unchanged through the project.
 
-Finite auger pulses enable the Timer1 compare interrupt and count two compare matches per requested step. When the count reaches zero, the interrupt disconnects the timer output and sets a completion flag. The main loop reports completion separately. Hardware creates the waveform while software retains a finite-motion boundary and command reporting.
+Finite auger pulses enable the Timer1 compare interrupt and count two compare matches per requested step. When the count reaches zero, the interrupt disconnects the timer output and sets a completion flag. The main loop reports completion separately. Hardware creates the waveform while software retains a defined end to the motion and command reporting.
 
 The disk uses Timer2 and pin 11, OC2A, with a prescaler of 64 and its own compare-match count. Timer selection therefore changes the wiring: auger STEP moves from the early pin 2 to pin 9, and disk STEP uses pin 11. The later integrated drive also uses HIGH for enable and LOW for disable. These pin and polarity changes must accompany the firmware change.
 
-Timer configuration establishes the intended electrical timing, while the motor and powder load determine whether the shaft follows it. The record contains no preserved waveform measurement paired with a loaded-speed series. The configured 20 kHz rate is therefore reported as a command setting, without assigning it the meaning of a demonstrated reliable mechanical limit.
+## More views
 
-## Archived implementation
+![Physical multi-doser assembly photograph included in M4.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m4_2.jpg)
+
+Physical multi-doser assembly photograph included in M4.
+
+## Code for this revision
 
 Exact archived source excerpts. The file labels identify their revisions.
 
@@ -2713,19 +2790,14 @@ void updateContinuousRamp() {
 }
 ```
 
-## Process images
+This was a more concrete improvement than just raising the requested speed again. I had changed how the waveform was produced. A measured pulse trace paired with a loaded run would be the next way to check both halves of that change; that paired measurement isn't in the saved record.
 
-![Breadboard motor-control wiring in the early prototype.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m2_2.jpg)
+<details>
+<summary>Notes added while reconstructing this entry</summary>
 
-Breadboard motor-control wiring in the early prototype.
+Timer configuration establishes the intended electrical timing, while the motor and powder load determine whether the shaft follows it. The record contains no preserved waveform measurement paired with a loaded-speed series. The configured 20 kHz rate is therefore reported as a command setting, without assigning it the meaning of a demonstrated reliable mechanical limit.
 
-![Physical multi-doser assembly photograph included in M4.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m4_2.jpg)
-
-Physical multi-doser assembly photograph included in M4.
-
-## Outcome and reflection
-
-Hardware timers provided a more regular timing source while preserving phase commands and bounded pulses. The optimization addressed how steps were generated, leaving motor torque and powder resistance as separate limits. Keeping the frequency calculation and pin map with the firmware made this revision more reproducible than describing it only as a faster controller.
+</details>
 
 ## Sources
 
@@ -2743,33 +2815,39 @@ CAD construction captures are retrospective inspections of saved models, capture
 
 <a id="j29"></a>
 
-# J29 Add driver-alarm handling and an interactive motor-speed test
+# J29 Changing speed without uploading another sketch
 
-*Milestone 5 | Personal retrospective journal*
+*Milestone 5 | Retrospective build notes*
 
-## Design and iteration
+Recompiling and uploading for every new speed setting was an unnecessary part of the test cycle. I added an interactive speed-test workflow so I could type a rate, observe the response, and try another. The M5 notes describe recording the commanded speed associated with a driver fault too.
 
-I added an interactive speed-test workflow so I could enter a new requested speed without editing and uploading the program for every setting. The milestone notes describe recording the commanded speed associated with a driver-reported problem. That shortened the experiment cycle and made a fault more informative than an unexplained stop.
+That made a stopped motor more informative. Instead of only noticing something had gone wrong, there was a requested operating point to connect to it. I don't have the standalone transcript, though, so there isn't a failure-speed number I can honestly recover from this account.
 
-The later production firmware also contains explicit alarm handling. A fault can stop motion, latch a state, and produce a serial message. I kept those paths distinct from the communication watchdog and from ordinary status reporting, because each responds to different information.
+![Physical multi-doser assembly photograph included in M4.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m4_2.jpg)
 
-A generic driver alarm did not identify the underlying cause by itself. I did not turn that signal into a specific overcurrent, temperature, or stall diagnosis without supporting status data. The standalone test transcript is not available in the source record, so this account documents the workflow and implemented fault paths without assigning a numerical failure-speed limit.
+Physical multi-doser assembly photograph included in M4.
 
-## Technical detail
+The later production firmware has explicit alarm paths: stop motion, latch the fault, report it. Status and the communication watchdog do different jobs. I wanted to keep those distinctions because 'fault handling' can hide quite a few unrelated behaviors.
 
-The M5 speed-test workflow accepted a typed speed and recorded the requested rate associated with a driver fault. This reduced recompilation between experiments. The standalone test source and captured output are not preserved in the available set, so no numerical fault-speed threshold is reconstructed from that description.
+The alarm message itself stays generic. It doesn't tell me whether the cause was current, temperature, or position error without more information from the driver. I shouldn't turn a useful fault signal into a more detailed diagnosis than it actually provides.
 
-The later production firmware does contain concrete fault paths. Auger alarm is pin 7 and disk alarm is pin 6. The auger alarm check reads LOW as a fault while the mechanism is running, stops auger motion, latches faulted state, and emits FAULT DRIVER ALARM. The source uses INPUT_PULLUP and notes that an unconnected alarm line reads HIGH, so an unused input does not establish functional driver fault detection.
+## Alarm and watchdog behavior
+
+The later production firmware does contain concrete fault paths. Auger alarm is pin 7 and disk alarm is pin 6. The auger alarm check reads LOW as a fault while the mechanism is running, stops auger motion, latches faulted state, and emits FAULT DRIVER ALARM. The source uses INPUT_PULLUP and notes that an unconnected alarm line reads HIGH, so an unused input doesn't establish functional driver fault detection.
 
 RESET FAULT clears the latched fault states and stops the auger. STATUS reports the run mode, current frequency, target frequency, and OCR1A. The 2000 ms serial watchdog stops active auger motion if serial contact disappears. These are distinct mechanisms: driver alarm reports the driver signal, status describes configured motion, and watchdog detects lost controller communication.
 
-FAULT DRIVER ALARM identifies the received fault signal, rather than a detailed cause. Without the installed driver's corresponding status information, it does not separately diagnose temperature, current, or position error. The active-LOW interpretation in the saved source is a wiring assumption tied to that revision.
+FAULT DRIVER ALARM identifies the received fault signal, rather than a detailed cause. Without the installed driver's corresponding status information, it doesn't separately diagnose temperature, current, or position error. The active-LOW interpretation in the saved source is a wiring assumption tied to that revision.
 
-Requested frequency, microsteps, acceleration, supply, and powder load all affect how a speed test is interpreted. An unloaded shaft test and an auger moving cornstarch are different operating conditions. I did not infer a grams-per-second rate or universal speed ceiling from the presence of a regular timer output.
+Requested frequency, microsteps, acceleration, supply, and powder load all affect how a speed test is interpreted. An unloaded shaft test and an auger moving cornstarch are different operating conditions. I didn't infer a grams-per-second rate or universal speed ceiling from the presence of a regular timer output.
 
-Alarm latching, fault reset, status output, and the watchdog are directly visible in the later firmware. The milestone notes separately describe the interactive test version. Together they document a more observable development process, while the missing raw speed trials limit quantitative conclusions.
+## More views
 
-## Archived implementation
+![Breadboard motor-control wiring in the early prototype.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m2_2.jpg)
+
+Breadboard motor-control wiring in the early prototype.
+
+## Code for this revision
 
 Exact archived source excerpts. The file labels identify their revisions.
 
@@ -2843,19 +2921,16 @@ void updateWatchdog() {
 }
 ```
 
-## Process images
+The testing workflow became easier to adjust, and the controller had clearer ways to expose its state. The numerical speed limit is still missing from the archive. What I can keep is the method and the fault logic, without pretending a source-code setting was a measured ceiling.
 
-![Physical multi-doser assembly photograph included in M4.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m4_2.jpg)
+<details>
+<summary>Notes added while reconstructing this entry</summary>
 
-Physical multi-doser assembly photograph included in M4.
+The M5 speed-test workflow accepted a typed speed and recorded the requested rate associated with a driver fault. This reduced recompilation between experiments. The standalone test source and captured output aren't preserved in the available set, so no numerical fault-speed threshold is reconstructed from that description.
 
-![Breadboard motor-control wiring in the early prototype.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m2_2.jpg)
+Alarm latching, fault reset, status output, and the watchdog are directly visible in the later firmware. The milestone notes separately describe the interactive test version. Together they document a more observable development process, while the missing raw speed trials limit quantitative conclusions.
 
-Breadboard motor-control wiring in the early prototype.
-
-## Outcome and reflection
-
-The controller became easier to investigate because requested speed, reported state, and alarm handling had explicit roles. Fault latching and reset behavior are present in the saved firmware. The milestone record supports the interactive test version, while the absence of its raw transcript limits the numerical conclusions I can draw from it.
+</details>
 
 ## Sources
 
@@ -2872,37 +2947,29 @@ CAD construction captures are retrospective inspections of saved models, capture
 
 <a id="j30"></a>
 
-# J30 Drop the fixed-board plan, troubleshoot perfboard, and mount a half-size breadboard
+# J30 Back to a breadboard, but make it fit
 
-*Milestone 5 | Personal retrospective journal*
+*Milestone 5 | Retrospective build notes*
 
-## Design and iteration
+The PCB plan hadn't become a stable board, and the full-size breadboard was still awkward to put on the frame. I tried perfboard as a more permanent arrangement. That attempt didn't give me the working connections I needed.
 
-I returned to electronics packaging once the mechanisms were assembled. The PCB plan had not reached a stable layout, and the original full-size breadboard arrangement was bulky and difficult to mount cleanly.
+So I went back to a breadboard. Not the most satisfying-looking end to the PCB idea, but I needed to keep changing and testing the circuit. The notes don't identify the exact perfboard fault, so I'm not going to retrofit a solder-bridge story onto it.
 
-I tried perfboard as a more permanent alternative, but it did not provide the working connections I needed. The notes do not identify a confirmed soldering or mapping fault, so I have kept the failed connection attempt separate from a diagnosis. I returned to a breadboard to keep development moving.
+![IMG_8167.HEIC Drive preview: breadboard wiring beside an unsoldered perfboard. Supports the board-packaging discussion; does not show a completed failed perfboard circuit.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/photo_perfboard_comparison.jpg)
 
-I reduced the footprint with a half-size breadboard and a custom printed mount. That retained access to change the circuit while making it more practical to attach to the machine. The decision prioritized a serviceable prototype over finalizing a permanent board while motor, alarm, and actuator interfaces were still evolving.
+IMG_8167.HEIC Drive preview: breadboard wiring beside an unsoldered perfboard. Supports the board-packaging discussion; does not show a completed failed perfboard circuit.
 
-## Technical detail
+I used a half-size breadboard and printed a custom mount to reduce the footprint. That dealt with the immediate physical problem while keeping the connection rows accessible. The circuit could still change without making another permanent board.
 
-The early PCB plan never reached a finalized design according to M5 notes. As motor control, timers, alarm lines, and the actuator changed, a fixed board layout would have needed repeated revision. The eventual prototype needed an adaptable arrangement that could support continued testing.
+This was one of the less glamorous parts of getting the machine together. A working circuit spread across the bench wasn't the same thing as a circuit that could stay on the frame while the mechanisms moved around it.
 
-A perfboard was tried after the larger breadboard proved bulky and messy. The notes say the perfboard failed to connect, then record returning to a breadboard. That establishes a failed implementation attempt, but does not identify whether the failure came from a solder joint, a trace break, a wrong connection, or another electrical cause. The comparison photo shows both arrangements; it does not diagnose the failure.
+## Mounting notes
 
 The final mounting response was a half-size breadboard and a custom printed mount. The design task shifted from creating a permanent electrical circuit to constraining an interchangeable board mechanically. Relevant CAD details are the board footprint, retaining edges, access to connection rows, mounting-hole positions, standoff height, and clearance around the frame fasteners.
 
 The mount had to hold the breadboard without covering useful connection rows or making routine changes awkward. Wire movement could pull at contacts, while excessive retention could distort the board. These were packaging constraints on the printed part, rather than evidence of a measured vibration or pullout rating.
 
-The comparison imagery records the electrical arrangements, and the notes identify the custom mount. Its detailed retaining geometry and a diagnosed perfboard fault are not preserved. I therefore describe the reported transition and its practical purpose without adding a particular joint failure or an invented mount dimension.
-
-The result was a prototype arrangement that kept the electronics accessible and modifiable. The decision explains why a breadboard remained in the assembled machine despite the earlier PCB proposal. A permanent board could become useful once the circuit stabilized, but it was not a prerequisite for completing this integration stage.
-
-## Process images
-
-![IMG_8167.HEIC Drive preview: breadboard wiring beside an unsoldered perfboard. Supports the board-packaging discussion; does not show a completed failed perfboard circuit.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/photo_perfboard_comparison.jpg)
-
-IMG_8167.HEIC Drive preview: breadboard wiring beside an unsoldered perfboard. Supports the board-packaging discussion; does not show a completed failed perfboard circuit.
+## More views
 
 ![Electronics schematic proposal from M2. It is not evidence that a PCB was manufactured.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m2_1.jpg)
 
@@ -2916,9 +2983,20 @@ Breadboard motor-control wiring in the early prototype.
 
 Current Main workspace Superstructure Part Studio. CAD geometry capture, not a validated structural test.
 
-## Outcome and reflection
+The half-size board and mount were the practical choice for this stage. I still wanted more permanent electronics eventually, but the circuit had to be ready for that. Forcing the PCB plan to look finished wouldn't have made the machine easier to debug.
 
-The final packaging choice for this stage was a half-size breadboard in a printed mount. It addressed the immediate mounting problem while keeping the circuit modifiable. The abandoned PCB and failed perfboard were useful parts of that decision: a more permanent construction method only helped if the electrical implementation was ready for it.
+<details>
+<summary>Notes added while reconstructing this entry</summary>
+
+The early PCB plan never reached a finalized design according to M5 notes. As motor control, timers, alarm lines, and the actuator changed, a fixed board layout would have needed repeated revision. The eventual prototype needed an adaptable arrangement that could support continued testing.
+
+A perfboard was tried after the larger breadboard proved bulky and messy. The notes say the perfboard failed to connect, then record returning to a breadboard. That establishes a failed implementation attempt, but doesn't identify whether the failure came from a solder joint, a trace break, a wrong connection, or another electrical cause. The comparison photo shows both arrangements; it doesn't diagnose the failure.
+
+The comparison imagery records the electrical arrangements, and the notes identify the custom mount. Its detailed retaining geometry and a diagnosed perfboard fault aren't preserved. I describe the reported transition and its practical purpose without adding a particular joint failure or an invented mount dimension.
+
+The result was a prototype arrangement that kept the electronics accessible and modifiable. The decision explains why a breadboard remained in the assembled machine despite the earlier PCB proposal. A permanent board could become useful once the circuit stabilized, but it wasn't a prerequisite for completing this integration stage.
+
+</details>
 
 ## Sources
 
@@ -2936,45 +3014,48 @@ CAD construction captures are retrospective inspections of saved models, capture
 
 <a id="j31"></a>
 
-# J31 Design protective covers and consolidate wiring along the frame
+# J31 The wiring needed somewhere to live
 
-*Milestone 5 | Personal retrospective journal*
+*Milestone 5 | Retrospective build notes*
 
-## Design and iteration
+Once the parts were on the frame, the wiring needed attention. I printed wire covers, an Arduino cover, and mounting pieces, then secured the connections along the side and concentrated the route around one extrusion.
 
-I printed wire covers, an Arduino cover, and mounting parts to organize the electronics on the assembled frame. I secured wiring along the side and concentrated routing around one extrusion rather than leaving the connections spread across the machine.
-
-This was a mechanical integration task as much as a cosmetic one. The carousel, lifted motor, receiving cup, and fixed electronics occupied the same working space. Covers and supports had to fit around real connectors and preserve access for continued debugging.
-
-The moving drive also meant part of the cable route changed with actuator position. That made travel allowance and the locations of restraints relevant to the design. The available notes establish the consolidation work, but do not contain a measured electrical-noise comparison or a complete endpoint inspection record. I have described the physical change without assigning those unrecorded outcomes to it.
-
-## Technical detail
-
-M5 notes describe printed wire covers, an Arduino cover, and a breadboard mount, with wiring secured to the side and consolidated around one extrusion. This was a final integration task because the motor, lift, disk, scale, and screen positions determined where the cable routes could run.
-
-The cable bundle and actual mounting surface constrained the covers. Internal space, wall thickness, connector exits, and attachment positions affected whether the parts could organize wiring without pinching it or blocking board access. The milestone record identifies the printed parts but does not provide all of their feature dimensions.
-
-The lifted drive required a moving cable section, while most electronics stayed on the frame. The moving segment needed enough travel allowance at both UP and DOWN positions. A cable photographed with the actuator in only one position cannot show whether it becomes taut or catches during the other part of the stroke.
-
-The reported change was consolidation and physical support of wiring. The source does not establish final wire gauges, terminal specifications, a quantified strain-relief rating, or a measured noise reduction. Those outcomes cannot be deduced from the cleaner layout alone.
-
-Cable clearance has to be considered over the full index-and-lift sequence. A route could rub at the disk, pull at a driver or breadboard, obstruct coupling, or cross the cup access area. Those are relevant inspection conditions; a recorded full-travel result for each route is not available here.
-
-The assembly views show the wider packaging context, while the notes supply the description of covers and consolidated routing. I retained the actual images without adding a substitute construction sequence for unrecovered channel and enclosure features.
-
-## Process images
+It was tempting to treat this as the tidy-up at the end. But the motor moved with the lift, the disk rotated, and the cup still needed access. A wire route that looked fine with everything stationary could get in the way somewhere else in the sequence.
 
 ![Physical multi-doser assembly photograph included in M4.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m4_2.jpg)
 
 Physical multi-doser assembly photograph included in M4.
 
+The covers also had to fit actual connectors and leave the boards accessible. Covering a mess without being able to reach the next connection wouldn't make later debugging much nicer.
+
+The notes establish the routing and printed parts, not an electrical-noise measurement or a full endpoint inspection. I can describe the organization change. I can't say a neater cable bundle proved every electrical issue was gone.
+
+## Cable routes and clearance
+
+The cable bundle and actual mounting surface constrained the covers. Internal space, wall thickness, connector exits, and attachment positions affected whether the parts could organize wiring without pinching it or blocking board access. The milestone record identifies the printed parts but doesn't provide all of their feature dimensions.
+
+The lifted drive required a moving cable section, while most electronics stayed on the frame. The moving segment needed enough travel allowance at both UP and DOWN positions. A cable photographed with the actuator in only one position can't show whether it becomes taut or catches during the other part of the stroke.
+
+Cable clearance has to be considered over the full index-and-lift sequence. A route could rub at the disk, pull at a driver or breadboard, obstruct coupling, or cross the cup access area. Those are relevant inspection conditions; a recorded full-travel result for each route isn't available here.
+
+## More views
+
 ![Current Main workspace Superstructure Part Studio. CAD geometry capture, not a validated structural test.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/cad_main_superstructure.jpg)
 
 Current Main workspace Superstructure Part Studio. CAD geometry capture, not a validated structural test.
 
-## Outcome and reflection
+The wiring had a more deliberate place on the machine now. The moving section was still the part to judge through the whole stroke, not from one nice photo. Packaging only helps if it keeps access and movement workable.
 
-The covers and consolidated routing made the prototype's electronics more organized around the frame. The main lesson was to judge packaging in the context of motion and service access, rather than only the appearance of a stationary machine. Electrical noise performance and full-travel cable behavior remained separate questions from the reported routing work.
+<details>
+<summary>Notes added while reconstructing this entry</summary>
+
+M5 notes describe printed wire covers, an Arduino cover, and a breadboard mount, with wiring secured to the side and consolidated around one extrusion. This was a final integration task because the motor, lift, disk, scale, and screen positions determined where the cable routes could run.
+
+The reported change was consolidation and physical support of wiring. The source doesn't establish final wire gauges, terminal specifications, a quantified strain-relief rating, or a measured noise reduction. Those outcomes can't be deduced from the cleaner layout alone.
+
+The assembly views show the wider packaging context, while the notes supply the description of covers and consolidated routing. I retained the actual images without adding a substitute construction sequence for unrecovered channel and enclosure features.
+
+</details>
 
 ## Sources
 
@@ -2992,45 +3073,48 @@ CAD construction captures are retrospective inspections of saved models, capture
 
 <a id="j32"></a>
 
-# J32 Write an operating and cleaning procedure consistent with the actual prototype
+# J32 Writing down the steps I was already taking for granted
 
-*Milestone 5 | Personal retrospective journal*
+*Milestone 5 | Retrospective build notes*
 
-## Design and iteration
+I wrote an operating procedure for someone who hadn't spent all this time in the code. Select powder, load it, tare the scale, enter the mass, start, check the result. Stop if it jams or malfunctions. Then empty and disassemble the contact parts for cleaning.
 
-I wrote an operating procedure to make the doser usable without requiring someone to understand the control code first. It covered powder selection, loading, taring, target entry, starting a run, checking the result, stopping, and cleaning the removable powder-contact components.
-
-The procedure also exposed assumptions that were easy to overlook during development. A correct mass command depends on the baseline, and an automatic recipe depends on meaningful disk and actuator references. The later app's unknown-position state therefore mattered to operation, not just to debugging.
-
-I kept the documented household-powder tests as the operating evidence for this account. A capacity target and a written cleaning procedure do not establish performance across every dose or validated sanitation. The practical achievement was recording how to use and recover the prototype, while identifying the limits of the available measurements.
-
-## Technical detail
-
-The written SOP covers selecting powder, entering mass, dispensing, stopping, and cleaning. The original single-doser procedure and the later recipe app have different positioning requirements. I treated the documented procedure and later source behavior as distinct stages so a general START instruction did not conceal the extra references required by the carousel.
-
-The later recipe app requires a known disk position and a meaningful actuator UP reference. UNKNOWN blocks a run. In the saved reference-based arrangement, physical alignment and SET CURRENT operations establish what the software will treat as its position; the app does not automatically sense an actuator top limit.
-
-Force stop marks actuator and disk state unknown. That differs from normal completion and can require the operator to establish references again before continuing. Retaining an old slot number after interrupted motion would assume the disk finished a movement that may have stopped partway through.
-
-Cleaning connects directly to the earlier interface decisions. The contact path includes the hopper interior, agitator, screw, outlet, and receiving area. Combining components removed a joint but left those surfaces to access and inspect. The source procedure calls for disassembly of the hopper and lid and lists an M3 wrench and screwdriver or Allen key among the tools.
-
-The original procedure includes broad performance language and a capacity limit. The measured evidence in this account is narrower: individual household-powder results at 5 g and 0.055 g, including small-dose failures. I have kept that demonstrated range distinct from the hopper capacity target and from any clinical performance claim.
-
-Writing the procedure did not validate a cleaning chemistry or quantify residual powder. No compatibility study, contamination acceptance measurement, or independent usability trial is preserved in this record. The result of this stage was an operating document, with those additional questions left as future validation work.
-
-## Process images
+Putting that into instructions exposed how much setup I could otherwise skip over in a quick explanation. A target number is only useful with the right baseline. An automatic recipe is only useful when the disk and actuator references mean something physically.
 
 ![Single-doser test arrangement with scale, screen, and controller wiring.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m2_4.jpg)
 
 Single-doser test arrangement with scale, screen, and controller wiring.
 
+The later app also loses trust in position after force stop. That means recovery can't just be 'press start again' as though the interrupted move completed. The unknown state belongs in the operating explanation, even if it makes the process less effortless to describe.
+
+The test materials were the eight household powders. A written procedure didn't turn the prototype into a clinically validated machine or establish that every surface was clean enough by a measured criterion. I wanted the instructions to describe what I had, not quietly expand the claims beyond the tests.
+
+## Setup and recovery details
+
+The later recipe app requires a known disk position and a meaningful actuator UP reference. UNKNOWN blocks a run. In the saved reference-based arrangement, physical alignment and SET CURRENT operations establish what the software will treat as its position; the app doesn't automatically sense an actuator top limit.
+
+Force stop marks actuator and disk state unknown. That differs from normal completion and can require the operator to establish references again before continuing. Retaining an old slot number after interrupted motion would assume the disk finished a movement that may have stopped partway through.
+
+Cleaning connects directly to the earlier interface decisions. The contact path includes the hopper interior, agitator, screw, outlet, and receiving area. Combining components removed a joint but left those surfaces to access and inspect. The source procedure calls for disassembly of the hopper and lid and lists an M3 wrench and screwdriver or Allen key among the tools.
+
+## More views
+
 ![Physical multi-doser assembly photograph included in M4.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m4_2.jpg)
 
 Physical multi-doser assembly photograph included in M4.
 
-## Outcome and reflection
+This was useful work because it made the hidden assumptions harder to ignore. Setup, recovery, and cleaning were all connected to earlier design decisions. The procedure existed; independent usability and cleaning validation were still separate work.
 
-The operating document brought setup, feeding, stopping, and cleaning into one workflow. It also tied usability back to engineering decisions: detachable surfaces, baseline mass, and lost position after interruption all affect the operator. The written procedure did not create new validation results, so its claims remain bounded by the actual powder tests and implemented reference behavior.
+<details>
+<summary>Notes added while reconstructing this entry</summary>
+
+The written SOP covers selecting powder, entering mass, dispensing, stopping, and cleaning. The original single-doser procedure and the later recipe app have different positioning requirements. I treated the documented procedure and later source behavior as distinct stages so a general START instruction didn't conceal the extra references required by the carousel.
+
+The original procedure includes broad performance language and a capacity limit. The measured evidence in this account is narrower: individual household-powder results at 5 g and 0.055 g, including small-dose failures. I've kept that demonstrated range distinct from the hopper capacity target and from any clinical performance claim.
+
+Writing the procedure didn't validate a cleaning chemistry or quantify residual powder. No compatibility study, contamination acceptance measurement, or independent usability trial is preserved in this record. The result of this stage was an operating document, with those additional questions left as future validation work.
+
+</details>
 
 ## Sources
 
@@ -3049,33 +3133,33 @@ CAD construction captures are retrospective inspections of saved models, capture
 
 <a id="j33"></a>
 
-# J33 Bring the prototype together and assess the documented results
+# J33 Putting the build in perspective
 
-*Milestone 5 | Personal retrospective journal*
+*Milestone 5 | Retrospective build notes*
 
-## Design and iteration
+By the final milestone, the project had the feeder, agitator, carousel, lifted drive, scale feedback, and touchscreen brought together into a prototype. The notes had shifted toward pulse generation, fault reporting, mounting, and wiring. Those last integration details were a lot less simple than the original raise-rotate-lower description made them sound.
 
-By the final milestone, I had brought the feeder, agitation, rotary selection, lifted drive, scale feedback, and touchscreen interface into an integrated prototype. The remaining work described in the notes concentrated on motor control, fault visibility, mounting, and wiring organization.
+Looking back, the failures connect fairly clearly. Sharing motors created the engagement problem. Sugar needed to stay put while idle and stop being added before the scale caught up. Cornstarch needed help both inside the screw and out near the hopper walls. Recipes added another layer where position and completion messages mattered as much as the motion itself.
 
-Looking back across the iterations, the major decisions were connected. Sharing the motors created the lift-and-coupling problem. Sugar required resistance to passive discharge and careful stopping. Cornstarch required attention to both the screw and the powder outside its active region. Moving to recipes made state, references, and completion messages as important as the motion itself.
+![Physical multi-doser assembly photograph included in M4.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m4_2.jpg)
 
-The clearest measured outcome is the powder test sheet: all eight recorded 5 g runs met the 3% target, while only three of eight at 0.055 g did. I kept that distinction in the closing account. The available source set does not establish a fully matched final software configuration or an ingredient-by-ingredient autonomous run, so the completed narrative closes the documented development without claiming those missing measurements.
+Physical multi-doser assembly photograph included in M4.
 
-## Technical detail
+The 5 g table is still the strongest numerical result: eight of eight listed runs inside 3%. The 55 mg table is the uncomfortable one: only three of eight. Both belong in the project. Leaving out the small-target failures would give a much cleaner ending and a much less useful picture of the machine.
 
-The integrated system spans feeder and disk CAD, printed interfaces, motor and actuator hardware, driver settings, wiring, the touchscreen app, the mass controller, and separate motion firmware. The archive preserves several real revisions of those elements, but not a confirmed final manifest matching every file to the installed hardware.
+There are gaps in the archive too. I don't have one confirmed final set matching every software file to the installed hardware, or the full per-ingredient data from an autonomous recipe run. That limits what I can conclude here. It doesn't erase the design work, but it does tell me what evidence to keep next.
 
-Two version boundaries remain especially important. The app describes switch-based indexing while the recovered disk firmware uses counted steps, and the later controller's 120 s timeout is shorter than several recorded powder trials. Those mismatches do not erase the trials; they prevent attributing all earlier results to one assumed final code set.
+## More views
 
-The intended integrated flow covers reference setup, recipe entry, lift clearance, disk movement, engagement, mass-controlled feeding, and the transition to the next ingredient. The saved app implements that ordering with state and completion checks. The available evidence does not include an uncut run and corresponding ingredient-by-ingredient data that establish the complete sequence's measured performance.
+![Current Main workspace SuperStructureAssem. Only one hopper is visible in this assembly view. CAD includes mate or linked-reference warnings; the image is not proof of a fully populated or validated mechanism.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/cad_main_assembly.jpg)
 
-Per-item CSV fields in the app can retain target, actual mass, error, remaining amount, and status. Those fields are part of the logging design; they are not populated test results in this account. Recipe duration, manual interventions, and final mixture measurements are therefore not assigned values that the source does not provide.
+Current Main workspace SuperStructureAssem. Only one hopper is visible in this assembly view. CAD includes mate or linked-reference warnings; the image is not proof of a fully populated or validated mechanism.
 
-The strongest numerical distinction remains the target size: eight of eight recorded 5 g trials met 3%, compared with three of eight at 0.055 g. These are single-powder results. The full assembly CAD shows one populated hopper, so its appearance does not independently establish the hopper count or success of a physical eight-ingredient demonstration.
+![Full frame, carousel, drive, and screen CAD from M4.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m4_4.jpg)
 
-My next priorities would be to freeze one matched hardware-and-code configuration, retain a complete integrated run, and repeat fixed-target measurements with controlled conditions. Those experiments would build directly on the documented mechanism and expose whether remaining error came from dispensing variability, feedback timing, positioning, or engagement. They are future work rather than additional completed tests.
+Full frame, carousel, drive, and screen CAD from M4.
 
-## Archived implementation
+## Code for this revision
 
 Exact archived source excerpts. The file labels identify their revisions.
 
@@ -3100,23 +3184,26 @@ Recovered full later Library app; contains automatic recipes, serial discovery, 
     if actuator_position == "UNKNOWN":
 ```
 
-## Process images
+## Next
 
-![Physical multi-doser assembly photograph included in M4.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m4_2.jpg)
+The next priority would be freezing one matched configuration and running it repeatedly, with the raw results kept alongside it. Especially at the small target. There's a real prototype and a lot of useful engineering behind it; the remaining job is to make the performance as clear as the mechanism.
 
-Physical multi-doser assembly photograph included in M4.
+<details>
+<summary>Notes added while reconstructing this entry</summary>
 
-![Current Main workspace SuperStructureAssem. Only one hopper is visible in this assembly view. CAD includes mate or linked-reference warnings; the image is not proof of a fully populated or validated mechanism.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/cad_main_assembly.jpg)
+The integrated system spans feeder and disk CAD, printed interfaces, motor and actuator hardware, driver settings, wiring, the touchscreen app, the mass controller, and separate motion firmware. The archive preserves several real revisions of those elements, but not a confirmed final manifest matching every file to the installed hardware.
 
-Current Main workspace SuperStructureAssem. Only one hopper is visible in this assembly view. CAD includes mate or linked-reference warnings; the image is not proof of a fully populated or validated mechanism.
+Two version boundaries remain especially important. The app describes switch-based indexing while the recovered disk firmware uses counted steps, and the later controller's 120 s timeout is shorter than several recorded powder trials. Those mismatches don't erase the trials; they prevent attributing all earlier results to one assumed final code set.
 
-![Full frame, carousel, drive, and screen CAD from M4.](https://raw.githubusercontent.com/aaravs-s/pharmatech/main/docs/journal-reference/assets/m4_4.jpg)
+The intended integrated flow covers reference setup, recipe entry, lift clearance, disk movement, engagement, mass-controlled feeding, and the transition to the next ingredient. The saved app implements that ordering with state and completion checks. The available evidence doesn't include an uncut run and corresponding ingredient-by-ingredient data that establish the complete sequence's measured performance.
 
-Full frame, carousel, drive, and screen CAD from M4.
+Per-item CSV fields in the app can retain target, actual mass, error, remaining amount, and status. Those fields are part of the logging design; they aren't populated test results in this account. Recipe duration, manual interventions, and final mixture measurements are therefore not assigned values that the source doesn't provide.
 
-## Outcome and reflection
+The strongest numerical distinction remains the target size: eight of eight recorded 5 g trials met 3%, compared with three of eight at 0.055 g. These are single-powder results. The full assembly CAD shows one populated hopper, so its appearance doesn't independently establish the hopper count or success of a physical eight-ingredient demonstration.
 
-The project developed from a printable feeder into a coordinated powder-dispensing prototype with meaningful feedback and integration challenges. Its strongest measured evidence was at 5 g; its clearest remaining performance limitation was small-dose consistency. The next useful work was a version-matched integrated trial and repeated fixed-target measurements, building on the mechanisms and control structure already developed.
+My next priorities would be to freeze one matched hardware-and-code configuration, retain a complete integrated run, and repeat fixed-target measurements with controlled conditions. Those experiments would build directly on the documented mechanism and expose whether remaining error came from dispensing variability, feedback timing, positioning, or engagement. They are future work rather than additional completed tests.
+
+</details>
 
 ## Sources
 
