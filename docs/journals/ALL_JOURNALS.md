@@ -1,6 +1,6 @@
 # Pill Compounder: Personal Build Journal
 
-AI-assisted retrospective build notes for personal documentation. The conversational voice is an editorial interpretation. These are not contemporaneous session records or Forge submissions. See the [collection notes](README.md) for scope and image provenance.
+.  See the [collection notes](README.md) for scope and image provenance.
 
 ## Contents
 
@@ -3213,6 +3213,6 @@ My next priorities would be to freeze one matched hardware-and-code configuratio
 
 [Corresponding reference and evidence gaps](https://github.com/aaravs-s/pharmatech/blob/main/docs/journal-reference/entries/R33_document_the_final_integrated_state_and_identify_exactly_what_was_demonstrated.md)
 
-CAD construction captures are retrospective inspections of saved models, captured on October 13, 2026. They are not contemporaneous design-session screenshots.
+
 
 [Journal collection](README.md) | [Original references](../journal-reference/README.md) | [Project journal](../../JOURNAL.md)
