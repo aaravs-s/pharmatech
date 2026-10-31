@@ -1,4 +1,4 @@
-# pharmatech
+# Team Pharmatech
 
 Boilerplate repository structure for a pill compounding machine project.
 
