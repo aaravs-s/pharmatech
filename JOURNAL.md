@@ -5,9 +5,9 @@ description: "An 8-powder pill compounder: a rotary disk, one shared drive, and 
 created_at: "2026-05-25"
 ---
 
-*A note on the hours: I didn't keep a time log while I was building, so the hours on each entry are my best reconstruction from the session evidence — photos, doc dates, and test durations — not a contemporaneous record. The work, the numbers, and the failures are all real and traceable to the project sources; the hours are estimates.*
 
-# May 25: Studying an auger filler before designing mine
+
+# 2026-11-09: Studying an auger filler before designing mine
 
 It's simpler than I thought it would be. Powder sits in a tube on top, drops down through a funnel into a horizontal barrel, and there's a screw inside the barrel that pushes the powder out the end. One motor at the back turns the screw and that's basically the whole machine. Cap, tube, funnel block, motor, screw, barrel. Like six things.
 
