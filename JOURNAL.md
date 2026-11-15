@@ -5,9 +5,9 @@ description: "An 8-powder pill compounder: a rotary disk, one shared drive, and 
 created_at: "2026-05-25"
 ---
 
-
-
 # 2026-11-09: Studying an auger filler before designing mine
+
+**Total time spent: 2 hours**
 
 It's simpler than I thought it would be. Powder sits in a tube on top, drops down through a funnel into a horizontal barrel, and there's a screw inside the barrel that pushes the powder out the end. One motor at the back turns the screw and that's basically the whole machine. Cap, tube, funnel block, motor, screw, barrel. Like six things.
 
@@ -20,8 +20,6 @@ It's simpler than I thought it would be. Powder sits in a tube on top, drops dow
 The part I keep thinking about is the corner. In this design the screw is horizontal, so powder falls down out of the tube and then has to get pushed sideways. For what I want to build the powder is going to be sitting in hoppers and dispensing straight down anyway, so why not just put the auger vertical, inside the hopper, and let it push the powder down and out the bottom. Gravity is already going that direction. Seems like it removes the corner completely instead of designing around it.
 
 I understand the metering part now: the screw is what controls how much powder comes out, everything else is just holding powder above it and catching what falls. And I have one design decision made before I've drawn a single part of my own, which is vertical auger, in the hopper. Copy how it meters, not how it's laid out.
-
-**Total time spent: 2 hours**
 
 # June 9: Eight hoppers, but not sixteen motors
 
