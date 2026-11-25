@@ -64,7 +64,7 @@ Concept is locked. 8 hoppers around a rotary disk. Each hopper with its own auge
 
 Prove one hopper works before printing disk. If a single hopper and auger cant dispense one powder accurately there is no point building eight of them. So first milestone is one hopper, printing and testing. And the agitator isnt in yet either. Thats planned for later once the basic dispensing works.
 
-**Total time spent: 3 hours**
+**Total time spent: 3.5 hours**
 
 # June 18: First hopper in CAD: tube, funnel, screw
 
