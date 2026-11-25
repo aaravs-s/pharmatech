@@ -18,9 +18,9 @@ The finished machine at demo day — eight clear PETG hoppers on top, two motors
 
 Watch the machine working — all Unlisted on YouTube:
 
-- [Full machine dispensing 6 g granulated sugar (0:29)](https://www.youtube.com/watch?v=Er3vP-hmCKU) — September 5, 2026. The full 8-hopper machine dispensing to a 6.000 g target, closed-loop on the balance, touchscreen in frame.
-- [Rotary disk indexing (0:40)](https://www.youtube.com/watch?v=ff1ccdtU3H8) — September 6, 2026. The disk indexing between hopper slots, with the two shared drive motors on purple mounts and the 3030 frame.
-- [Single doser closed-loop test, 2 g target (1:13)](https://www.youtube.com/watch?v=9py9lcKt120) — July 4, 2026. Early single-doser test: the touchscreen shows a 2.000 g target, dispensing in progress, and the balance lands at 1.999 g.
+- [Full machine dispensing 6 g granulated sugar](https://youtu.be/2B_qoMveCxg) —  The full 8-hopper machine dispensing fixed target, 
+
+- [Single doser closed-loop test, 2 g target (1:13)](https://www.youtube.com/watch?v=9py9lcKt120) — Early single-doser test: the touchscreen shows a 2.000 g target, dispensing in progress, and the balance lands at 1.999 g.
 
 ## Full 3D model
 
@@ -103,10 +103,7 @@ The three pieces — `app.py`, `motor_scale_controller.py`, and the Arduino sket
 
 ## Operating it
 
-Assign the powder to a slot in the kiosk, pour into the hopper, tare to 0.000 g, enter grams, start, FORCE STOP on any jam, smoke, or smell, confirm the result is within ±3%, then disassemble with M3 tools and wipe the auger and hopper clean. Forgetting to tare is the documented #1 mistake. Full 12-step procedure is the project SOP (Milestone 3 folder in Drive).
-
-
-\* Hours are reconstructed estimates from session evidence — photos, doc dates, test durations — not a contemporaneous time log.
+Assign the powder to a slot in the kiosk, pour into the hopper, tare to 0.000 g, enter grams, start, FORCE STOP on any jam, smoke, or smell, confirm the result is within ±3%, then disassemble with M3 tools and wipe the auger and hopper clean. Forgetting to tare is the documented #1 mistake. Full 12-step procedure is the project SOP (uploaded in github)
 
 ## BOM
 
