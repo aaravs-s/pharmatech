@@ -56,8 +56,7 @@ CATEGORY_PROFILES = {
         "final_settle_s": 0.30,
     },
 }
-# Use lowercase names here. These initial assignments can be changed after
-# observing your powders. Unknown names are rejected before hardware opens.
+
 POWDER_CATEGORIES = {
     "granulated sugar": "FREE",
     "table salt": "FREE",
@@ -68,8 +67,7 @@ POWDER_CATEGORIES = {
     "all-purpose flour": "NONFREE",
     "cocoa powder": "NONFREE",
 }
-# Optional later: override only the values that differ for one powder.
-# Example (inactive): "cornstarch": {"normal_to_fine_g": 0.25}
+
 POWDER_OVERRIDES = {}
 def get_profile(powder_name: str) -> tuple[str, dict]:
     key = " ".join(powder_name.lower().split())
@@ -88,14 +86,12 @@ dispensing.")
     settings.update(overrides)
     if any(not isinstance(v, (int, float)) or not math.isfinite(v) or v < 0
            for v in settings.values()):
-        raise ValueError("Profile values must be finite, nonnegative
-numbers.")
+        raise ValueError("Profile values must be finite, nonnegative numbers.")
     if not (settings["tolerance_g"] < settings["fine_to_final_g"] <
             settings["normal_to_fine_g"] < settings["turbo_to_normal_g"] <
             settings["max_to_turbo_g"]):
         raise ValueError(
-            "Thresholds must increase: tolerance < final < fine < normal <
-turbo."
+            "Thresholds must increase: tolerance < final < fine < normal <turbo."
         )
     return category, settings
 # ============================================================
@@ -173,8 +169,7 @@ data.
                 if value is not None:
                     latest = value
             if len(self._pending) > 4096:
-                raise ValueError("Scale message has no line ending; check
-serial format.")
+                raise ValueError("Scale message has no line ending; check serial format.")
             if latest is not None and self.serial.in_waiting == 0:
                 return latest
         if latest is not None:
