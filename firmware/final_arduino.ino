@@ -1,50 +1,7 @@
 #include <Arduino.h>
 #include <stdlib.h>
 #include <string.h>
-/*
-  Pill Compounder: Timer1 auger + Timer2 D2 detent indexing + linear
-actuator
-  Target: 16 MHz ATmega328P Uno / classic Nano (NOT Uno R4 or Mega).
-  Auger: STEP D9, DIR D8, ENABLE D10.
-  Disk:  STEP D11, DIR D12, ENABLE D4.
-  Mechanical switch: COM -> GND, NO -> D2. No external voltage to D2.
-  Linear actuator TMC2209: STEP D6, DIR D7, signal GND -> Arduino GND.
-  Driver ALM/fault inputs are intentionally NOT used.
-  INPUT_PULLUP: pressed on rim = LOW, released in detent = HIGH.
-  ALL disk travel is clockwise only and uses DISK_CLOCKWISE_DIR_LEVEL.
-  LOW is the current bench-tested direction level; confirm clockwise from
-  ABOVE the disc with the actuator raised. NEXT advances one slot clockwise.
-  DISK PREV is intentionally rejected. Slot numbers increase clockwise.
-  Start manually aligned in a known detent, then send SET SLOT n.
-  Identical detents do not provide automatic absolute homing.
-  The Pi should raise the actuator before any disk command. Because the
-  actuator now lives on this same Uno, simultaneous actuator/disk/auger
-motion
-  is rejected. Actuator UP/DOWN position is still software-only because
-there
-  are no actuator limit switches.
-  Indexing: leave current detent -> stable pressed rim -> stable release.
-  Detents are counted by the switch, NOT a fixed 800-step move.
-  Step limits only detect missing/implausibly early switch transitions.
-  Debouncing happens inside Timer2 ISR so serial output cannot delay it.
-  Timer2 generates D11 pulses in its ISR; Timer1 still uses hardware OC1A.
-  Do not use tone(), Servo, or other libraries that reconfigure these
-timers.
-  SET SLOT requires D2 to be released and stable for 20 ms. Completion
-  messages remain DONE DISK SLOT n. Disk indexing errors invalidate
-position.
-  A completed move holds the disk enabled. STOP/DISABLE releases it.
-  DISK STATUS preserves the Pi-facing protocol fields SLOT=n,
-AT_SLOT=YES/NO,
-  SWITCH=OPEN/PRESSED, and DIRECTION=CW.
-  Bench starting values, not machine-validated settings:
-    1000 steps/s; expected pitch 800; allowed interval 400..1200 steps;
-    leave starting detent within 400 steps; 4 ms debounce while moving.
-  Mechanical switch actuation is an edge, not necessarily detent center.
-  Mount for alignment or tune DISK_ALIGNMENT_OFFSET_STEPS (default 0).
-  The offset is applied only after detecting the destination detent.
-  It must remain inside the released portion of that detent.
-*/
+
 #if !defined(__AVR_ATmega328P__)
 #error "Select an ATmega328P Uno or classic Nano; this sketch uses their
 AVR registers."
