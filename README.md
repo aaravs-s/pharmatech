@@ -55,7 +55,7 @@ No PCB, so the wiring lives on a half breadboard in a printed mount, with wires 
 | Linear actuator (TMC2209) | STEP D6, DIR D7 |
 | Detent switch | COM → GND, NO → D2 |
 
-Rules, written in the sketch header: the actuator must be raised before any disk command; actuator, disk, and auger never move at the same time; actuator position is tracked in software only — there are no limit switches for actuator, only for rotating carasoul; the disk moves clockwise only. `SET SLOT n` replies `DONE DISK SLOT n`; an indexing error invalidates the stored position.
+Rules, written in the sketch header: the actuator must be raised before any disk command; actuator, disk, and auger never move at the same time; actuator position is tracked in software only, there are no limit switches for actuator, only for rotating carasoul; the disk moves clockwise only. `SET SLOT n` replies `DONE DISK SLOT n`; an indexing error invalidates the stored position.
 
 ## How it works
 
@@ -71,8 +71,6 @@ Tested on 8 powders: granulated sugar, table salt, cocoa, ground cinnamon, bakin
 | 55 mg | 5 of 8 powders miss the 3% target — flour 14.55% error, powdered sugar 10.91% |
 
 ## How to assemble
-
-This is the short version. 
 
 Assembly is relatevely simple compared to other machines, all parts can be custom made and the only mechanical part you need to buy is 3030 extrusion and T-Nuts which you can ethier handsaw or bansaw. For the most part the rest of the things you need to buy are ethier sensors, motors, etc. You will need to lasercut/3dp the rest of the mechanical parts. You can view the the onshape to see how to assemble the mechanism. 
 
