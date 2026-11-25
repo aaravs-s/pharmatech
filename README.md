@@ -14,7 +14,7 @@ The finished machine at demo day — eight clear PETG hoppers on top, two motors
 
 ## Videos
 
-Watch the machine working — all Unlisted on YouTube:
+Watch the machine working
 
 - [Full machine dispensing 6 g granulated sugar](https://youtu.be/2B_qoMveCxg) —  The full 8-hopper machine dispensing fixed target, 
 
