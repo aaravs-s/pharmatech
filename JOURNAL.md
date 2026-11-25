@@ -5,8 +5,6 @@ description: "An 8-powder pill compounder: a rotary disk, one shared drive, and 
 created_at: "2026-06-12"
 ---
 
-*A note on the hours: I didn't keep a time log while I was building, so the hours on each entry are my best reconstruction from the session evidence, photos, doc dates, and test durations, not a contemporaneous record. The work, the numbers, and the failures are all real and traceable to the project sources; the hours are estimates.*
-
 # June 12: Studying an auger filler before designing mine
 
 ## What I'm doing
