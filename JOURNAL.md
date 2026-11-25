@@ -34,7 +34,7 @@ I get the metering part now. And ive got the first design decision made. Vertica
 
 Set the actual targets for mine. How many hoppers. How much powder each one holds. How acurate it has to be. Taht kind of thing. Then start the first hopper in CAD. And write up the auger mechanism doc instead of leaving it as one line.
 
-**Total time spent: 2 hours**
+**Total time spent: 3 hours**
 
 # June 15: Eight hoppers, but not sixteen motors
 
@@ -176,7 +176,7 @@ Auger prints reliably now with glue for adhesion. Small thing but it was quietly
 
 The auger is only half the hopper. And the thread is already dead as of yesterday. So the latch version is next. The agitator still does'nt exist. And also the prints I do ahve need actual powder in them. So far everything hsa just been plastc spinning in air. And sugar is the first test becuase it flows on its own.
 
-**Total time spent: 3 hours**
+**Total time spent: 4.5 hours**
 
 # June 27: Seven versions in one day
 
@@ -208,7 +208,7 @@ Doser is a real assembly now. Flat disc, 8 pockets, auger and motor unit on top,
 
 Powder tests. CAD is way ahead of the actual machine rigth now. Sugar first through the printed hopper, see if any of this works outside the screen. Tomorrow is plastic and powder
 
-**Total time spent: 5 hours**
+**Total time spent: 6 hours**
 
 # July 1: Sugar falls out before the motor even starts
 
@@ -236,7 +236,7 @@ Leak fixed. Sugar stays in the hopper when I pour it in and only comes out when 
 
 Measure it. Run the auger in consistent turns and check what comes out each time. Me and the scale will figure out if "consistent turns" really means consistent amounts.  i need the numbers to back it up.
 
-**Total time spent: 3 hours**
+**Total time spent: 4 hours**
 
 # July 4: Sugar is dispensing consistently
 
@@ -264,7 +264,7 @@ First powder officially working. Sugar. Same dispense per turn. No agitator need
 
 Cornstarch next. It is the opposite of sugar in every way that matters. Clumpy, sticky, doesn't flow. And the original plan was one hopper and auger design for every powder with only the motor movement changing. And cornstarch is about to test that plan hard. Adn I already know sugar was the easy one. so i am not expecting cornstarch to be easyaswell
 
-**Total time spent: 2 hours**
+**Total time spent: 3 hours**
 
 # July 7: No detachable hopper at all: carving them into the disk
 
@@ -294,7 +294,7 @@ M1 design is settled. Rotary disk with all 8 hoppers carved into it. Auger in ea
 
 Powder. Everything so far is plastic and CAD. The design only counts once powder moves through it the way it is supposed to. Sugar already works but now we need to test on cornstarch, which I already suspect is going to be a problem because it clumps if you look at it wrong. And the disk wont prove itself until powder goes through it.
 
-**Total time spent: 2 hours**
+**Total time spent: 3 hours**
 
 # July 10: Cornstarch jams the auger solid
 
@@ -320,7 +320,7 @@ Cornstarch in the sugar setup. Jams. And leaves stagnant powder the auger can't 
 
 Two fixes to try. A wider auger with bigger threads for cornstarch specifically. So the clumps have something to grab onto and room to move. And an agitator that keeps the whole hopper cycling. Which i already know is coming because it is on tonight's fix list. And the agitator attempt so far has its own problem, next entry. And the wider auger wont fix the edges either. It will just jam less. So both fixes are needed, not just one.
 
-**Total time spent: 3 hours**
+**Total time spent: 4.5 hours**
 
 # July 13: A wider auger with bigger threads for cornstarch
 
@@ -348,7 +348,7 @@ Cornstarch dispenses without jamming on the wider, bigger-thread auger. Acceptab
 
 The stagnant powder problem is still unsolved. A wider auger doesn't reach the edges of the hopper either. And that is the agitator's job. And my first agitator attempt already failed for a dumb reason. And also tonight's fix list has a tapered-thread auger and double agitators on it. So the auger experiments aren't done. And the edges are still sitting there full of powder the screw cant reach. Which is the next thing to fix.
 
-**Total time spent: 3 hours**
+**Total time spent: 4 hours**
 
 # July 16: The agitator print fails, it doesn't reach the walls
 
@@ -374,7 +374,7 @@ Agitator attempt oen. Failed print. Wrong size anyway. And the next one definite
 
 The fix list I wrote tonight covers it. Mount two agitators on the bottom of the auger so they spin together off the same drive. Shaped to cycle the whole hopper. And that is the version to build next, along with the tapered auger. And M1's milestone write-up is due with what I have. Two powders working, a list of exactly what still doesnt. And the agitator is at the top of that list. Because without it the edges never empty.
 
-**Total time spent: 2 hours**
+**Total time spent: 3 hours**
 
 # July 19: Tonight's fix list: two agitators and a tapered auger
 
@@ -401,7 +401,7 @@ Fix list is written down and specific. 2 agitators mounted on the auger bottom s
 
 Build both. Print the tapered auger. Print agitators that reach the hopper walls this time. And rerun sugar and cornstarch against both configurations to see which powder wants which screw. And then M1 is done and the scale/motor work starts. And the fix list is the whole next session, not a side quest. Because without it the edges never empty and the powders never behave.
 
-**Total time spent: 2 hours**
+**Total time spent: 3 hours**
 
 # July 22: Starting a second CAD document: newauger
 
@@ -426,7 +426,7 @@ newauger document created. Single doser assembly is coherent in it. And the desi
 
 Electronics. The motor on top of that CAD doesn't turn itself. And I need a driver, something to control it, and the scale in the loop. And honestly I should sketch the whole system otu on paper before I wire anything bc the parts list in my head keeps changing. And the breadboard in the CAD is a hint, not a plan. And the plan is the next thing to draw.
 
-**Total time spent: 3 hours**
+**Total time spent: 4 hours**
 
 # July 25: Sketching the whole system on paper
 
@@ -453,7 +453,7 @@ One complete system sketch. Frame plus disk plus drive plus scale plus Pi, conne
 
 Wire it. Breadboard first, driver and motor, get a stepper turning udner control. Tehn bring the scale in. The sketch says the Pi runs the show, so the Pi has to run a motor and read a scale at the same time. Thats the next thing to prove, fr.
 
-**Total time spent: 2 hours**
+**Total time spent: 3 hours**
 
 # July 28: Electronics start: breadboard, driver, and a lot of wires
 
@@ -479,7 +479,7 @@ Electronics bench is live, no way. Power, breadboard, driver board, stepper moto
 
 Get the motor turning under program control, than the scale. The scale connection is its own adventure since it talks serial, RS232, which means an adapter board and more wires. After that the two halves have to meet, a motor program that listens to the scale. Thats the actual M2 milestone
 
-**Total time spent: 5 hours**
+**Total time spent: 5.5 hours**
 
 # August 1: Wiring the scale's serial adapter
 
@@ -505,7 +505,7 @@ Scale interface wired. RS232 adapter connected into the breadboard setup. Both h
 
 The combining. Two programs, one taht runs the touchscreen side and one that dispenses using scale feedback, and making them talk to each other. Plus the powder work keeps going in parrallel, the hopper still needs its agitator sorted. That has beeen running alongside the electronics all week, fr.
 
-**Total time spent: 4 hours**
+**Total time spent: 4.5 hours**
 
 # August 4: Powder test with an agitator actually in the hopper
 
@@ -531,7 +531,7 @@ Agitator works in a real hopper with real powder. The whole hopper cycles, no st
 
 Accuracy, with the motor and scale. that is M2 proper The mechanical side dispenses, now it has too dispense the right amount and stop itself. And the write-up for M2 is gonna be due soon to, so the closed loop needs to exist this week, not eventually.
 
-**Total time spent: 3 hours**
+**Total time spent: 4.5 hours**
 
 # August 7: The motor system: NEMA 17 and a TMC2209 on a breadboard
 
@@ -559,7 +559,7 @@ Motor system wired. NEMA 17 plus TMC2209 plus breadboard plus Pi, the doser has 
 
 The scale side and the screen. The touchscreen arrived and needs wiring to the Pi, and the scale needs its RS232 connection finished so the Pi can read weights. Then the tow programs, the interface, and the one that dispenses.
 
-**Total time spent: 4 hours**
+**Total time spent: 4.5 hours**
 
 # August 10: The scale and the screen join the Pi
 
@@ -587,7 +587,7 @@ Pi plus touchscreen plus scale over RS232 plus motor driver, all connected. The 
 
 Write the tow program. One with the visual interface where amounts get entered, and a seperate motor/scale program that takes the target, spins the motor, watches the scale, and stops at the target. The interface calls the dispenser. If that works even once, M2 is real
 
-**Total time spent: 4 hours**
+**Total time spent: 4.5 hours**
 
 # August 13: The speed problem isn't software
 
@@ -615,7 +615,7 @@ Root cause found. Dispensing speed is limited by the NEMA 17 motor, not the soft
 
 Order and mount the NEMA 23, retune around it, and run the full powder test properly, tho. All eight powders, two target weights, real numbers instead of vibes. Plus the two-speed idea that came out of the software wrok.
 
-**Total time spent: 3 hours**
+**Total time spent: 4.5 hours**
 
 # August 16: Fast, then slow: the two-speed rule
 
@@ -643,7 +643,7 @@ Two-speed dispensing kept as the approach. Fast bulk, slow final ~1 g. Speed goe
 
 The actual numbers. Eight powders, two targets, full test. Honest results about which ones hit the 3% bar and which ones dont. Time to stop theorizing about speed and start measuring it.
 
-**Total time spent: 3 hours**
+**Total time spent: 4 hours**
 
 # August 19: Two programs, not one
 
@@ -671,7 +671,7 @@ Software architecture set. App calls dispenser, dispenser owns the motor and the
 
 Run it for real and watch it stop at a target on its own rn. That is the whole milestone in one sentence
 
-**Total time spent: 5 hours**
+**Total time spent: 5.5 hours**
 
 # August 22: The 55-milligram test: 5 g is solved, 55 mg is not
 
@@ -712,7 +712,7 @@ The pattern is the same as everything else in this project. The powders split in
 
 The 5 g trial first. Then figuring out what to do about small doses, because machine has to handle tehm eventually. Big doses work, small doses dont yet
 
-**Total time spent: 5 hours**
+**Total time spent: 5.5 hours**
 
 # August 25: The 5-gram test: all eight within 0.3%
 
@@ -753,7 +753,7 @@ The times tell the other half The free-flowing powders finish in under two minut
 
 The powder behaviors write-up, because the test numbers dont explain themselves. And the NEMA 23 swap, because five minutes for 5 grams of baking soda is accurate but not a product. Also the barcode idea needs a decision. its beeen hanging aroudn since the profiles work and its time to either build it or kill it, lmao.
 
-**Total time spent: 5 hours**
+**Total time spent: 5.5 hours**
 
 # August 28: Sugar settings make cornstarch crawl: splitting powder profiles
 
@@ -785,7 +785,7 @@ Dispensing code is powder-aware now. Profiles split by consistency, app selects 
 
 The electrical weirdness. Sometimes after the program terminates, the motor keeps slowly spinning on its own, and thats not a profile problem, thats noise, and it needs a hardware answer. Also M3 is coming and the plan is one doser taht handles every powder properly, all eight of them, so a full powder test is next.
 
-**Total time spent: 4 hours**
+**Total time spent: 4.5 hours**
 
 # August 31: Two kinds of powder, and no barcode
 
@@ -813,7 +813,7 @@ Powders are in two families nwo, each with its own way of dispensing. And the ba
 
 The NEMA 23 swap and all-code-on-Pi, which are the last two M3 items. The motor fixes the speed and the Pi move gets rid of the laptop.
 
-**Total time spent: 3 hours**
+**Total time spent: 4.5 hours**
 
 # September 4: The program ends but the motor keeps turning
 
@@ -843,7 +843,7 @@ Ghost motion's fixed. EN rerouted to a Pi GPIO pin, and now the motor only turns
 
 Honestly the breadboard itself is becoming the risk now tbh. Every fix adds another jumper wire to a board that was supposed to be temporary. A machine that has to gte mounted on a frame cannot be a breadboard with thirty wires hoping for the best. A PCB layout is in progress, planned to be ordered and arrive by M3 So the electronics can be one board, mounted properly, organized, wtih less risk attached
 
-**Total time spent: 4 hours**
+**Total time spent: 4.5 hours**
 
 # September 7: Designing a PCB to escape the breadboard
 
@@ -869,7 +869,7 @@ PCB layout's in progress. Order planned to land by M3. We'll see if it survives 
 
 M3 itself. One doser, all eight powders, full coverage. That means the big powder test, and it means speed, because rigth now dispensing a full set of powders at careful-crawl speed would take all day. The motor might be the limit there, we'll see.
 
-**Total time spent: 3 hours**
+**Total time spent: 4 hours**
 
 # September 10: The purple agitator takes shape
 
@@ -897,7 +897,7 @@ Agitator assembly exists as a printed, assembled part now. Frame plus auger, spi
 
 Print more of them, because one agitator is a prototype and eight hoppers need eight of them, and the print quality has to hold up. which, well, the next entry is nto gonna be a good day.
 
-**Total time spent: 4 hours**
+**Total time spent: 4.5 hours**
 
 # September 13: The print that turned into spaghetti
 
@@ -921,7 +921,7 @@ One print failed completely. Filament wasted, time lost. The agitator parts that
 
 Reprint the failed parts. Check the bed and adhesion before starting long print. And stop treating a successful first layer as a given. The agitator set still needs to be complete before M4 starts multiplying hoppers. And i wont start another long print without watching that first layer go down properly.
 
-**Total time spent: 3 hours**
+**Total time spent: 4 hours**
 
 # September 16: The NEMA 23 swap
 
@@ -951,7 +951,7 @@ NEMA 23 is in as the dispensing motor now. Speed goes up, the accuracy stuff sta
 
 All the code onto the Pi so the machine runs without a laptop. And the repeatability runs, because a fast motor that dispenses differently every time is worse than a slow one that doesnt, lol.
 
-**Total time spent: 4 hours**
+**Total time spent: 4.5 hours**
 
 # September 19: Everything on the Pi: no laptop required
 
@@ -979,7 +979,7 @@ Single doser is standalone now. Pi plus touchscreen plus scale plus motor, no la
 
 Repeatability next. Run the same target a bunch of times in a row and compare the final weights, no recalibrating between runs. And if the numbers drifted i need to figure out waht drifts and why, before this thing becomes an eight-hopper machine.
 
-**Total time spent: 4 hours**
+**Total time spent: 4.5 hours**
 
 # September 22: Repeatability runs, and writing the SOP
 
@@ -1020,7 +1020,7 @@ Repeatability tested, same target over and over. And a 12-step SOP written so so
 
 M4 next. Eight hoppers at once, a rotary disk that positions them, a frame to hold it all, and a drive that engages and disengages. The single doser was the hard part, the multi-doser is the bigger part
 
-**Total time spent: 4 hours**
+**Total time spent: 4.5 hours**
 
 # September 25: Hoppers with lids, and the disk fitting
 
@@ -1050,7 +1050,7 @@ Hopper lids printed and fitted. Agitator confirmed in place inside the hopper. D
 
 The PCB schematic is on screen adn needs finishing. And tehn M4 starts in earnest. The frame, the disk, the actuator that lifts the motor into engagement. The parts are ready, the machine that holds them isnt yet
 
-**Total time spent: 4 hours**
+**Total time spent: 4.5 hours**
 
 # September 28: M3 done: what the single doser proved
 
@@ -1082,7 +1082,7 @@ M3 complete. The single doser works at normal doses, tiny ones are still a known
 
 M4 next. Eight hoppers, one disk, one shared drive, a frame, and the disk concept from way back comes bakc, except now it has to be real, with a motor that engages one hopper at a time and frame that holds everything square. And the loose ends form M3, the small doses, are still sitting there waiting. They arent going anywhere, lmao.
 
-**Total time spent: 2 hours**
+**Total time spent: 3 hours**
 
 # October 1: The PCB schematic, on screen
 
@@ -1108,7 +1108,7 @@ PCB schematic complete on screen, layout in progress. The electronics have a des
 
 M4 next, omg. The frame, the disk, the actuator. And the electronics story pauses here and the mechanical story takes over. And theyll meet again later wehn everything has to live on the Same machine.
 
-**Total time spent: 3 hours**
+**Total time spent: 4.5 hours**
 
 # October 5: The disk concept becomes real CAD
 
@@ -1139,7 +1139,7 @@ Rotary disk in high-fidelity CAD. First iteration and final iteration. Eight hop
 
 The hard question the disk creates is how does one motor drive eight hoppers. Eight motors would be expensive and huge. And the answer is gonna be one motor that moves between dosers. Which means an actuator, a coupler, and a whole new set of problems.
 
-**Total time spent: 4 hours**
+**Total time spent: 4.5 hours**
 
 # October 8: The actuator: bought, not built
 
@@ -1168,7 +1168,7 @@ Drive-engagement method decided. Linear actuator lifts the motor up while the di
 
 The coupler. Lifting the motor up and down is easy. Getting it to reconnect to the auger every single time, at whatever angle the auger stopped at, is the problem nobody warned me about. And its about to stop all progress.
 
-**Total time spent: 2 hours**
+**Total time spent: 3 hours**
 
 # October 11: The coupler that only worked at one angle
 
@@ -1200,7 +1200,7 @@ Serrated-teeth coupler works. Motor engages the auger at any angle. The roadbloc
 
 The frame, the disk, the actuator, the motor, and eight hoppers all need something to hang from. And that something is 3030 aluminum extrusion and a saw.
 
-**Total time spent: 5 hours**
+**Total time spent: 5.5 hours**
 
 # October 14: Sawing 3030 extrusion for the frame
 
@@ -1228,7 +1228,7 @@ Frame under construction. 3030 extrusion cut and assembled, disk position center
 
 Mount everything on it. Disk in the center, actuator to the side above the set doser position, Arduino and perf board and Pi on the side with the wires in a printed cover. Then the first full assembley. Then the part where i find out waht doesn't fit.
 
-**Total time spent: 5 hours**
+**Total time spent: 5.5 hours**
 
 # October 17: Frame and disk, together
 
@@ -1258,7 +1258,7 @@ Disk mounted in the center of the frame. The multi-doser has a body nwo. The rem
 
 The disk print itself, the actuator mounting, and the full assembly. Also the wiring, which is going to be an all-night job. i can already feel it coming, lol.
 
-**Total time spent: 4 hours**
+**Total time spent: 4.5 hours**
 
 # October 20: First full assembly
 
@@ -1345,7 +1345,7 @@ Diagnosis. Version 1 stepper code is too slow because basic Arduino pulse comman
 
 Version 2. Generate the pulses with a hardware timer built into the chip, so the pulses come from the timer, not from the main loop. And the motor gets tested against it's real limits instead of the code's limits. And the code stops being the thing in the way.
 
-**Total time spent: 3 hours**
+**Total time spent: 4 hours**
 
 # October 29: Version 3: fault checking and type-in speeds
 
@@ -1373,7 +1373,7 @@ Version 3 done. Fault checking that records the exact speed of a stall or overcu
 
 Electronics organization. The code is fast and the machine is wired, but the wiring is stil a breadboard and a prayer. And the PCB plan needs a verdict, because i cant keep putting that decision of. The machine needs a real answer for where its electronics live.
 
-**Total time spent: 4 hours**
+**Total time spent: 4.5 hours**
 
 # November 1: The PCB is scrapped, the perf board fails
 
@@ -1401,7 +1401,7 @@ Custom PCB scrapped, design never finalized, perf board tried, failed to connect
 
 Mkae the breadboard look like it belongs on the machiene. Printed wire covers, an Arduino cover, a breadboard mount, and all the wires secured to one extrusion, so the machine doesn't look like a science fair project with its guts out. The electronics work, now they have to look like they work.
 
-**Total time spent: 4 hours**
+**Total time spent: 4.5 hours**
 
 # November 5: Wire covers and one clean extrusion
 
@@ -1429,7 +1429,7 @@ Electronics organized. Printed wire covers, Arduino cover, breadboard mount, wir
 
 Next up. The final code, the disk learning were it is, and the demo. The machine is built, wired, fast, and tidy, and nwo it has to prove it can run a whole recipe by itself.
 
-**Total time spent: 4 hours**
+**Total time spent: 4.5 hours**
 
 # November 8: The assembly in CAD, again
 
@@ -1457,7 +1457,7 @@ Assembly CAD updated to match the built machine. The model and the machine agree
 
 The final code. Three pieces, Pi app, dispenser program, Arduino sketch, plus the disk positioning question the M4 notes got wrong that the code is going to have to gte right. And thats the big one, the rest is just typing.
 
-**Total time spent: 3 hours**
+**Total time spent: 4.5 hours**
 
 # November 11: Printing the last hopper parts
 
@@ -1487,7 +1487,7 @@ Final hopper parts printed. The machine has all eight hoppers, all eight agitato
 
 The code. The final Arduino sketch and the Pi programs, and the disk positioning decision that changes everything abotu how the machine finds its slots. And thats the last big decision before the demo.
 
-**Total time spent: 3 hours**
+**Total time spent: 4 hours**
 
 # November 14: The disk doesn't trust steps anymore
 
@@ -1529,7 +1529,7 @@ Final disk positioning. Clockwise-only detent indexing via the D2 switch, 800 st
 
 The rest of the final code, the Pi app and the dispenser program, and getting all three pieces talking to each other the way the emails show them. And then the demo, which is tomorrow, so theres not much time left to get this wrong.
 
-**Total time spent: 5 hours**
+**Total time spent: 5.5 hours**
 
 # November 17: The final code: three pieces
 
@@ -1569,7 +1569,7 @@ Final software complete and exchanged. Pi app plus dispenser program plus Arduin
 
 Demo day, the machine on a table, eight hoppers, and an audience, and everything from the start to nwo gets proven in one afternoon. And I hope it works lol, because there is no version 4 of this day.
 
-**Total time spent: 5 hours**
+**Total time spent: 5.5 hours**
 
 # November 20: it works end to end
 
@@ -1593,4 +1593,4 @@ Machine works end to end, I was also able to show to some of my friends.
 
 The next version, small-dose accuracy, for one, but thats a different log. This one ends here, with a machine that works, and it works bc of a whole summer of parts that didnt. Which is a seperate kind of ending than I expected back when I started
 
-**Total time spent: 4 hours**
+**Total time spent: 4.5 hours**
