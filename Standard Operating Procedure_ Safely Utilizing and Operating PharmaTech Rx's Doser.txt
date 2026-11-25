@@ -1,0 +1,32 @@
+﻿1. Purpose
+Users will be able to utilize the doser to accurately and precisely dispense a specific amount of powdered substance up till the 100 gram limit. This machine is able to safely replicate results with 8 powders: cornstarch, baking soda, ground cinnamon, table salt, granulated sugar, cocoa powder, powdered sugar, and all-purpose flour.
+
+
+2. Scope
+This applies to all users operating PharmaTech Rx® 's Doser.
+
+
+3. Tools Needed
+* M3 wrench and M3 screwdriver (Also known as Allen Key)
+* Personal protective equipment: safety goggles (DISCLAIMER: PharmaTech Rx®’s Doser is intended only for the use of the standard 8 powders (cornstarch, baking soda, ground cinnamon, table salt, granulated sugar, cocoa powder, powdered sugar, and all-purpose flour) listed. When utilizing pharmacy grade substances, it is mandatory for users to use full PPE such as powder-free gloves and a gown for non-hazardous powders, and double gloves, a respirator mask such as an N95, safety goggles, a disposable gown, shoe covers, and a hair cover.)
+
+
+4. Procedure Steps
+1. Press the “edit” button on slot 1 on the kiosk.
+2. Use the dropdown menu to select the appropriate, desired powder you will be using and press back.
+3. Take the powder you will be using and pour it into the hopper through the cutouts on the top of the hopper. Pour from both sides.
+4.  Press continue.
+5. Next, press the tare (O/T) button in the middle of the scale in order to tare the scale. Press and wait a few seconds and repeat until it reaches 0 grams. 
+6. Press the slot with the powder picked previously (in this case slot 1 always), enter the desired number of grams to dispense, and press save. Keep in mind that this doser dispenses a max of 100 grams.
+7. Press start. 
+8. Watch the auger. If it starts jamming, you see any smoke or smell anything burning, or any other signs that the machine is malfunctioning, press FORCE STOP. 
+9. Once the kiosk reads “DONE”, the operation is complete. Check on the scale that it reached the correct quantity within ±3% error.
+10. Press the “clear all + return to home” button.
+11. Discard any remaining powder from the hopper. 
+12. Use the M3 wrench and M3 screwdriver to deassemble the hopper from its lid and wipe the auger, hopper, and its surroundings clean.
+5. Expected Outcome
+In the end, users will be left with their desired number of grams of their desired powder. 
+
+
+6. Common Mistakes
+A common mistake is to forget to tare the scale. Read the directions carefully above and be sure that after the scale is tared, it is at 0.000 grams.
