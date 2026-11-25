@@ -72,16 +72,6 @@ Tested on 8 powders: granulated sugar, table salt, cocoa, ground cinnamon, bakin
 
 Assembly is relatevely simple compared to other machines, all parts can be custom made and the only mechanical part you need to buy is 3030 extrusion and T-Nuts which you can ethier handsaw or bansaw. For the most part the rest of the things you need to buy are ethier sensors, motors, etc. You will need to lasercut/3dp the rest of the mechanical parts. You can view the the onshape to see how to assemble the mechanism. 
 
-## How to flash
-
-**Arduino Uno / classic Nano (ATmega328P) — the sketch:**
-
-1. Open the Arduino sketch (final state September 12, 2026 — see Journal 055 for the pin map, detent protocol, and safety rules) in the Arduino IDE.
-2. Connect the Uno/Nano over USB.
-3. Select board **Arduino Uno** (or **Arduino Nano**, ATmega328P), and select the serial port.
-4. Click **Upload**. Bench values in the final code: 1,000 steps per second, 4 ms debounce.
-
-Before this, testing a new speed meant rewriting the code and re-uploading every time. Version 3 of the step code (Journal 049) lets you type in a speed and test it immediately — use that loop to characterize the motor instead of guessing.
 
 **Raspberry Pi 4: the app:**
 
@@ -97,7 +87,7 @@ Before this, testing a new speed meant rewriting the code and re-uploading every
    ```
    That program dispenses one powder to one target using scale feedback. It does not move the actuator or the disk.
 
-The three pieces — `app.py`, `motor_scale_controller.py`, and the Arduino sketch code are all uploaded
+The three pieces: `app.py`, `motor_scale_controller.py`, and the Arduino sketch code are all uploaded
 
 ## Operating it
 
@@ -133,4 +123,5 @@ From the project bill of materials sheet — 22 items, $732.06.
 - **No limit switches on the actuator.** Actuator position is tracked in software only. If the code loses track, it has to be told where the actuator is.
 - **Disk is clockwise only, by detent.** 
 
+Please let me know if you come across anything or have any questions!
 
