@@ -34,7 +34,7 @@ Onshape: https://cad.onshape.com/documents/e2fb2b451acf286ed66ba165/w/6cd2a32041
 
 ## Schematic
 
-There is no PCB in this machine — see Known Issues below. There is a schematic. It covers the driver circuit, the Pi connections, and the enable routing.
+There is no PCB in this machine, There is a schematic. It covers the driver circuit, the Pi connections, and the enable routing. The pcb files are uploaded however they are scrapped versions of it, they were added incase anyone was wondering how they looked.
 
 ![PCB schematic: driver, Pi connections, enable routing, drawn properly instead of implied by jumper wire colors.](docs/assets/cad/pcb-schematic.png)
 
