@@ -17,9 +17,9 @@ ngl its simpler than I thought it would be tho. Powder sits in a tube on top. Dr
 
 Cap, tube, funnel block, motor, screw, barrel. Like six things. Each one does its own job. The screw is the whole metering idea. Every turn moves a consistent amount of powder. Everything else is just holding powder abvoe it and catching what falls. So what im copying from this design is how it meters, not how its laid out.
 
-![](docs/journals/assets/reference/auger-filler_exploded.png)
+![](docs/assets/reference/auger-filler_exploded.png)
 
-![](docs/journals/assets/reference/auger-filler_assembled.png)
+![](docs/assets/reference/auger-filler_assembled.png)
 
 
 The part I keep thinking about is the corner. In this design the screw is horizontal, so powder falls down out of the tube and then has to turn ninety degrees to get pushed sideways out the barrel. And that corner is where powder is going to sit. And jam. And be a pain to clean. And for what im building the powder is going to be sitting in hoppers and dispensing straight down anyway. so why make it turn at lal. Put the auger vertical, inside the hopper, and let it push the powder down and out the bottom. Gravity is already going that direction. And it removes the corner completely instead of designing around it. Which is alot cleaner than trying to fix a corner that shouldnt be tehre in the first place.
@@ -48,13 +48,13 @@ First idea was every hopper gets its own auger and its own agitator. Good for cr
 
 so the plan lowk did a 180. Instead of a motor per hopper, two motors sitting above the one slot thats over the scale. They clip into whichever hopper rotates into that position and power its auger and agitator. Each hopper keeps its own auger and agitator, so powder never touches another powders parts. But the motors are shared. Two motors total doing the work of sixteen. The auger and the agitator touch powder, so every hopper needs its own. The motors never touch powder, so they can be shared. Cross contamination stays solved because nothing powder touches is ever shared. And the motor count stays sane because the expensive moving parts are the ones that get shared.
 
-![](docs/journals/assets/cad/rotary-disk-concept.png)
+![](docs/assets/cad/rotary-disk-concept.png)
 
 Picking teh dispensing mechanism wasnt really a debate. Im going with an auger. Every turn moves a consistent amount of powder. Which is what I need if this thing is going to hit a target weight instead of just dumping. A vibrating chute or a flap would be simpler too build and impossible to control. So the auger stays. Every turn moves a consistent amount and thats what hitting a target weight needs.
 
 Why a rotary disk instead of eight fixed hoppers in a row. Theres one scale and one place powder comes otu. Eight fixed stations would mean eight scales or a moving scale. Both dumber than a disk that just turns the right hopper over the one scale. And the drive has to be pararell whith the hopper it clips into or the whole clip-in idea doesnt work. So the alignment matters even though there is only one drive position.
 
-![](docs/journals/assets/cad/hopper-section-in-disk.png)
+![](docs/assets/cad/hopper-section-in-disk.png)
 
 ## Today's results
 
@@ -80,10 +80,10 @@ The funnel is with a thread cut into the stem. A 2 1/4-4 1/2 thread, 10 cm deep.
 
 I also tried a different motor that afternoon, a GF7, plus an idea called "Spinning Big Arm". And it went nowhere. First dead end of the project, day one lol. 
 
-![](docs/journals/assets/cad/doser-v01-final-assembly.png)
+![](docs/assets/cad/doser-v01-final-assembly.png)
 
 
-![](docs/journals/assets/cad/hopper-section-annotated.png)
+![](docs/assets/cad/hopper-section-annotated.png)
 
 The auger is a profile swept along a spiral path. The shaft is a circle wtih a 2.5 mm radius, so the auger is a long screw with a 5 mm shaft and a spiral flight wrapped around it. And the flight is the part that moves teh powder. The shaft is just the spine it hangs off.
 
@@ -91,10 +91,10 @@ And the same day brings in the NEMA 17 stepper (a 17HS4401) and a DC motor mount
 
 And an hour later, another change adds the motor adapter. A disc about 60 mm across with three posts on it that the motor sits on. And the Lower plate. And the adapter is the piece that connects the motor to the auger. Motor on top, adapter disk, long screw underneath. And it looks simple sitting in CAD. Everything looks simple in CAD. And a few milimeters of error in the adapter would throw the whole shaft off. Which is the kind of thing I only notice once I try to fit it together.
 
-![](docs/journals/assets/cad/doser-v02-final-assembly.png)
+![](docs/assets/cad/doser-v02-final-assembly.png)
 
 
-![](docs/journals/assets/cad/auger-assembly-onshape.png)
+![](docs/assets/cad/auger-assembly-onshape.png)
 
 The last day is cleanup. And by then the document was a total mess. Half of it old imports and dead ends. And I couldnt find anything. so i cleaned up the onshape document. The disc copy got renamed. A dead part got deleted. A "stationary disc" folder got made. And a couple of dead parts got deleted. And I also did a cleanup pass that deleted the old imports and sorted the rotary disc and funnel into folders. And there was alot of junk in there. Boring work. But the Doc went from unusable to navigable. Which is what the next three days needed And the parts arent diagnal or anything clever. It is just a pile of parts that needed sorting. 
 
@@ -122,9 +122,9 @@ But the real change is in the final assembly. It went from 2 loose parts with no
 
 And then the latch. I looked at how a blender locks its jar on and copied the geometry. The funnel gets two slits cut into its sides and the hopper end gets two extruding slabs, tabs, that line up with the slits. And the hopper drops in flush, twists, and the tabs catch behind the slits so it is locked in position. And and pulling it back out is the same move in reverse. A slot is a slot. It either fits or it doesnt. And if it is loose I change one number instead of re-cutting a whole thread profile and hoping. Because a thread needs the printer to hold a precise helical groove that has to turn with almost no tension. And that is exactly the kind of thing a printer is bad at. And the latch also keeps the thing I wanted from the thread in the first place. The hopper comes off with no tools so it can be wiped clean. Which is what I wanted the thread for anywyas.
 
-![](docs/journals/assets/reference/blender-latch-collar.jpg)
+![](docs/assets/reference/blender-latch-collar.jpg)
 
-![](docs/journals/assets/cad/latch-funnel.png)
+![](docs/assets/cad/latch-funnel.png)
 
 But designing it made me stop and think about whether the hopper needs to come off at all. The latch works. But it is still two parts with a seam between them. And seams are exactly where powder hides when you are cleaning. And either way the same pocket has to be wiped down. And a detachable hopper just creates more surfaces that need rigorous cleaning. And the next step might be combining the funnel and the enclosure into one part. Or just carving the hoppers straight into the rotary disk so there is nothing to take apart. But right now I am still trying to mkae the detachable version work.
 
@@ -134,11 +134,11 @@ today is the test. Both parts printed, blue filament, threads on both. And the p
 
 And I don't want to spend a week tuning thread clearances and end up in the same place. Because the printer is the limit, not the numbers. And the thread was the whole reason the hopper was designed to come apart in the first place. The M1 idea was minimal tools, easy cleaning, unscrew and wipe. And a connection that gets harder to unscrew every time and damages itself doing it fails the one job it had. And that stings a bit. Becuase I spent three days on a connection that was never gonna wrok in plastic. And the latch was sitting there the whole time. And the accomodate-the-thread approach would ahve just been more of the same. so i stopped
 
-![](docs/journals/assets/photos/threaded-auger-in-funnel.jpg)
+![](docs/assets/photos/threaded-auger-in-funnel.jpg)
 
-![](docs/journals/assets/photos/threaded-augers-frayed.png)
+![](docs/assets/photos/threaded-augers-frayed.png)
 
-![](docs/journals/assets/photos/threaded-funnel.png)
+![](docs/assets/photos/threaded-funnel.png)
 
 ## Today's results
 
@@ -164,9 +164,9 @@ The thread does'nt help at all. It sticks out sideways and catches on nothing. I
 
 The fix turned out to be boring. Glue on the build plate with a big brim. With the base stuck down properly the auger prints clean all the wya up. Just glue lol. And i spent time asuming the problem was something interesting. Temperature, speed, the thread geometry. And it was just that a tall thin screw needs its base glued dwon like everything else tall and thin. And the quanity of glue does'nt need to be much. A thin layer is enough. It just has to hold the first layers while the rest of the screw goes up. And im annoyed at myself for not trying it first, because the neccessary fix was sitting on my desk the whole time.
 
-![](docs/journals/assets/photos/printer-printing-blue-part.jpg)
+![](docs/assets/photos/printer-printing-blue-part.jpg)
 
-![](docs/journals/assets/cad/auger-cad-screen.jpg)
+![](docs/assets/cad/auger-cad-screen.jpg)
 
 ## Today's results
 
@@ -190,15 +190,15 @@ The motor stuff is the big thing. A whole micro-metal motor set showed up at onc
 
 And then the disc just changes. It was the tall grey drum, now its a flat blue disc with 8 grey pocket containers on top and the black auger and motor unit sitting on it. Same parts underneath. Completely different machine on screen. I cant tell you which change did it because tehre wree lkie fifty of them and I didnt track each one. All I knwo is the part list and the render lol. Flat disc, eight pockets, auger on top.
 
-![](docs/journals/assets/cad/doser-v07-final-assembly.png)
+![](docs/assets/cad/doser-v07-final-assembly.png)
 
 Two of the saves are just checkpoints with nothing in them. I save like that when working, it pays off once and then you just keep doing it forever. Then some small stuff on the rotary disc, a hole and a thread, hiding and showing things. Assembly looks the same, and then- Then the auger, which took forever, the profile and the spiral just reworked over and over, edits, deletes, put it back in. 
 
 Then the housing tube. First circle is 57.8 mm across, thats the tube the powder sits in. Parts keep disapearing and reappearing while I shuffle things around, I stopped tracking why and just read the part list each time. few undos, some parts deleted, some shown again. Auger ends the day as a finished screw, Spiral flight and all, rounded edge on the end. Disc is a flat plate with eight pockets. Motor adapter is just a single 60 mm circle now, simpler than when I built it.
 
-![](docs/journals/assets/cad/doser-final-assembly-top.png)
+![](docs/assets/cad/doser-final-assembly-top.png)
 
-![](docs/journals/assets/cad/doser-dc-motor-import.png)
+![](docs/assets/cad/doser-dc-motor-import.png)
 
 ## Today's results
 
@@ -222,11 +222,11 @@ Sugar went in the top and some of it came straight out the bottom... Not while d
 
 so i made the auger with a narrowr opening at the end. So there is resistance at the bottom of the screw. And the sugar can't just free-fall through anymore. It needs the auger turning to push it past the tight part. The tight exit is a gate. It holds the powder back when nothing is pushing. And lets it through when the screw pushes. The screw pushes, the exit resists. And the balance between them is what makes the dispense controllable. And the exit wasnt the part I was thinking about when I designed the screw. i was thinking about the flight and the shaft. But the exit turned out to be just as important. And the screw and the exit have to work together. The screw meters and the exit holds. And if either one is wrong the whole thing leaks or jams. And im glad sugar showed me that now, on the easy powder, instead of on cornstarch later.
 
-![](docs/journals/assets/photos/auger-in-housing-cad.jpg)
+![](docs/assets/photos/auger-in-housing-cad.jpg)
 
 It also taught me the exit geometry matters as much as the screw itself The screw meters the powder but the exit decides whether gravity gets a vote. And every powder after sugar is going to need its exit thought about, not jsut its screw. And the machine that works is the one where the screw and the exit agree wtih each other. And sugar is the powder that proved that. Because sugar is so free-flowing it finds every gap you leave it. And if the exit holds sugar, it will probably hold the rest.
 
-![](docs/journals/assets/photos/hopper-on-scale.png)
+![](docs/assets/photos/hopper-on-scale.png)
 
 ## Today's results
 
@@ -248,13 +248,13 @@ Ok so M1 comes down to one question. If I turn the auger the same amount, do I g
 
 It works!!! wtih the narrower exit on the auger, sugar comes out in the same amounts for the same turns of the screw, over and over. Turn it this much, get this weight. Turn it again, same weight agian. And it worked better than I though it would on the first real try. And that is the whole metering idea from the reference auger filler I looked at back at the start. Just vertical and in my hopper this time. The screw meters, the exit holds, and the weight repeats. The screw moves a fixed volume per turn, so teh same turns move the same powder. And the exit keeps gravity out of the eqation. So the only thing deciding the amount is how much I turn the screw.
 
-![](docs/journals/assets/video-stills/hopper-scale-still.jpg)
+![](docs/assets/video-stills/hopper-scale-still.jpg)
 
 The other thing sugar proved is it doesn't need an agitator at all. It just flows. There is always sugar falling into screw so the auger never starves. And so for sugar at least the simplest version of the design is enough. Which felt great after all the printing, tho. And i should enjoy that while it lasts because I already know not every powder is gonna be like this. And a a lot of the later work is going to be about powders that do not flow. So sugar being easy is a gift, not a guarantee.
 
 And this test matters because everything after it kinda depends on it. The motor, the scale loop, the whole closed-loop idea. All of it assumes the auger is a reliable metering device. And if the same turns gave different amounts every time, no amount of software could fix that. Because the software would just be correcting something random. And sugar says the process isn't random. Same turns, same weight, over and over. And the componenets all agree with each other for once. Which is not something I get to say very often in this project.
 
-![](docs/journals/assets/photos/metal-auger-screw.jpg)
+![](docs/assets/photos/metal-auger-screw.jpg)
 
 ## Today's results
 
@@ -280,11 +280,11 @@ And the seam is not a small detail. It is the whole cleaning problem in miniatur
 
 So. Final design. The hoppers are carved into rotary disk. One part. Nothing to unscrew. Nothing to latch. No seam. Less to clean. Less filamnet. Faster prints. And the disk CAD has been heading this way for days. The pockets was already in it. The first render is a disc with a ring of pockets. And every change since has kept them. The pockets were the design all along. i just spent three days arguing with myself about whether tehy needed a connection on top of them. And they dont. They never did.
 
-![](docs/journals/assets/cad/rotary-disk-cad.jpg)
+![](docs/assets/cad/rotary-disk-cad.jpg)
 
 The thread and the latch both go in the bin of ideas that worked on paper. The thread failed in plastic. The latch works, but it solves a problem I no longer have. If nothing detaches, nothing needs a latch. And that is the part that is easy to miss. I spent three days designing ways to take the hopper apart. And the right answer is to stop taking it apart. And the latch is a goood design for a problem I dont have anymore. Which is a weird thing to say about your own work lol. But it is true. And a seperate latch version would just be more parts to clean. More seams to hide powder in. And more filament for nothing.
 
-![](docs/journals/assets/cad/doser-rotary-disk-sketch.png)
+![](docs/assets/cad/doser-rotary-disk-sketch.png)
 
 ## Today's results
 
@@ -308,9 +308,9 @@ Cornstarch dose not flow. It clumps. And instead of falling into the screw and g
 
 And there is a second problem hiding behind the first one. Even where it doesn't jam, there is cornstarch sitting in the hopper that the auger never touches. Out at the edges. Just stagnant. And the screw only moves the powder directy abvoe it. so part of the hopper is dispensing and part of it is just storage that never empties. Which for a compounding machine is a real problem. Because that leftover powder is the wrong amount of an ingredient sitting in a later dose. And the auger can't fix that by itself no matter how good the screw is. Because the screw's reach is the screw's width. And the hopper is wider than the screw. And that was annoying to figure out, tbh. Because it means the screw was never going to be enough on its own. And the edges are a few milimeters away form the screw at the closest point and a lot further at the far side. And no amout of turning the same screw is going to reach them. Because the screw is in the middle and the powder is at the walls. And that distance is the problem.
 
-![](docs/journals/assets/video-stills/clumpy-powder-still.jpg)
+![](docs/assets/video-stills/clumpy-powder-still.jpg)
 
-![](docs/journals/assets/photos/threaded-cylinder-cad.jpg)
+![](docs/assets/photos/threaded-cylinder-cad.jpg)
 
 ## Today's results
 
@@ -334,11 +334,11 @@ It worked, mostly lol. And the wider auger with bigger threads lets the cornstar
 
 The spacing is the trick here. A clump needs a gap it can sit in. And the wider threads give it that gap. So the screw carries the clump instead of fighting it. And the powder moves down the tube instead of packing into a plug at the top. And dont underestimate how much of a difference a few millimeters of thread spacing makes. Because the sugar screw and the cornstarch screw look almost the same until you put powder in them. And than tehy behave like completely different machines.
 
-![](docs/journals/assets/cad/doser-auger-sketch.png)
+![](docs/assets/cad/doser-auger-sketch.png)
 
 Not perfect though. It is relatively consistent with an acceptable error margin. pretyt much it dispenses and the amounts are close enough for now. But cornstarch is never gonna behave like sugar no matter what screw I put udner it, and- And the design needs streamlining too. Right now there are just multiple augers floating around for different powders and i need a system for that. Which auger goes with which powder. And how the machine knows. And that is a problem for the sofware side later. But the physical answer is already decided. The machine carries different screws for different powders. Full stop. And the quanity of augers is going to keep growing if I dont get a system for it. Because every new powder is going to want its own screw. And a seperate screw for every powder is fine as long as I know which one is which. Which i dont yet. Not properly.
 
-![](docs/journals/assets/photos/external-thread-dialog.jpg)
+![](docs/assets/photos/external-thread-dialog.jpg)
 
 ## Today's results
 
@@ -360,11 +360,11 @@ Trying to fix the stagnent powder problem with an agitator. Something inside the
 
 The print failed. And looking at it, the design failed frist. And the agitator doesnt account for the full width of the hopper. It stirs the middle and leaves a ring of powder around the edges completly untouched. Which is exactly the powder that was stagnating in the cornstarch test. And an agitator that misses the edges is decoration lol. The agitator has to be shaped to hopper, not just roughly the right size. Because the job is the whole hopper, edge to to edge. And a paddle that roughly fits is what I printed. And it roughly works. Which is to say it doesnt. and im nto surprised it failed in print. Because the design was wrong before the printer even started. And the print jsut made the wrongness visible.
 
-![](docs/journals/assets/cad/agitator-cad.jpg)
+![](docs/assets/cad/agitator-cad.jpg)
 
 What the agitator has to do is scrape the edges of the hopper as it turns. Physically push the wall powder back into the middle where the auger can grab it. And that means it has to be designed to the hopper's exact inner shape. Not just be a paddle that roughly fits. The wall powder is the powder that never moves. so the agitator has to go to the wall. It can't just stir the middle and hope the edges follow. Because they wont. They just sit there. And the agitator has to track the wall all the way around as it turns, scraping as it goes. And if it is a few millimeters short it leaves a rign. And that ring is the problem again, just in a different shape. And this is the part of the build where the fix is annoyingly simple and i still had to print the wrong thing to figure it out. Because the agitator is not a separate little part you drop in. It is a part of the hopper's shape. Its job is the whole hopper, edge to edge, or the edge powder stays put. And alot of the design work in this project is kinda like that. The simple lesson you only learn by printing the wrong version first.
 
-![](docs/journals/assets/photos/auger-research-page.jpg)
+![](docs/assets/photos/auger-research-page.jpg)
 
 ## Today's results
 
@@ -388,7 +388,7 @@ First, the agitator situation. And right now their is no working agitator. The o
 
 Second, a whole second auger configuration. And the current auger has uniform threads the whole way down. And the new one will have threads that funnel down, tapered, so the spacing changes along the screw. And different powders are clearly gonna want different screws. Sugar already proved it doesn't behave like cornstarch. So instead of one perfect auger I am gonna have two configurations. The uniform one with agitators attached. And the tapered one, also with agitators. And i have been reading up on auger types too. There is a whole thing about self-feeding augers I had open on my laptop yesterday. And the research page is the one I keep coming back to. Because there is mroe auger theory there than I expected there to be. And the agitator is part of it, not a separate topic. Which is the part I kept missing.
 
-![](docs/journals/assets/reference/auger-filler-interchangeable-screws.jpg)
+![](docs/assets/reference/auger-filler-interchangeable-screws.jpg)
 
 The powder tests gave me three separate answers and they all point at the same thing. Sugar works on the plain auger. Cornstarch works on the wide auger. And nothing works without something moving the edge powder. So the next build is two auger configurations, both wtih two agitators attached to the auger bottom. And then rerun sugar and cornstarch against both to see which powder wants which screw. And the list is a print queue now, not just a note. Because every item on it is a part I have to print before M1 is done. so tomorrow i print instead of remembering, lmao
 
@@ -413,7 +413,7 @@ The doser document is geting crowded. It has the disk, the auger experiments, mo
 
 The single doser is getting mroe real in this document. And the version I am working on today has the motor mounted on top of the tube with the auger under it. Blue printed parts for the bottom feeder. The whole powder path in one assembly instead of pieces floating around. And tehre is even a breadboard modeld next to the motor mount in one of the studies. Which is me starting to think about where the electronics physically go instead of treating them as a later problem. And they are a later problem. But a soon later problem. The single doser in the new doc is one complete unit. Motor on top, tube, blue bottom feeder. The doser doc was doing two jobs and doing neither cleanly. It was the M1 archive of every auger experiment and also the place the real machine was supposed to come together. so splitting it means the new doc only has the parts that are going into the machine. And the old doc keeps the history.
 
-![](docs/journals/assets/cad/newauger-single-doser.jpg)
+![](docs/assets/cad/newauger-single-doser.jpg)
 
 Why a second document at all. Because the doser doc was doing two jobs and doing neither cleanly. And the risk is the two docs drift apart and I lose track of which one is true. Which is a real risk. But the doser doc was already unreadable. So it is the better trade. And the new doc doesnt have to carry the history. It just has to carry the machine. And a a seperate doc for the real machine is more effecient than one doc trying to be both an archive and a build. Because every time I opened the doser doc I had to wade through dead ends to find the parts that mattered. And that wasnt going to get better. It was only going to get worse as M2 added electronics.
 
@@ -438,12 +438,12 @@ Before I wire anything I need the whole machine on one page. CAD is great for on
 
 I drew the whole system out by hand. Superstructure, thats the frame, labeled SS in the sketch because im not writing superstructure forty times. Rotary disk with the hoppers, motor and mount above the dispensing spot, scale underneath, Pi 4 off to the side running it. Arrows for what connects to what, a note abotu witch hopper is over the scale and how the drive reaches it. Its messy, my drawing skills arent the best lol but you get the idea. First time the entire machine is in one picture, mechanics and electronics and all, instead of five cad document and a pile of intentions in my head. A couple connections are just question marks in arrow form, mostly how the scale reading gets back into the dispensing decision. At least now the question marks are written dwon somewhere.
 
-![](docs/journals/assets/photos/system-sketch.jpg)
+![](docs/assets/photos/system-sketch.jpg)
 
 The sketch does something CAD cant do right now. It holds the whole system in one view while i still dont know half the answers. In CAD id have to decide the exact size of everything before I could even see the system. On paper I can put the Pi next to the scale wtih an arrow and a question mark and move on i dont have to loose track of which connection I was unsure about, its right there on the page. answers come later, in the wiring tho. The sketch's SS box already becomes a real part same day, an L-shaped plate for the superstructure. and the auger I drew in CAD, the screw inside a translucent tube, is one of the componenets the sketch has to hold together.
 
-![](docs/journals/assets/cad/newauger-v02-auger-helix.png)
-![](docs/journals/assets/cad/newauger-v03-superstructure-lplate.png)
+![](docs/assets/cad/newauger-v02-auger-helix.png)
+![](docs/assets/cad/newauger-v03-superstructure-lplate.png)
 
 ## Today's results
 
@@ -465,11 +465,11 @@ Starting the electronics on the desk. Up to now the auger has only ever been tur
 
 Desk is covered. Power supply brick, breadboard with the driver on it, a stepper motor, rainbow jumper wires going everywhere in the way they do when youre still moving things around every two minutes. honestly there were to many wires to keep track of by the end of the day. I have photos from today taht are just escalating levels of wire mess lmao, which is how you can tell its a real electronics day and not a staged one.
 
-![](docs/journals/assets/photos/breadboard-wiring.jpg)
+![](docs/assets/photos/breadboard-wiring.jpg)
 
 Progress looks kinda like nothing right now. Nothing is mounted, nothing is clean, half the work is figuring out which wire is which for the fourth time. Ubt the motor end of the system from my paper sketch exists on the desk nwo, physically. thats the jump from M1 to M2. I started on the breadboard instead of going straight to a PCB or a mounted board becuase nothing is decided yet. Driver choice, wiring, power arrangement, all of it is still changing every time I touch it. A breadboard lets me change it in seconds, a PCB woudl lock me into whatever I guessed on day one. My day-one guesses were not that good, so the mess stays for now. changing your mind is cheap on a breadbord, and doing it this way is just more effecient than redrawing a board every time I move a wire. The driver and the Pi meet on the desk today, and i wont pretend the the wiring looks good, it doesnt, but it doesnt have too yet.
 
-![](docs/journals/assets/photos/raspberry-pi-closeup.jpg)
+![](docs/assets/photos/raspberry-pi-closeup.jpg)
 
 ## Today's results
 
@@ -491,11 +491,11 @@ Ok so the scale is the other half of the closed loop and it dont speak USB, it s
 
 The adapter is a little serial board and now its got the rainbow cable treatment too. Most of todays close-ups are just me documenting which wire goes where before i unplug something and and forget, because your the one who has to figure it out later and that person is also me. its a system, technically.
 
-![](docs/journals/assets/reference/usb-rs232-pl2303-cable.jpg)
+![](docs/assets/reference/usb-rs232-pl2303-cable.jpg)
 
 Without the scale readings getting to the Pi their is no closed loop at all. Hearing the scale turns out to be a hardware problem before its a software won. Once the readings land on the Pi, dispensing to a target becomes a program. Until they do its just a motor and a scale sitting near each other having seperate lives. This is also the frist time the scale stops being a lab tool I set a hopper on and starts being a component of the machine. The scale isnt for checking my work after the fact anymore, the scale, its the sensor the machine steers by. im starting to tihnk of it that way now.
 
-![](docs/journals/assets/video-stills/bench-wide-still.jpg)
+![](docs/assets/video-stills/bench-wide-still.jpg)
 
 ## Today's results
 
@@ -517,11 +517,11 @@ While the electronics come together Ive still got the hopper problem from M1 run
 
 Looking down into the hopper from the top you can see the difference the agitator makes. The powder is not sitting in a neat undisturbed layer, its worked through, coating everything. Its been getting moved around the whole hopper instead of jsut the column above the screw getting eaten away. That is the stagnant ring problem from the cornstarch test getting attacked properly.
 
-![](docs/journals/assets/photos/single-doser-cad.jpg)
+![](docs/assets/photos/single-doser-cad.jpg)
 
 This is the fix list from the 17th turning into actual hardware. Two weeks ago the agitator was a failed print that didnt reach the walls, and honestly i should of tested the new one sooner. But now there is one in a hopper with powder in it doing the job. I cant tell you the dispense numbers were suddenly perfect, this was a does-the-powder-move test, not an accuracy test, but the Powder moves lols. Their is alot riding on that one question because if the powder doesnt move the auger has nothing to meter. And the two track are finally meeting. The electronics bench hsa a motor and a scale, the hopper has an agitator and a working auger. The only thing left is making the first one drive the second one while the scale watches. Taht is M2, and its this week.
 
-![](docs/journals/assets/cad/doser-auger-agitator-partstudio.png)
+![](docs/assets/cad/doser-auger-agitator-partstudio.png)
 
 ## Today's results
 
@@ -543,11 +543,11 @@ Ok so M2 is doser plus scale, closed loop, one hopper, one auger, oen motor. The
 
 The early wiring sessions were me getting the pieces on the desk, and now it's an actual system. Pi wired to the TMC2209 on the breadboard, driver wired to the NEMA 17, motor ready to be coupled to the auger. The plan for the interface is in the write-up too. The user assigns powders to slots, types in how much they want, and machine dispenses it. Right now there is one slot and the user is me, but the shape of the thing is there.
 
-![](docs/journals/assets/photos/breadboard-driver.png)
+![](docs/assets/photos/breadboard-driver.png)
 
 A stepper because of the whole metering idea from M1. Turn the auger the same amount, get the same amount out. A stepper is the only cheap motor that makes that true, because it moves in exact steps instead of just spinning until you cut teh power. The NEMA 17 is the standard size for this kind of thing, strong enough to turn an auger full of powder. The TMC2209 is the driver that tells it how to step, quietly and wtih current control so it doesnt cook it self. If the driver is nto wired right you couldnt get nothing to move at all. The motor itself is already in the CAD, mounted on the plate next to the breadboard.
 
-![](docs/journals/assets/photos/motor-breadboard-driver-cad.jpg)
+![](docs/assets/photos/motor-breadboard-driver-cad.jpg)
 
 Breadboard becuase nothing is decided yet, and i already knwo im gonna hate it later lol. Driver choice, wiring, power arrangement, all of it is still changing every time I touch it. A breadboard lets me change it in seconds, a PCB would lock me into whatever I guessed on day one. so the mess stays for now, changing your mind is cheap on a breadboard. The motor arent coupled too the auger yet, that is a whole separate problem, the coupler, and it's coming in M4. Today the motor just has to turn when the Pi tells it too.
 
@@ -571,11 +571,11 @@ Giving the Pi its two peripherals, eyes and hands. The touchscreen is the interf
 
 The touchscreen is wired too the Raspberry Pi 4. The scale connects thorugh one of the Pi's blue USB ports with the RS232 adapter in beteween, the serial setup from last week. The Pi polls it for weight readings continously.
 
-![](docs/journals/assets/photos/full-test-setup.png)
+![](docs/assets/photos/full-test-setup.png)
 
 And now the test setup exists as a complete thing for the first tmie. Hopper over the scale, scale feeding the Pi, Pi running the screen and the motor. I have a photo of the whole arrangement on the desk, hopper on the balance, screen alive next to it, keyboard still plugged in because we're not animals lol, everything is still in development mode. The scale connection is the part that took the most thinking. The balance is a lab instrument, it talked RS232 serial, and the Pi speaks USB, so the PL2303 adapter sits between them translating. The Pi polls the scale continuously, cycling through readings, which means the weight the program sees is always a few milliseconds old. That lag matters later, its the the reason sugar overshoots at the end of a dispense, because the scale is still catching up while powder is still falling. But today the important thing is just that readings arrive at all. The Pi can hear the scale now, and thats what today was for.
 
-![](docs/journals/assets/cad/newauger-assembly2-v7.png)
+![](docs/assets/cad/newauger-assembly2-v7.png)
 
 The screen is a 7-inch touchscreen, 800×480, the size the interface was designed for. Its the screen the user will stand in front of, assign a powder to a slot, type a number, and press start. Today its wired and alive, showing whatever the Pi shows. And the keyboard is still attached because the code is changing every ten minutes and im not desperate enough to start typing on a touchscreen yet
 
@@ -601,9 +601,9 @@ At first I figured it was a software problem. So I spent time in the code adjust
 
 That is wehn the real answer showed up. Its not the code, the NEMA 17 is the limit. Its a small motor doing a job that needs more torque and better control, and no amount of tuning acceleration curves is going to give a 17 the strength of a 23. The motor can only turn the auger so fast against a hopper full of clumpy powder befor it starts missing steps or crawling. The code cannot fix a motor that does not have the the torque. So the fix is hardware, switch too a NEMA 23, which has the torque and control to dispense faster while still moving accurately.
 
-![](docs/journals/assets/cad/single-doser-motor-hopper.png)
+![](docs/assets/cad/single-doser-motor-hopper.png)
 
-![](docs/journals/assets/video-stills/doser-on-scale-still.jpg)
+![](docs/assets/video-stills/doser-on-scale-still.jpg)
 
 I keep looking at software frist, becuase software is where I can change things fastest. Even when the problem is a physical limit. The test that settled it was simple, same code different speeds, and the dispense times barely move. If the code were the limit, changing the code would of changed the times. It didnt, so the code isnt the limit, the motor is. Theres alot of temptation to keep tuning anyway because tuning feels like progress and swapping a motor feels like starting over.
 
@@ -627,9 +627,9 @@ Keeping the one good idea from the software-tuning detour. While I was trying to
 
 The rule works and it survives the motor swap, no way. Looking back its pretty simple, the bulk of the powder doesnt need care, the Last gram does. Sugar taught me tihs the hard way back in M2, it pours so fast that by the time the scale reports the weight, the auger has already dumped more. Slowing down near the target gives the scale time to be right.
 
-![](docs/journals/assets/photos/breadboard-closeup.jpg)
+![](docs/assets/photos/breadboard-closeup.jpg)
 
-![](docs/journals/assets/photos/dispense-complete-5g.jpg)
+![](docs/assets/photos/dispense-complete-5g.jpg)
 
 The hard part is the balence. Where exactly to switch from fast to slow, how slow slow is, and getting that right for eight different powders is a lot of trial and error. Each powder gets it's own version of the rule because a gram away from the target means something different for sugar than for flour. Sugar at a gram out needs the auger barely turning, little pulses with time between them, because it pours. Flour at a gram otu needs the auger stil turning enough to move clumps at all, because it doesnt same rule, different numbers, and the numbers only come from running the test and watching what happens. i dont think their is a shortcut for that part, you just run it and watch
 
@@ -655,11 +655,11 @@ Splitting teh software the wya the final machine will run it. I use to have one 
 
 The app is where the user lives. Assign a powder to a slot, enter the amount, and when dispense start, the app calls the motor/scale program and hands it the target value the user typed in. The motor/scale program doesnt care about screens or buttons, it spins the motor, reads the scale, and keeps going until the weight gets to the target, within 3% error.
 
-![](docs/journals/assets/photos/breadboard-stepper-wide.jpg)
+![](docs/assets/photos/breadboard-stepper-wide.jpg)
 
 Dispensing is timing-sensitive and the interface isnt. And later there will be eight slots and recipes and a disk to position. I refuse to let the thing that stops a motor at exactly 5 grams also be the thing drawing buttons, lmao. So each program does one job and the app jsut tells the dispenser what to hit.
 
-![](docs/journals/assets/reference/raspberry-pi-4-gpio-pins.jpg)
+![](docs/assets/reference/raspberry-pi-4-gpio-pins.jpg)
 
 The split also makes each half testable on its own, which is the part that pays off immediately. I can run the motor/scale program from the command line with a target and a powder name and watch it dispense, without touching the interface at all. And I can click through the interface without a motor attatched and ssee if the numbers flow through. When something breaks, and it will, the ghost motor is already lurking, i know which half too blame, because the boundary between them is one call with one number in it. The interface side is a CustomTkinter app, dark, fullscreen at 800×480, built for the touchscreen. The dispenser side is the program that owns the motor and the scale. The app passes the target, the dispenser owns everything after taht.
 
@@ -696,11 +696,11 @@ Trial 1, 0.055 g target, and the numbers are honest in a way that stings:
 
 Three powders hit the 3% target and five didnt. Flour was off by 14.55% and powdered sugar by 10.91%. And lok at the times. The clumpy powders took over three minutes each to dispense 55 milligrams. Thats kinda the small-dose problem right there The free-flowing powders are fast and slightly overshoot, the clumpy ones are slow and undershoot, and at 55 mg their is no margin for either mistake.
 
-![](docs/journals/assets/photos/small-dose-complete.jpg)
+![](docs/assets/photos/small-dose-complete.jpg)
 
 55 mg is so much harder then 5 g. At 5 g an error of a few milligrams is a fraction of a percent, invisible. At 55 mg the same few milligrams is 5, 10, 15 percent. The scale reads to 0.001 g, which is 1 mg, so a a single clump falling late is a 2% swing by itself. The auger cant meter what it cant grip. At these amounts one turn of the screw moves more powder than the whole remaining dose, so the machine is trying to dispense a fraction of a turn, and a fraction of a turn is not a thing the motor does cleanly. The free-flowing powders overshoot because they keep falling after the motor stops. The clumpy powders undershoot because they fall in clumps or not at all.
 
-![](docs/journals/assets/photos/sugar-test-run.jpg)
+![](docs/assets/photos/sugar-test-run.jpg)
 
 The pattern is the same as everything else in this project. The powders split inot tow families and the families fail in opposite directions. Free-flowing, fast, overshoot, done in under a minute. Clumpy, slow, undershoot, three minutes for 55 milligrams. There is no single setting that fixes both because the failure modes are opposites. Thats why the profiles exist, and why the the small-dose problem stays open after this test instead of getting solved by it. There really isnt a clever fix hiding in the settings lol. i dont love reporting that, but that is what the numbers say.
 
@@ -737,11 +737,11 @@ It works, every single powder, all eight, inside 0.3% error.
 
 Sugar and salt landed on exactly 5 g, adn the worst error in the whole table is cinnamon at 0.3%, which is a tenth of the 3% target. felt great honestly lol, after yesterday
 
-![](docs/journals/assets/video-stills/5g-midrun-still.jpg)
+![](docs/assets/video-stills/5g-midrun-still.jpg)
 
 The times tell the other half The free-flowing powders finish in under two minutes, sugar 1:54, salt 1:49. The clumpy ones take four to five minutes, baking soda 5:01, powdered sugar 4:57, cornstarch 4:55, flour 4:39. Slow but right. And thats the trade the two-speed rule was built for. The clumpy powders need the slow finish, and the slow finish is what gets them inside 0.3%.
 
-![](docs/journals/assets/video-stills/hopper-powder-closeup-still.jpg)
+![](docs/assets/video-stills/hopper-powder-closeup-still.jpg)
 
 5 g works when 55 mg doesnt because its the same math from the other direction. At 5 g a few milligrams of overshoot or a clump falling late is a fraction of a percent, and the two-speed rule has room work. Fast bulk, then a slow final gram where the scale catches up and the auger crept too the target. At 55 mg theres no bulk phase and no room, the whole dose is the final gram. and the the speed problem is still there even when the accuracy isnt. Five minutes for baking soda is rigth but its not fast.
 
@@ -771,9 +771,9 @@ Its the scale lag. The Pi polls the scale continuously, ubt the reading it sees 
 
 So teh code split, The motor/scale program nwo has different categories depending on the consistency of the powder, different speeds and timing for free-flowing versus clumpy. And the app calls the rigth profile based on which powder the user picked in the interface.
 
-![](docs/journals/assets/video-stills/funnel-pour-still.jpg)
+![](docs/assets/video-stills/funnel-pour-still.jpg)
 
-![](docs/journals/assets/video-stills/stepper-nano-breadboard-still.jpg)
+![](docs/assets/video-stills/stepper-nano-breadboard-still.jpg)
 
 Same as M1. In M1 the answer was different augers for different powders, and now the answer is different speeds and timing for different powders, in the same auger. The physical design splits by powder, and now the software splits by powder too. The profile idea survives too the final code, where every powder gets its own settings. i tried the one-size version and it doesnt work tbh.
 
@@ -799,7 +799,7 @@ After running all eight powders, they collapse inot tow families, not eight. Tha
 
 **Free-flowing:** granulated sugar, table salt, cocoa powder, ground cinnamon. They pour, they don't clump, they don't jam. Their problem is the opposite of what you'd expect. They flow so fast that the scale lags behind and the dose overshoots, so they need the slow finish with more time between pulses near the target. Sugar is the easy one to understand and the hard one too get right. It flows so well that it looks like youre approaching the target perfectly, and then it overshoots because of the scale delay. Salt is the same as sugar, virtually no difference. which is nice because i already solved sugars problem once. Cocoa is the odd one, fine and free-flowing but so fine it launches out of the lid. It needs the free-flowing settings run faster for longer. Cinnamon is kinda the easy one, fine and free-flowing, small amounts at a time, accurate almost by default.
 
-![](docs/journals/assets/photos/2g-test-complete.png)
+![](docs/assets/photos/2g-test-complete.png)
 
 **Non-free-flowing:** baking soda, cornstarch, powdered sugar, all-purpose flour. Fine and clumpy, they jam the auger, they fall in inconsistent clumps. This is where the agitator earns its keep, loosening clumps and cycling powder through the hopper so the auger doesn't starve. Near the target they need the auger turning slower, smaller, with more time between turns. The inconsistency is the hard part. Sometimes a clump falls out, sometimes only small bits fall threw, so the same number of turns gives a different amount each time. Teh slow finish is the only way to average it out. And the profiles for this family arent about speed at all
 
@@ -825,11 +825,11 @@ Ok so there is this weird thing going on. Sometimes the motor and scale program 
 
 Troubleshooting it pointed at electrical noise. The driver was picking up noise and reading it as steps, so the motor would creep even though nothing is telling it to move. And the enable line was the problem path.
 
-![](docs/journals/assets/photos/bench-motor-nano-breadboard.jpg)
+![](docs/assets/photos/bench-motor-nano-breadboard.jpg)
 
 The fix was pretty simple once i saw it. Reroute the EN pin to a GPIO pin on the Pi 4, and now the enable is under the Pi's control. The driver gets properly disabled when the program ends and the ghost spinning stop. Program ends, motor stops, that is how its supposed to work lol.
 
-![](docs/journals/assets/photos/breadboard-topdown.jpg)
+![](docs/assets/photos/breadboard-topdown.jpg)
 
 The noise part is pretty simple too. A stepper driver on a breadboard is a a bunch of long jumper wires acting like antennas, sitting next to a switching power supply, next to a motor that throws electrical noise every time it steps. The enable pin was floating, so the noise on it read as "go" often enough to creep the motor. If Id left it like that it would of kept creeping forever. Rerouting EN to a Pi GPIO pin means the pin is driven to a definite state by the Pi at all times, and when the program ends the Pi holds the driver disabled. Its not a fancy fix, it just works. dont leave control pins floating in a noisy environment, fr.
 
@@ -855,9 +855,9 @@ Starting the printed circuit board layout. The breadboard works, and I hate it l
 
 Im laying out a PCB that takes the driver circuit off the breadbord and puts it on one board that can mount on the superstructure. The schematic hsa the driver, the Pi connections, hte enable routing taht just cost me a week of ghost motors. All of it drawn properly instead of implied by jumper wire colors.
 
-![](docs/journals/assets/cad/pcb-schematic-pi-motors.png)
+![](docs/assets/cad/pcb-schematic-pi-motors.png)
 
-![](docs/journals/assets/cad/pcb-layout-board.png)
+![](docs/assets/cad/pcb-layout-board.png)
 
 The plan is to order it so it arrives by the M3 milestone. Mounted bored, organized wiring, less risk. the breadboard gets retired prototyping duty lkie it was always supposed to be. Weather the layout survives contact with reality is a question for a future entry. I have my suspicions, and i wont pretend otherwise.
 
@@ -881,11 +881,11 @@ Building the agitator properly this time. The first version failed because it di
 
 Todays photos are the agitator in pieces and then together. The tall cage frame with the threaded top, the auger beside it, and then the whole thing assembled in my hand, auger running down the middle of the frame. its a satisfying object honestly, lol. The frame scrapes the edges where powder hides, the auger moves it down, and the the whole thing spins as one unit. Thats exactly what the fix list asked for, agitators attached to the auger bottom so both spin together.
 
-![](docs/journals/assets/photos/agitator-frame-screw.jpg)
+![](docs/assets/photos/agitator-frame-screw.jpg)
 
-![](docs/journals/assets/photos/purple-agitator.jpg)
+![](docs/assets/photos/purple-agitator.jpg)
 
-![](docs/journals/assets/photos/hopper-agitator-powder.jpg)
+![](docs/assets/photos/hopper-agitator-powder.jpg)
 
 The design is kinda doing tow jobs at once. The frame is the agitator, it reaches the walls and scrapes the stagnant ring bakc into the middle so the auger can recieve it and move it down. And the auger is the dispenser, it moves the powder down and otu. Spinning them together off one drive means know second motor, no sync problem, no extra electronics. Which is the effecient way to do it.
 
@@ -909,7 +909,7 @@ Printing agitator parts, or trying to, anyway. One of the prints failed so compl
 
 The photo says it all, lmao. Purple filament everywhere, a tangled mess on the print bed where a part was suppose to be. The print detached or the extruder just kept going with nothing to stick to What came out is the 3D printing equivalent of a shrug, lol. Several hours of print time, a chunk of filament, and nothing useable. And that was annoying, alot mroe annoying than it probably sounds, becuase it wasnt just one part, it was a whole evening of printing gone.
 
-![](docs/journals/assets/photos/failed-print-spaghetti.jpg)
+![](docs/assets/photos/failed-print-spaghetti.jpg)
 
 Tihs is the part of the project nobody writes in the milestone docs. A print failing isnt a milestone. But the agitators need to be printed eight times oevr, and a failure rate like this woudl eat the whole schedule. Especially with less parts surviving than i planned for. The fix is the same set of lessons as the earlier auger print. Adhesion, bed prep, first layer, relearned at a bigger scale. The fix was glue on the build plate and the same fix applies here. A tall thin part on a small base wobbles and lets go, and once it lets go the extruder just keeps extruding into air. Weather the first layer sticks is what decides if you get a part or spaghetti. and the first layer is the part of the print im least likely to be watching when it fails. Which is probably why it keeps failing, if im being honest.
 
@@ -935,9 +935,9 @@ More torque, more control, and and the same two-speed rule on top of it. The 23 
 
 Heres the motor and coupler in hand wtih the purple auger mounted, the drive side of the machine taking shape as a real assembly instead of a breadboard experiment.
 
-![](docs/journals/assets/photos/motor-coupler-purple-auger-hand.jpg)
+![](docs/assets/photos/motor-coupler-purple-auger-hand.jpg)
 
-![](docs/journals/assets/cad/shaft-coupler-parts.png)
+![](docs/assets/cad/shaft-coupler-parts.png)
 
 Swap itself is mostly mechanical. Unmount the 17, mount the 23, connect the coupler, retune speeds around the new motor. The two-speed rule doesnt change, because its abotu the scale, not the motor. and the profiles dont change, because theyre about the powders, not the motor. What changes is the ceiling. The fast phase can be fast now, and the slow phase can be slow without the motor strugling. the 17 was doing the job at its limit. The 23 does the same job with room to spare, lmao.
 
@@ -963,9 +963,9 @@ Ok so today was moving all the code onto the Pi so the doser can run on its own,
 
 Honestly the interface part was the fun bit, it runs right on the Pis touchscreen now. So you pick a powder, type in a target mass, hit start, and the final result just shows up on the screen, all on the machine. No computer, no opening code to run a dose, lol. The Pi is the computer now which is kinda what it was always for.
 
-![](docs/journals/assets/reference/raspberry-pi-4-top-view.jpg)
+![](docs/assets/reference/raspberry-pi-4-top-view.jpg)
 
-![](docs/journals/assets/video-stills/set-recipe-screen-still.jpg)
+![](docs/assets/video-stills/set-recipe-screen-still.jpg)
 
 Adn its more then just copying files over. On the laptop I controlled everything, keyboard and screen right there, me watching every line. And on the Pi it has to start up on its own, run the touchscreen, talk to the motor and the scale, all without me standing there. So the two-program split has to wrok as a system now. The app owns the interface and the dispenser, the dispenser owns the motor and the scale, and they're two seperate programs that have to talk to each other. The app calls the dispenser with a target and gets a result bak. No human in the loop, no keyboard, no editing code between doses. And im not going to pretend that part was trivial. Getting two programs to agree on teh the handoff took some fiddling, but once it worked it just worked.
 
@@ -991,9 +991,9 @@ Two things today and they kinda go together. Proving the doser gives the same an
 
 Ok so the repeatability runs were simple on paper. Same target mass, a bunch of dispenses in a row, compare the final weights, no recalibrating inbetween. Thats the test that separates it worked once from it working every time, lol. If the numbers drift beteween runs it points at a real source of error. The scale, the motor, the powder settling, something. And Id way rather find it nwo with one hopper than later with eight, because eight hoppers times a drifting error is a a mess i dont wnat to debug.
 
-![](docs/journals/assets/photos/hopper-open-agitator.jpg)
+![](docs/assets/photos/hopper-open-agitator.jpg)
 
-![](docs/journals/assets/photos/fitting-disk-to-motor.jpg)
+![](docs/assets/photos/fitting-disk-to-motor.jpg)
 
 Then the SOP, the standard operating procedure. A machine only I know how to run is a prototype with a single point of failure, and the the machine has to work when I'm nto the one standing next to it. Twelve steps, start to finish:
 
@@ -1032,13 +1032,13 @@ Ok so a hopper work day today. The purple hoppers are getting lids, and im fitti
 
 The hoppers now have two-piece lids with a slot for the auger post, printed in pink and purple. You can ssee the agitator sitting inside the open hopper, right where it belongs. And lids definately matter alot more than they look like they should. Cocoa launches out of hopper if there isn't one, powder gets everywhere, lol, and a machine with eight open hoppers is a mess waiting to happen.
 
-![](docs/journals/assets/photos/hopper-with-post.jpg)
+![](docs/assets/photos/hopper-with-post.jpg)
 
-![](docs/journals/assets/photos/purple-hopper-lid.jpg)
+![](docs/assets/photos/purple-hopper-lid.jpg)
 
 At the same time i was doing hands-on fitting. The purple disk mount going onto the black motor, checking the fit in real life instead of in CAD. CAD never tells you a part is 0.5 mm too tight. A render is perfect by definition, it doesn't know about friction or a print that came out half a milimeter wide. The only way to know is to hold the parts in your hands and feel whether they go.
 
-![](docs/journals/assets/cad/rotary-disk-v2-sketch.png)
+![](docs/assets/cad/rotary-disk-v2-sketch.png)
 
 The lid slot is the detail that makes the lid work instead of jsut covering the hopper. Teh auger post has to pass through the lid while the auger spins, so the lid is two pieces with a slot for the post, not one piece with a hole that would bind. And its a small piece of geometry. The hand-fitting is the part of the build CAD can't do. The disk mount, the motor, the fit beteween them, checked by holding the parts together and feeling whether they go.
 
@@ -1068,9 +1068,9 @@ Ok so the single doser, full coverage. One hopper, eight powders. Me and the dos
 - It has two-speed dispensing, fast bulk then slow finish, and powder profiles split inot free-flowing and non-free-flowing.
 - It has a written SOP, and the repeatability runs behind it.
 
-![](docs/journals/assets/photos/bench-setup.jpg)
+![](docs/assets/photos/bench-setup.jpg)
 
-![](docs/journals/assets/video-stills/nema23-closeup-still.jpg)
+![](docs/assets/video-stills/nema23-closeup-still.jpg)
 
 M3 was supposed to be about speed. The speed limit was hardware, so the answer was a bigger motor. The small-dose limit is real. The accuracy answer was a slower finish and powder profiles. And the independence answer was the Pi. None of those were the answers i guessed at the start, and all three of them are in the machine now. Which is a pretty good feeling, ngl, considering the the frist version of this thing coudl barely dispense sugar without making a mess.
 
@@ -1094,9 +1094,9 @@ The PCB schematic, finally on screen in full. i started the layout a while back 
 
 The screen shows the schematic in the design tool. All the blocks laid out, traces being routed. And this is the board thats supposed to replace the breadboard, mount on the superstructure, and make the electronics organized and reliable instead of a wire nest that falls apart if you lok at it wrong.
 
-![](docs/journals/assets/photos/pcb-schematic-screen.jpg)
+![](docs/assets/photos/pcb-schematic-screen.jpg)
 
-![](docs/journals/assets/reference/tmc2209-wiring-diagram.png)
+![](docs/assets/reference/tmc2209-wiring-diagram.png)
 
 Drawing the schematic is the part that forces you to undertsand your own circuit. On the breadboard the enable reroute was one wire moved from one hole to another. But on the schematic the enable line has to be drawn from the Pi GPIO pin to the driver EN pin, with everything in between visible. If i draw it wrong it will effect the whole board and i pay for it in a two-week shipping delay. A board doesnt forgive sloppy thinking the way a breadboard does, because you can't just move a trace with your fingers. Thats the risk of the PCB route and it's a real one. The breadboard is ugly and it works and and the PCB would be clean and it might not work, lol. But the machine cant live on a breadboard, not with a frame and a disk and eight hoppers and a demo to survive. So the board gets designed anyway, and im the one who has to live with the traces once theyre copper.
 
@@ -1120,12 +1120,12 @@ M4 now. Expanding the single doser into a multi-doser that can dispense multiple
 
 The single doser was designed with this in mind from the start. Which is why the transition is smoother tehn it has any right to be. The disk i sketched early on is now a proper model. Eight pockets, one for each hopper, arranged in a circle. The first iteration is a solid disk with eight holes. The final iteration is lighter, a two-tier lattice structure, because a solid disk that size is heavy, slow to print, and a waste of filament.
 
-![](docs/journals/assets/cad/disk-concept-cad.png)
+![](docs/assets/cad/disk-concept-cad.png)
 
-![](docs/journals/assets/cad/disk-v2-cad.png)
-![](docs/journals/assets/cad/newauger-rotary-disk-v2-underside.png)
+![](docs/assets/cad/disk-v2-cad.png)
+![](docs/assets/cad/newauger-rotary-disk-v2-underside.png)
 
-![](docs/journals/assets/cad/newauger-v04-eight-hole-disk.png)
+![](docs/assets/cad/newauger-v04-eight-hole-disk.png)
 
 Two tiers instead of one solid disk. Because a solid disk eight hoppers wide is big print, a lot of filament, a lot of weight hanging on the disk motor, and most of the material is doing nothing. The middle of the disk doesn't hold powder, the Pockets do. So the two-tier version keeps the pockets and the structure that holds them and dropped the rest. Less filament, faster print, lighter to spin. And the lattice looks like engineering instead of a hockey puck. The trade is print complexity. A lattice is harder to print cleanly than a solid slab, and if it warps or starts to loose alignment the pockets dont line up with the actuator. Ubt the weight saving is worth it, because the disk motor has to stop this thing at exact positions, and a lighter disk is easier to stop exactly.
 
@@ -1151,10 +1151,10 @@ Ok so the problem is the transition. One motor has to run eight dosers, so it ne
 
 At first the plan was to build the actuator ourselves, then i did the cost math and it fell apart. Building a linear actuator from parts costs mroe then just buying one. and the bought one is a known thing, a mini linear rail with a lead screw and a small stepper, 50 mm of travel. Which is exactly the lift the motor needs to clear the coupler and come back down. And turns out building it ourselves woudl've cost way to much for something i could just order, lol.
 
-![](docs/journals/assets/cad/actuator-cad.png)
+![](docs/assets/cad/actuator-cad.png)
 
-![](docs/journals/assets/reference/nema11-linear-actuator-50mm.jpg)
-![](docs/journals/assets/cad/newauger-dg281-50l-actuator.png)
+![](docs/assets/reference/nema11-linear-actuator-50mm.jpg)
+![](docs/assets/cad/newauger-dg281-50l-actuator.png)
 
 So we bought it instead. The BOM stil has it marked pending at $49.96, the oen item on the list that never got checked off as bought in the sheet. Which is either an accounting gap or the actuator arriving faster than the spreadsheet. Thats my best guess anyway Either way the actuator is a purchase, not a build, and honestly im fine with that, fr. The interesting engineering in tihs machine is the dispensing, and reinventing a lead screw doesnt make the powder dispense any better.
 
@@ -1180,15 +1180,15 @@ Fixing the connection beteween the motor and the auger. Which has turned into th
 
 The frist coupler design only connected if the auger happend to be sitting at one very specific angle. And if it wasnt, and it almost never was, the motor would come down and not engage. and nothing could dispense. No tests, no progress on hardware or software. The whole machine held hostage by a connection that needed luck, bruh. And if the auger wasnt at that one angle, yuor out of luck.
 
-![](docs/journals/assets/cad/motor-coupler-rue.png)
+![](docs/assets/cad/motor-coupler-rue.png)
 
-![](docs/journals/assets/cad/newauger-hex-shaft-coupler.png)
+![](docs/assets/cad/newauger-hex-shaft-coupler.png)
 
 This was a major roadblock because it blocked everything downstream. I couldnt test the disk. I couldnt test the actuator cycle. I couldnt test multi-powder runs. Because the motor couldnt reliably grab the auger it was supposed to turn. A machine that cant connect its motor to it's load cant dispense anything. And i had a very expensive machine that couldnt do anything for a while. Which is not a great feeling when the whole milestone is waiting on one connection, lmao.
 
 The fix, the fix came after a lot of approaches. And the images show some of them. Attempt after attempt, idea after idea, test prototypes, different geometries. All of them mine, all of them trying to solve the same problem from a different direction. The answer that stuck was to line the motor coupler with serrated teeth that align with the auger coupler at any angle. Teeth, not a keyway. However the auger stopped, the teeth find each other and engage.
 
-![](docs/journals/assets/cad/newauger-coupler-idea2.png)
+![](docs/assets/cad/newauger-coupler-idea2.png)
 
 Teath work and a keyway doesn't because of what the auger does when it stops. It stops wherever it stops. A keyway needs the auger at one exact angle. Which means the machine has to rotate the auger to that angle before every engagement. Which means more code, more time, more ways for it to fails. Teeth need the auger at any angle, because tehre are enough teeth aroudn the circle that one of them is always close to aligned. And the lowering motion itself pushes them into engagement. And the connection finds itself instead of needing to to be found.
 
@@ -1212,9 +1212,9 @@ Building the superstructure. The frame everything hangs from. The machine outgre
 
 First tihng I needed was 3030 aluminum extrusion. Cut it with an electric saw, put it together with connectors and T-nuts. The photo from today is the frame going together on the floor, silver extrusions and black brackets, a saw nearby. The unglamorous middle of a build. Everything is measurement and cutting and re-measuring, becuase the disk has to be centered and the actuator has to line up with the slot positions or nothing works. I should of known the measuring would eat most of the day.
 
-![](docs/journals/assets/photos/extrusion-frame.jpg)
+![](docs/assets/photos/extrusion-frame.jpg)
 
-![](docs/journals/assets/cad/newauger-superstructure-frame.png)
+![](docs/assets/cad/newauger-superstructure-frame.png)
 
 The frame is also about fitting in its envelope. The machine has to fit, thats constraint. Extrusion works for that because its strong and modular and you can move a bracket when you remeber the actuator is 2 cm off. Instead of rebuilding the whole thing. Thats why I went with extrusion instead of wood or printed parts. The machine is still changing so the frame has to change with it. Unbolt a bracket, move it, done lmao
 
@@ -1240,13 +1240,13 @@ Putting the disk on the frame. The frame is built, the disk is designed, and tod
 
 The rotary disk is mounted in the center of the extrusion frame. Photos from today show it form a couple of angles, the disk hanging in the frame with the purple mounts and the motor hardware starting to appear around it. First time the machine looks like the CAD. Which is weird after months of the CAD being the only version that looked finished. honestly it kind of caught me off guard how much it already looks like a machine, ngl.
 
-![](docs/journals/assets/cad/superstructure-assem-copy1.png)
+![](docs/assets/cad/superstructure-assem-copy1.png)
 
-![](docs/journals/assets/cad/newauger-expanded-rotary-disk-v2.png)
+![](docs/assets/cad/newauger-expanded-rotary-disk-v2.png)
 
 The white disk itself is a big print. Eight pockets. theres a photo from a few days later of it sitting on the frame wtih the purple hub in the middle, which is the version that gets used. the printed one is solid and real and heavier than the CAD suggested. The disk in the CAD was light and lacy. The printed oen isnt light and lacy. Which isnt a detail the frame minds tho, but the disk motor will have opinions about later.
 
-![](docs/journals/assets/photos/rotary-disk.jpg)
+![](docs/assets/photos/rotary-disk.jpg)
 
 The weight matters becuase the disk doesnt just sit their. It has to spin and stop at exact positions, eight of them, and stop precisely enough that the actuator comes down onto the right hoppr. A heavier disk has more momemtum, which means more overshoot, which means the positioning code has to work harder. The CAD said light and lacy, the print says solid and heavy. And if the frame was even a little out of square i couldnt get nothing to line up, so im glad the measuring paid off. The motor will be the judge. The judge hasnt ruled yet.
 
@@ -1270,11 +1270,11 @@ First full assembly. Everything on the machine at once. Frame, disk, actuator, m
 
 The disk print is running, you can see it in the slicer on sceen. Eight pockets, sparse infill, the big white disk that the whole machine rotates around. And the assembly is coming together in the photos, the full CAD with the orange actuator column, the disk in the middle, the screen at the base, and then the real thing on the desk at night. Wires everywhere, disk in place, motors mounted. The machine existing in three dimensions for first time. And it wont look tihs New agian for a while, lmao.
 
-![](docs/journals/assets/cad/full-assembly-cad.png)
+![](docs/assets/cad/full-assembly-cad.png)
 
-![](docs/journals/assets/photos/final-assembly.png)
+![](docs/assets/photos/final-assembly.png)
 
-![](docs/journals/assets/photos/printing-disk.jpg)
+![](docs/assets/photos/printing-disk.jpg)
 
 The CAD and the real thing side by side. The frame holds the disk, the actuator column stands where the CAD said it would, the screen sits at the base, right where it was suppose to be. The motors are mounted. Everything the CAD promised is their, in three dimensions, on the desk, at night, with wires everywhere because the wiring hasn't happened yet and the wires are stil a pile instead of a system. And i keep coming back to how strange it is to see it as a a real object instead of a model.
 
@@ -1300,11 +1300,11 @@ Wiring the whole machine. Not a bench test, not a subsystem, the whole tihng. Mo
 
 The photos from tihs session are from the middle of the nite, and they look like it. The breadboard is mounted on a blue box on the the machine with wires going in every direction. theres a perf board in hand, a driver board in hand, disk segments on the carpet. And the machine is slowly turning from a mechanical assembly into an electrical one, bruh. And the amount of wires coming off that breadboard was honestly kind of insane.
 
-![](docs/journals/assets/photos/wiring-night.jpg)
+![](docs/assets/photos/wiring-night.jpg)
 
-![](docs/journals/assets/photos/perfboard-breadboard-hand.jpg)
+![](docs/assets/photos/perfboard-breadboard-hand.jpg)
 
-![](docs/journals/assets/photos/disk-segments.jpg)
+![](docs/assets/photos/disk-segments.jpg)
 
 This is the session where the M4 and M5 documents both get written, because the work crosses midnight and the write-ups land the next day. And the machine that comes out of this night is the machine that the rest of the project is about. Eight hoppers, one shared drive, an actuator, a disk, adn electronics that are, for now, a breadboard and a prayer. and dont let the prayer part fool you, it works.
 
@@ -1330,8 +1330,8 @@ M5, fine-tuning and optimizing. The machine is built and wired, and now it's abo
 
 The first version of the stepper code used basic Arduino commands to send step pulses at increasing speed. Simple, readable, and too slow, tbh. And the code itself became the bottleneck instead of the motor. The motor could go faster, the pulses just couldnt get to it fast enough, becuase the Arduino was spending its time running the pulse commands instead of pulsing. The code is doing the pulsing and pulsing is the slow part.
 
-![](docs/journals/assets/photos/driver-board.jpg)
-![](docs/journals/assets/photos/perfboard-breadboard.jpg)
+![](docs/assets/photos/driver-board.jpg)
+![](docs/assets/photos/perfboard-breadboard.jpg)
 
 Last time the hardware was the limit and I blamed the software. i use to think the motor was always the slow part, but this time the software really is the limit. And the fix has to be in how the pulses are generated, not in how fast I ask for them. The basic pulse commands work by having the main loop do everything. Set the pin high, wait, set it low, wait, reapet. And every step costs the processor time, and the processor can only do one thing at a time. so the fastest the motor can go is the fastest the loop can run. That's the ceiling, and it's a low one.
 
@@ -1357,11 +1357,11 @@ Version 3 of the stepper code. Tow things this time, fault checking, and typing 
 
 Fault checking first. If the driver catches a stall or too much current, the code records exactly what speed it happend at. And thats way more useful than just knowing the motor stopped Now I know it stalled at this speed under this load, and that's actual data I can use, not a shrug. And the driver board is the part that reports it, so version 3 is really the code listening to the hardware for once.
 
-![](docs/journals/assets/reference/tmc2209-btt-v12-modules.jpg)
+![](docs/assets/reference/tmc2209-btt-v12-modules.jpg)
 
 Tehn the type-in speed testing. Before this, testing a new speed meant rewriting the code and re-uploading it to the Arduino every single time. That would of gotten old fast, and honestly it made me skip tests I should've run. And now I just type in a number and it run. Minutes per test down to seconds, and the motor gets characterized instead of me guessing at it. Guessing was the old method and it wasnt working, lol.
 
-![](docs/journals/assets/photos/breadboard-perfboard-driver.jpg)
+![](docs/assets/photos/breadboard-perfboard-driver.jpg)
 
 Ok so both of these are really about the same thing, making the motor testable. fault checking tells me where it fails, type-in speed let me find that spot fast. And without the first one I'm guessing about limits, and without the second one I'm too slow to map them. And once I know the limits I can run the machine fast without breaking it. And the componenets didn't change at all, the driver is the same Driver, the motor is the same motor, only the code gto smarter. Which is the cheapest upgrade in the whole project, ngl.
 
@@ -1387,7 +1387,7 @@ The custom PCB is scrapped. We looked into building one to replace the breadboar
 
 So, perf board. A breadboard is to big to mount and too messy, so a perf board seemed like the middle ground. Smaller, mountable, soldered instead of jumperd. And the perf board failed to connect, the connections just didn't work. And after all that soldering, were back to square one on electronics packaging, lmao, and then the- Which is a frustrating place to be when you thought you were past it.
 
-![](docs/journals/assets/photos/perfboard-in-hand.jpg)
+![](docs/assets/photos/perfboard-in-hand.jpg)
 
 The answer in the end is going back to a breadboard, but a half breadboard, one I can keep adapting with a modular design, mounted in a 3D-printed custom mount. Its not pretty. The breadboard works, the perf board doesnt, and the PCB doesnt exist, so the breadboard is what stays. a mechanism that doesnt work doesnt get kept just because I already spent tmie on it. It gets replaced by the one that does work, even if it's uglier. And the connections on the perf board were pararell to nothing, they just didnt connect. Which is abotu as final as a verdict gets.
 
@@ -1413,9 +1413,9 @@ Ok so, cleaning up the machine. The electronics work, the motors are fast, the d
 
 Printed parts to rescue. which is the theme of this whole project, when something needs to exist, print it. Custom wire covers, an Arduino cover, a breadboard mount, all printed to fit teh machine. And the wires get secured to the side and consolidated to one extrusion, so instead of cables going everywhere theres one clean run down one piece of frame. one run, one extrusion, nothing dangling.
 
-![](docs/journals/assets/cad/wire-cover.png)
+![](docs/assets/cad/wire-cover.png)
 
-![](docs/journals/assets/video-stills/machine-on-table-still.jpg)
+![](docs/assets/video-stills/machine-on-table-still.jpg)
 
 Its not just cosmetic. Exposed wires get snagged and pulled and unpluged, and a machine that has to dispense eight powders in a row can't have a wire come loose because someone brushed past it. And the covers and the consolidation wree reliabilty work. A wire in a cover can't be snagged, a wire secured to one extrusion can't be yanked from three directions, and a breadboard in a printed mount can't slide off the machine mid-dispense. And the machine stops being one accidental tug away from a failure, lmao. And that's worth more than looking good, even though it also looks good. And alot of the reliability in this project has been exactly this kind of unglamorous work.
 
@@ -1441,9 +1441,9 @@ Back in CAD, checking the assembly one more time before the final code push. The
 
 The screen shows the assembly, the orange actuator column, the funnel and hopper, the frame, the whole machine modeled with the parts as tehy are now. And this is the version of the CAD that matches the machine, kinda, not the older version that matched the plan. And the difference between those two versions is the whole summer, lol.
 
-![](docs/journals/assets/cad/newauger-superstructure-assem-b4.png)
+![](docs/assets/cad/newauger-superstructure-assem-b4.png)
 
-![](docs/journals/assets/video-stills/two-motors-disk-still.jpg)
+![](docs/assets/video-stills/two-motors-disk-still.jpg)
 
 the drift is the story of the whole summer. The disk got heavier than the CAD said, the electronics moved from a PCB plan to a half breadboard in a printed mount, the wire covers got added the coupler got serrated teeth, and their were always more parts to build than time to model them. And every one of those changes moved the real machine away from the model, and none of them got modeled at the time, because modeling takes time and building was faster. And this is when I pay that debt back, because the final code is about to be written against this exact geometry. And the actuator positions, the disk slots, the scale position, all of it has to be right in the modle, or the code that reads the model will be wrong about the machine. And that is nto a mistake I want to find out about on demo day.
 
@@ -1469,11 +1469,11 @@ Printing the last of the hopper parts. Eight hoppers means eight of everything, 
 
 The photo form today is the print bed wtih the finished parts, stacked white cylindres, the hopper bodies, and the latice pieces beside them. Clean prints, no spaghetti this time, lol. And the process is reliable now in a way it wasnt before, and the spaghetti failure feels like a different project. Which in a way it was, that was before i figured out the process.
 
-![](docs/journals/assets/photos/finished-hopper-parts-print-bed.jpg)
+![](docs/assets/photos/finished-hopper-parts-print-bed.jpg)
 
-![](docs/journals/assets/video-stills/hopper-in-carousel-still.jpg)
+![](docs/assets/video-stills/hopper-in-carousel-still.jpg)
 
-![](docs/journals/assets/cad/newauger-singlefunnel.png)
+![](docs/assets/cad/newauger-singlefunnel.png)
 
 The reliability is the result here. At the start the auger wouldn't stick to the bed without glue, then a print turned into spaghetti, then the disk printed clean, then eight hopper bodies print clean in one run. And the process got reliable the same way everything else in this project did, by failing, figuring out why, and fixing the actual cause instead of hoping. glue on the bed, first layer watched, bed prep checked before a long print. None of it is exciting, and all of it is the reason the last parts printed clean. And dont let anyone tell you bed prep is boring, its what makes the prints come out clean, lmao.
 
@@ -1511,11 +1511,11 @@ DISK PREV is intentionally rejected.
 
 Clockwise only, no reverse, no shortest path, no step counting. The disk goes around until the switch says it's home, and if the indexing fails the stored position is invalidated instead of guessed at. And it's slower than the shortest-path idea and it's correct. Which is what matters when the machine is dispensing actual doses, tbh.
 
-![](docs/journals/assets/cad/newauger-limit-switch-assembly.png)
+![](docs/assets/cad/newauger-limit-switch-assembly.png)
 
-![](docs/journals/assets/cad/superstructure-assem.png)
+![](docs/assets/cad/superstructure-assem.png)
 
-![](docs/journals/assets/video-stills/disk-test-code-still.jpg)
+![](docs/assets/video-stills/disk-test-code-still.jpg)
 
 Why the M4 plan was wrong comes dwon to what a missed step costs. In the M4 notes the disk motor has 6,400 steps per revolution, 800 steps per slot, and the disk takes the shortest route. And that's elegent, and it's fragile, because the position is a count in the code's memory, and the code's memory is only right if evrey step happened. And under load, a heavy disk, eight hoppers, friction, steps get missed, and the count drifts, and the drift is silent, and the machine thinks it's at slot 3 and it's at slot 4, and it dispenses the wrong powder inot the right dose. And the detent switch fixes it by making the position physcial. The switch clicks when a slot passes, the code counts clicks, and if the clicks don't add up the position is invalidated instead of guessed at. And the expected pitch is 800 steps per slot, wtih 400 to 1,200 allowed. Which is the code admitting that steps are approximate and the switch is what counts. And the componenets didnt change, the switch was always there. i jsut wasnt listening to it.
 
@@ -1553,9 +1553,9 @@ ALL disk travel is clockwise only.
 DISK PREV is intentionally rejected.
 ```
 
-![](docs/journals/assets/photos/arduino-actuator-step-code.png)
+![](docs/assets/photos/arduino-actuator-step-code.png)
 
-![](docs/journals/assets/photos/arduino-actuator-commands.png)
+![](docs/assets/photos/arduino-actuator-commands.png)
 
 The three pieces was the M2 split, grown up. At first there were two programs, the app and the dispenser, now there are three, because the disk and the actuator need a brain of their own, and that brain is the Arduino sketch. And the app owns the interface and the recipes, the dispenser owns one powder and one target, the sketch owns the motors, the actuator, and the disk position. And each piece does one job, each piece is testable on its own, and the boundries beteween them are single calls with single values in them. And it's the same architecture from the start, the split was right the first time.
 
@@ -1581,7 +1581,7 @@ Doing final tweaks on the machine, the carasoul rotation got fixed earlier now I
 
 The finished machine, two-level carousel wtih eight clear PETG hoppers on top, lids and funnels in place, two big black motors on purple mounts over the disk, the 3030 extrusion frame holding it all, the touchscreen at the base, and a black electronics box with PHARMATECH printed on it. I had to make sure there were no mechanical clearances and I tidied up the wires some more. I also tried making the ui a bit smoother.
 
-![](docs/journals/assets/photos/demo-machine-photo.png)
+![](docs/assets/photos/demo-machine-photo.png)
 
 After finally fixing all these issues with ethier dispensing the amount of turns the motor takes to dispense correctly, how many rotations the disc has to do, all these electrical issues, im proud to say the machine finally fully works!
 

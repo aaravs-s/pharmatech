@@ -10,9 +10,9 @@ Compounding a pill means weighing out several different powders, accurately, one
 
 The finished machine at demo day — eight clear PETG hoppers on top, two motors on purple mounts over the disk, touchscreen at the base, PHARMATECH electronics box. Powder on the tablecloth is the review: it dispensed, here, in front of people.
 
-![The finished machine at the demo table: eight clear hoppers, two motors on purple mounts, touchscreen at the base, PHARMATECH box.](docs/journals/assets/photos/finished-machine-demo.jpg)
+![The finished machine at the demo table: eight clear hoppers, two motors on purple mounts, touchscreen at the base, PHARMATECH box.](docs/assets/photos/finished-machine-demo.jpg)
 
-![The machine on its table under the expo screen, the whole project in one frame.](docs/journals/assets/photos/demo-day-wide.jpg)
+![The machine on its table under the expo screen, the whole project in one frame.](docs/assets/photos/demo-day-wide.jpg)
 
 ## Videos
 
@@ -38,9 +38,9 @@ Onshape: https://cad.onshape.com/documents/e2fb2b451acf286ed66ba165/w/6cd2a32041
 
 There is no PCB in this machine — see Known Issues below. There is a schematic. It covers the driver circuit, the Pi connections, and the enable routing.
 
-![PCB schematic: driver, Pi connections, enable routing, drawn properly instead of implied by jumper wire colors.](docs/journals/assets/cad/pcb-schematic.png)
+![PCB schematic: driver, Pi connections, enable routing, drawn properly instead of implied by jumper wire colors.](docs/assets/cad/pcb-schematic.png)
 
-![The schematic on screen in the design tool.](docs/journals/assets/photos/pcb-schematic-screen.jpg)
+![The schematic on screen in the design tool.](docs/assets/photos/pcb-schematic-screen.jpg)
 
 The board was never finalized, so it was scrapped. 
 
