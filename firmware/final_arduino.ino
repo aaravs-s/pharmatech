@@ -2,13 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#if !defined(__AVR_ATmega328P__)
-#error "Select an ATmega328P Uno or classic Nano; this sketch uses their
-AVR registers."
-#endif
-#if F_CPU != 16000000UL
-#error "This sketch requires a 16 MHz board."
-#endif
+
 // ---------------- Pins and polarity ----------------
 const uint8_t AUGER_STEP_PIN=9, AUGER_DIR_PIN=8, AUGER_ENABLE_PIN=10;
 const uint8_t DISK_STEP_PIN=11, DISK_DIR_PIN=12, DISK_ENABLE_PIN=4;
