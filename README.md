@@ -8,7 +8,7 @@ Compounding a pill means weighing out several different powders, accurately, one
 
 ## Pictures
 
-The finished machine at demo day — eight clear PETG hoppers on top, two motors on purple mounts over the disk, touchscreen at the base, PHARMATECH electronics box. Powder on the tablecloth is the review: it dispensed, here, in front of people.
+The finished machine
 
 ![](docs/assets/photos/demo-machine-photo.png)
 
